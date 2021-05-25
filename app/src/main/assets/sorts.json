@@ -1,0 +1,56 @@
+[
+  {
+    "name": "BogoSort",
+    "theory": "theory.bogo.json",
+    "recommended_length": {
+      "min": 0,
+      "max": 10,
+      "out_of_range": false
+    }
+  },
+  {
+    "name": "BubbleSort",
+    "theory": "theory.bubble.json",
+    "recommended_length": {
+      "min": 0,
+      "max": 10000,
+      "out_of_range": false
+    }
+  },
+  {
+    "name": "CountingSort",
+    "theory": "theory.counting.json",
+    "recommended_length": {
+      "min": 0,
+      "max": 10000000,
+      "out_of_range": true
+    }
+  },
+  {
+    "name": "MergeSort",
+    "theory": "theory.merge.json",
+    "recommended_length": {
+      "min": 0,
+      "max": 1000000,
+      "out_of_range": true
+    }
+  },
+  {
+    "name": "QuickSort",
+    "theory": "theory.quick.json",
+    "recommended_length": {
+      "min": 0,
+      "max": 10000000,
+      "out_of_range": true
+    }
+  },
+  {
+    "name": "RadixSort",
+    "theory": "theory.radix.json",
+    "recommended_length": {
+      "min": 0,
+      "max": 10000000,
+      "out_of_range": true
+    }
+  }
+]
