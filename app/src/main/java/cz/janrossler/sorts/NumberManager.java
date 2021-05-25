@@ -141,6 +141,11 @@ public class NumberManager {
                 JSONObject session = new JSONObject(data.getString(entry.getKey(), "{}"));
                 session.put("session", entry.getKey());
 
+                if(session.has("sorted"))
+                    session.remove("sorted");
+                if(session.has("unsorted"))
+                    session.remove("unsorted");
+
                 sessions.put(session);
             }
         }catch (Exception e){

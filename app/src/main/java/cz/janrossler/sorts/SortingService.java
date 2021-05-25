@@ -78,7 +78,7 @@ public class SortingService extends Service {
     }
 
     public void registerClient(Activity activity){
-        this.activity = (Callbacks)activity;
+        this.activity = (Callbacks) activity;
     }
 
     public interface Callbacks{

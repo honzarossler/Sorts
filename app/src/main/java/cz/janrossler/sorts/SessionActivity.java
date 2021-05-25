@@ -166,7 +166,6 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
-
         @Override
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {

@@ -1,6 +1,5 @@
 package cz.janrossler.sorts.async;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -18,22 +17,10 @@ import cz.janrossler.sorts.sortable.Sortable;
 
 public class QuickAsync extends AsyncTask<String, String, String> {
     private Context context;
-    public static ProgressDialog pDialog;
     public SortingService.Callbacks callbacks;
-    private boolean isDone = false;
 
     public QuickAsync(Context context){
         this.context = context;
-    }
-
-    protected void onPreExecute() {
-        //super.onPreExecute();
-        if(pDialog != null) {
-            pDialog.setMessage("Třídím čísla ...");
-            pDialog.setIndeterminate(true);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
     }
 
     protected String doInBackground(@NonNull String... sessions) {
@@ -59,13 +46,11 @@ public class QuickAsync extends AsyncTask<String, String, String> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                isDone = true;
                 publishProgress();
             }
 
             @Override
             public void onFailed(String _message) {
-                isDone = true;
                 publishProgress();
             }
         });
@@ -73,11 +58,6 @@ public class QuickAsync extends AsyncTask<String, String, String> {
 
         return null;
     }
-
-    protected void onPostExecute(String str) {
-        if (isDone && pDialog != null) pDialog.dismiss();
-    }
-
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
