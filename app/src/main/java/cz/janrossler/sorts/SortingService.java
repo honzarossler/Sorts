@@ -5,15 +5,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
-import cz.janrossler.sorts.async.BogoAsync;
-import cz.janrossler.sorts.async.BubbleAsync;
-import cz.janrossler.sorts.async.CountingAsync;
-import cz.janrossler.sorts.async.MergeAsync;
-import cz.janrossler.sorts.async.QuickAsync;
-import cz.janrossler.sorts.async.RadixAsync;
-import cz.janrossler.sorts.sortable.Sortable;
+import cz.janrossler.sorts.sortable.AsyncSorting;
 
 public class SortingService extends Service {
     private final IBinder mBinder = new LocalBinder();
@@ -30,41 +23,10 @@ public class SortingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             if(intent.hasExtra("use-sort") && intent.hasExtra("session")){
-                switch (intent.getStringExtra("use-sort")){
-                    case Sortable.BUBBLE:
-                        BubbleAsync bubbleAsync = new BubbleAsync(this);
-                        bubbleAsync.callbacks = activity;
-                        bubbleAsync.execute(intent.getStringExtra("session"));
-                        break;
-                    case Sortable.COUNTING:
-                        CountingAsync countingAsync = new CountingAsync(this);
-                        countingAsync.callbacks = activity;
-                        countingAsync.execute(intent.getStringExtra("session"));
-                        break;
-                    case Sortable.QUICK:
-                        QuickAsync quickAsync = new QuickAsync(this);
-                        quickAsync.callbacks = activity;
-                        quickAsync.execute(intent.getStringExtra("session"));
-                        break;
-                    case Sortable.MERGE:
-                        MergeAsync mergeAsync = new MergeAsync(this);
-                        mergeAsync.callbacks = activity;
-                        mergeAsync.execute(intent.getStringExtra("session"));
-                        break;
-                    case Sortable.BOGO:
-                        BogoAsync bogoAsync = new BogoAsync(this);
-                        bogoAsync.callbacks = activity;
-                        bogoAsync.execute(intent.getStringExtra("session"));
-                        break;
-                    case Sortable.RADIX:
-                        RadixAsync radixAsync = new RadixAsync(this);
-                        radixAsync.callbacks = activity;
-                        radixAsync.execute(intent.getStringExtra("session"));
-                        break;
-                    default:
-                        Log.d("SortingService", "Unknown sort " + intent.getStringExtra("use-sort"));
-                        break;
-                }
+                AsyncSorting asyncSorting = new AsyncSorting(this);
+                asyncSorting.callbacks = activity;
+                asyncSorting.sortAlgorithm = intent.getStringExtra("use-sort");
+                asyncSorting.execute(intent.getStringExtra("session"));
             }
         }
 
