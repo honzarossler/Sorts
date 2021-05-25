@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -31,6 +30,8 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     private JSONObject session;
     private Intent intent;
     Intent sortIntent;
+    private JSONArray unsorted = new JSONArray();
+    private JSONArray sorted = new JSONArray();
 
     SortingService myService;
 
@@ -77,6 +78,16 @@ public class SessionActivity extends AppCompatActivity implements SortingService
 
     void update(){
         session = numberManager.getSession(intent.getStringExtra("session"));
+        sorted = new JSONArray();
+        unsorted = new JSONArray();
+
+        List<Integer> list_sorted = numberManager.getSortedSessionList(intent.getStringExtra("session"));
+        List<Integer> list_unsorted = numberManager.getUnsortedSessionList(intent.getStringExtra("session"));
+
+        for(int i = 0; i < list_unsorted.size(); i++)
+            unsorted.put(list_unsorted.get(i));
+        for(int i = 0; i < list_sorted.size(); i++)
+            sorted.put(list_sorted.get(i));
 
         try{
             instance.setText("Informace o instanci: %instance%".replace("%instance%", session.has("session") ? session.getString("session") : ""));
@@ -91,17 +102,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             sort_time.setText("Doba třídění:");
         }
 
-        try {
-            adapter = new SessionPreviewAdapter(this,
-                    session.has("unsorted")
-                            ? session.getJSONArray("unsorted") : new JSONArray(),
-                    session.has("sorted")
-                            ? session.getJSONArray("sorted") : new JSONArray()
-            );
-        } catch (JSONException e) {
-            e.printStackTrace();
-            adapter = new SessionPreviewAdapter(this, new JSONArray());
-        }
+        adapter = new SessionPreviewAdapter(this, unsorted, sorted);
         session_preview.setAdapter(adapter);
         session_preview.setLayoutManager(new LinearLayoutManager(this));
 

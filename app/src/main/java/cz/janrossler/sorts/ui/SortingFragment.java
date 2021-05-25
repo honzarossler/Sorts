@@ -90,6 +90,7 @@ public class SortingFragment extends Fragment {
                         alertDialog.dismiss();
                     }
                 }catch (Exception e){
+                    e.printStackTrace();
                     Toast.makeText(activity, "Zadejte hodnoty", Toast.LENGTH_LONG).show();
                 }
             });
