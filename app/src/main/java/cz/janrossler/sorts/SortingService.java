@@ -12,8 +12,6 @@ public class SortingService extends Service {
     private final IBinder mBinder = new LocalBinder();
     private Callbacks activity;
 
-    public SortingService() { }
-
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;

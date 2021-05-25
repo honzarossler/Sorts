@@ -1,5 +1,6 @@
 package cz.janrossler.sorts;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import cz.janrossler.sorts.adapter.SessionPreviewAdapter;
 
+@SuppressWarnings({"FieldCanBeLocal", "deprecation"})
 public class SessionActivity extends AppCompatActivity implements SortingService.Callbacks {
     private NumberManager numberManager;
     private JSONObject session;
@@ -76,6 +78,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         update();
     }
 
+    @SuppressLint("SetTextI18n")
     void update(){
         session = numberManager.getSession(intent.getStringExtra("session"));
         sorted = new JSONArray();
@@ -166,7 +169,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         });
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {

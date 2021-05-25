@@ -14,6 +14,7 @@ import java.util.List;
 import cz.janrossler.sorts.NumberManager;
 import cz.janrossler.sorts.SortingService;
 
+@SuppressWarnings("deprecation")
 public class AsyncSorting extends AsyncTask<String, String, String> {
     @SuppressLint("StaticFieldLeak")
     private final Context context;

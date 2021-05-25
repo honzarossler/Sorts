@@ -35,6 +35,7 @@ public abstract class Sortable {
         this.sortingListener = listener;
     }
 
+    @SuppressWarnings("unused")
     public SortingListener getSortingListener(){
         return this.sortingListener;
     }
