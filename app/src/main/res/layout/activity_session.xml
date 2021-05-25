@@ -1,119 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SessionActivity"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/instance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Informace o instanci"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:padding="8dp"/>
-
-    <TextView
-        android:id="@+id/total_length"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Seznam čísel: 1000"
-        android:padding="8dp"/>
-
-    <TextView
-        android:id="@+id/sort_technology"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Třídicí algoritmus: BubbleSort"
-        android:padding="8dp"/>
-
-    <TextView
-        android:id="@+id/sort_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Doba trvání: 20s"
-        android:padding="8dp"/>
-
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="8dp">
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_sort_now"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_sort_by_alpha_24"
-                    android:layout_margin="4dp"
-                    app:fabSize="mini"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Vytřídit" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="8dp">
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_delete_session"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_delete_24"
-                    android:layout_margin="4dp"
-                    app:fabSize="mini"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Odstranit" />
-            </LinearLayout>
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black" />
-
+    tools:context=".SessionActivity">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/instance"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="Neseřazeno"
+            android:text="Informace o instanci"
+            android:textStyle="bold"
+            android:textSize="18sp"
             android:padding="8dp"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/total_length"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical|end"
-            android:text="Seřazeno"
+            android:text="Seznam čísel: 1000"
             android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/sort_technology"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Třídicí algoritmus: BubbleSort"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/sort_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Doba trvání: 20s"
+            android:padding="8dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Neseřazeno"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="Seřazeno"
+                android:padding="8dp"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/session_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/session_preview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_sort_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_sort_by_alpha_24"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_delete_session"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_delete_24"
+        android:layout_margin="16dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/fab_sort_now"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

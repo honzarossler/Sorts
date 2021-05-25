@@ -164,8 +164,15 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         });
 
         fab_delete_session.setOnClickListener(v -> {
-            numberManager.removeSession(intent.getStringExtra("session"));
-            finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Smazat instanci");
+            builder.setMessage("Tato operace nenávratně smaže celou instanci včetně uložených dat.\n\nPřejete si pokračovat?");
+            builder.setPositiveButton("Smazat", (dialog, which) -> {
+                numberManager.removeSession(intent.getStringExtra("session"));
+                finish();
+            });
+            builder.setNegativeButton("Zachovat", null);
+            builder.show();
         });
     }
 
