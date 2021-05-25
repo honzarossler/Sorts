@@ -10,6 +10,9 @@ import org.json.JSONArray;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Utilities {
 
@@ -26,6 +29,7 @@ public class Utilities {
         return sorts;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Nullable
     private static String loadSortsFromAsset(@NonNull Context context) {
         String json;
@@ -41,5 +45,19 @@ public class Utilities {
             return null;
         }
         return json;
+    }
+
+    public static String getRandomDialogStringWhileSorting(){
+        List<String> strings = new ArrayList<>();
+        strings.add("Třídím čísla ...");
+        strings.add("Hledám postupně jdoucí čísla ...");
+        strings.add("Prohazuji a skládám ...");
+        strings.add("Posouvám nuly na začátek ...");
+        strings.add("Promíchávám a kontroluji ...");
+        strings.add("Sestupně či vzestupně, to je oč tu běží ...");
+        strings.add("Indexuji od nuly ...");
+        strings.add("Pokud jsi použil BogoSort, přeji hodně štěstí s čekáním na výsledek.");
+
+        return strings.get(ThreadLocalRandom.current().nextInt(0, strings.size()));
     }
 }

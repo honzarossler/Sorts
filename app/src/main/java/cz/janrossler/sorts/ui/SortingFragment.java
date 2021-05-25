@@ -91,7 +91,7 @@ public class SortingFragment extends Fragment {
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    Toast.makeText(activity, "Zadejte hodnoty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, "Zadejte platné hodnoty", Toast.LENGTH_LONG).show();
                 }
             });
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Zrušit", (dialog, which) -> alertDialog.dismiss());

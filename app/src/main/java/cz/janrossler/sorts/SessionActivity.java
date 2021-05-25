@@ -71,7 +71,6 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         bindService(sortIntent, mConnection, Context.BIND_AUTO_CREATE);
 
         pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Třídím čísla ...");
         pDialog.setIndeterminate(true);
         pDialog.setCancelable(false);
 
@@ -154,6 +153,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     sortIntent.putExtra("session", intent.getStringExtra("session"));
                     sortIntent.putExtra("use-sort", charSequences[selectedPosition]);
 
+                    pDialog.setMessage(Utilities.getRandomDialogStringWhileSorting());
                     pDialog.show();
                     startService(sortIntent);
                 });
