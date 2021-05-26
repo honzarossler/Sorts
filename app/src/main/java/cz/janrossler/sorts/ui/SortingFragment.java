@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONArray;
 
 import java.util.Calendar;
 
@@ -30,22 +35,31 @@ public class SortingFragment extends Fragment {
     private ActionBar actionBar;
     private FloatingActionButton add;
     private RecyclerView sort_sessions;
+    private LinearLayout layout_empty;
+    private ImageView image_animated;
 
     private NumberManager numberManager;
     private SessionsAdapter adapter;
+    private JSONArray sessions;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
+        assert activity != null;
         View root = activity.getLayoutInflater().inflate(R.layout.fragment_home, null);
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         sort_sessions = root.findViewById(R.id.sort_sessions);
         add = root.findViewById(R.id.add);
+        layout_empty = root.findViewById(R.id.layout_empty);
+        image_animated = root.findViewById(R.id.image_animated);
+
+        Glide.with(activity)
+                .load(R.drawable.ic_sorting)
+                .placeholder(R.mipmap.ic_launcher)
+                .into(image_animated);
 
         numberManager = new NumberManager(activity);
-        adapter = new SessionsAdapter(activity, numberManager.getAllSessions());
-        sort_sessions.setAdapter(adapter);
-        sort_sessions.setLayoutManager(new LinearLayoutManager(activity));
+        update();
 
         ((AppCompatActivity) activity).setSupportActionBar(toolbar);
         actionBar = ((AppCompatActivity) activity).getSupportActionBar();
@@ -83,9 +97,7 @@ public class SortingFragment extends Fragment {
                         numberManager.createSession(session, true);
                         numberManager.createList(session, length, min, max);
 
-                        adapter = new SessionsAdapter(activity, numberManager.getAllSessions());
-                        sort_sessions.setAdapter(adapter);
-                        sort_sessions.setLayoutManager(new LinearLayoutManager(activity));
+                        update();
 
                         alertDialog.dismiss();
                     }
@@ -102,12 +114,26 @@ public class SortingFragment extends Fragment {
         return root;
     }
 
+    private void update(){
+        sessions = numberManager.getAllSessions();
+
+        if(sessions.length() < 1){
+            layout_empty.setVisibility(View.VISIBLE);
+            sort_sessions.setVisibility(View.GONE);
+        }else{
+            layout_empty.setVisibility(View.GONE);
+            sort_sessions.setVisibility(View.VISIBLE);
+        }
+
+        adapter = new SessionsAdapter(activity, sessions);
+        sort_sessions.setAdapter(adapter);
+        sort_sessions.setLayoutManager(new LinearLayoutManager(activity));
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
-        adapter = new SessionsAdapter(activity, numberManager.getAllSessions());
-        sort_sessions.setAdapter(adapter);
-        sort_sessions.setLayoutManager(new LinearLayoutManager(activity));
+        update();
     }
 }

@@ -25,6 +25,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <LinearLayout
+            android:id="@+id/layout_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/image_animated"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:src="@drawable/ic_sorting" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kliknutím na + přidáte instanci třídění."
+                android:gravity="center"
+                android:padding="8dp"
+                android:layout_margin="12dp"/>
+        </LinearLayout>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add"
             android:layout_width="wrap_content"
