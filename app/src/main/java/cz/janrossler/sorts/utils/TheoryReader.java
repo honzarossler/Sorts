@@ -15,6 +15,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * <p>
+ * TheoryReader využívá prostoru složky assets, kde jsou vloženy soubory JSON a MD pro jednotlivé
+ * teorie k algoritmům. Tyto algoritmy jsou pohromadě uložené v souboru sort.json.
+ * </p>
+ * <p>
+ * Každý algoritmus má zde k dispozici klíč 'theory' s hodnotou názvu souboru ve formátu theory.{sort}.json.
+ * Tento soubor obsahuje hlavu 'head', kde se nachází název teorie, hlavní složka teorie a zvláštní vlastnosti.
+ * Dále tento soubor obsahuje tělo 'body', které obsahuje klíč '_' pro výchozí jazykovou mutaci a může obsahovat další klíče (např. 'us', 'cs', 'de')
+ * </p>
+ *
+ */
+
 public class TheoryReader {
     private Context context;
     private AssetManager am;
@@ -24,6 +37,16 @@ public class TheoryReader {
         am = context.getAssets();
     }
 
+    /**
+     * <p>
+     *     Zjistí, zda soubor teorie existuje. Slouží pro případné přeskočení algoritmu ve výpisu
+     *     dostupných teorií.
+     * </p>
+     * @param path Cesta ve složce 'assets', může být jako prázdný string a značí root.
+     * @param theoryFile Soubor umístěný ve složce 'assets' + 'path'.
+     * @return Pokud teorie existuje, vrátí true.
+     */
+
     public boolean isTheoryAvailable(String path, String theoryFile){
         try {
             return Arrays.asList(am.list(path)).contains(theoryFile);
@@ -32,6 +55,13 @@ public class TheoryReader {
         }
         return false;
     }
+
+    /**
+     * <p>
+     *     Získá všechny dostupné teorie ze souboru 'sorts.json' ve složce 'assets' a převede je do seznamu {@link JSONArray}.
+     * </p>
+     * @return Vrací {@link JSONArray} obsahující dostupné teorie.
+     */
 
     public JSONArray getAllTheories(){
         JSONArray theories = new JSONArray();
@@ -55,6 +85,15 @@ public class TheoryReader {
 
         return theories;
     }
+
+    /**
+     * <p>
+     *     Otevírá teorii algoritmu a kompletuje jeho data (slučování obsahu MD souborů do jednoho návratového {@link JSONObject}).
+     *     Teorie obsahuje 2 klíče 'head' a 'body'.
+     * </p>
+     * @param theoryFile Cesta k teorii algoritmu ve složce 'assets'.
+     * @return Vrací {@link JSONObject} s teorií a jazykovými mutacemi.
+     */
 
     public JSONObject getTheoryData(String theoryFile){
         JSONObject theory = new JSONObject();
@@ -117,6 +156,14 @@ public class TheoryReader {
 
         return theory;
     }
+
+    /**
+     * <p>
+     *     Otevírá soubory typu MD, které jsou umístěné ve složce 'assets' a vrací jejich obsah.
+     * </p>
+     * @param path Cesta k souboru MD ve složce 'assets'
+     * @return Vrací obsah MD souboru, pokud neexistuje, vrací prázdný řetězec.
+     */
 
     private String getTheoryText(String path){
         String text;
