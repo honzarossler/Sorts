@@ -2,6 +2,7 @@
   {
     "name": "BogoSort",
     "theory": "theory.bogo.json",
+    "complexity": "O((N+1)!)",
     "recommended_length": {
       "min": 0,
       "max": 10,
@@ -11,6 +12,7 @@
   {
     "name": "BubbleSort",
     "theory": "theory.bubble.json",
+    "complexity": "O(N^2)",
     "recommended_length": {
       "min": 0,
       "max": 10000,
@@ -20,6 +22,7 @@
   {
     "name": "CountingSort",
     "theory": "theory.counting.json",
+    "complexity": "O(N)",
     "recommended_length": {
       "min": 0,
       "max": 10000000,
@@ -27,8 +30,19 @@
     }
   },
   {
+    "name": "HeapSort",
+    "theory": "theory.heap.json",
+    "complexity": "O(N log(N))",
+    "recommended_length": {
+      "min": 0,
+      "max": 1000000,
+      "out_of_range": true
+    }
+  },
+  {
     "name": "MergeSort",
     "theory": "theory.merge.json",
+    "complexity": "O(N log(N))",
     "recommended_length": {
       "min": 0,
       "max": 1000000,
@@ -38,6 +52,7 @@
   {
     "name": "QuickSort",
     "theory": "theory.quick.json",
+    "complexity": "O(N^2)",
     "recommended_length": {
       "min": 0,
       "max": 10000000,
@@ -47,10 +62,21 @@
   {
     "name": "RadixSort",
     "theory": "theory.radix.json",
+    "complexity": "O((N+B) * logB(k))",
     "recommended_length": {
       "min": 0,
       "max": 10000000,
       "out_of_range": true
+    }
+  },
+  {
+    "name": "SelectionSort",
+    "theory": "theory.selection.json",
+    "complexity": "O(N^2)",
+    "recommended_length": {
+      "min": 0,
+      "max": 10000,
+      "out_of_range": false
     }
   }
 ]

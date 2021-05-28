@@ -5,8 +5,8 @@ import android.util.Log;
 
 import java.util.Calendar;
 
-public class BubbleSort extends Sortable{
-    public BubbleSort(Context context, String session) {
+public class SelectionSort extends Sortable{
+    public SelectionSort(Context context, String session) {
         super(context, session);
     }
 
@@ -15,18 +15,22 @@ public class BubbleSort extends Sortable{
         startTime = Calendar.getInstance();
 
         try {
-            for (int i = 0; i < numbers.size() - 1; i++) {
-                for (int j = 0; j < numbers.size() - i - 1; j++) {
-                    if (numbers.get(j + 1) < numbers.get(j)) {
-                        int swapVar = numbers.get(j + 1);
-                        numbers.set(j + 1, numbers.get(j));
-                        numbers.set(j, swapVar);
-                    }
+            int size = numbers.size();
+
+            for (int i = 0; i < size - 1; i++) {
+                int min_index = i;
+                for (int j = i + 1; j < size; j++) {
+                    if (numbers.get(j) < numbers.get(min_index))
+                        min_index = j;
                 }
+
+                int nSwipe = numbers.get(min_index);
+                numbers.set(min_index, numbers.get(i));
+                numbers.set(i, nSwipe);
             }
 
             endTime = Calendar.getInstance();
-            Log.d("BubbleSort", "Done!");
+            Log.d("SelectionSort", "Done!");
 
             if(sortingListener != null) {
                 int time = (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);

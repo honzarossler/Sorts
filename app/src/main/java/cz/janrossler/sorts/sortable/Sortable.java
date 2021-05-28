@@ -14,6 +14,8 @@ public abstract class Sortable {
     public static final String MERGE = "MergeSort";
     public static final String BOGO = "BogoSort";
     public static final String RADIX = "RadixSort";
+    public static final String HEAP = "HeapSort";
+    public static final String SELECTION = "SelectionSort";
 
     protected boolean isSorting = false;
     protected String session;

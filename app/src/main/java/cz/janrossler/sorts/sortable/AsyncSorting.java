@@ -46,6 +46,12 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
             case Sortable.BOGO:
                 sort = new BogoSort(context, sessions[0]);
                 break;
+            case Sortable.HEAP:
+                sort = new HeapSort(context, sessions[0]);
+                break;
+            case Sortable.SELECTION:
+                sort = new SelectionSort(context, sessions[0]);
+                break;
         }
 
         if(!sortAlgorithm.equals("") && sort != null){

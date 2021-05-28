@@ -111,13 +111,18 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         fab_sort_now.setOnClickListener(v -> {
             try {
                 JSONArray sorts = Utilities.getSortAlgorithms(this);
+                //HashMap<String,String> time = new HashMap<>();
                 List<String> allowedSorts = new ArrayList<>();
 
                 int length = session.has("length")
                         ? session.getInt("length") : 0;
 
+                //Complexity complexity = new Complexity(length);
+
                 for(int i = 0; i < sorts.length(); i++){
                     JSONObject sort = sorts.getJSONObject(i);
+                    //time.put(sort.getString("name"), sort.getString("complexity"));
+                    //allowedSorts.add(sort.getString("name"));
 
                     if(!sort.has("recommended_length")){
                         allowedSorts.add(sort.getString("name"));
@@ -153,9 +158,26 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     sortIntent.putExtra("session", intent.getStringExtra("session"));
                     sortIntent.putExtra("use-sort", charSequences[selectedPosition]);
 
-                    pDialog.setMessage(Utilities.getRandomDialogStringWhileSorting());
-                    pDialog.show();
-                    startService(sortIntent);
+                    //double complex = complexity.getTimeComplexity(time.get(charSequences[selectedPosition]));
+                    //Log.i("TimeComplexity", complex+" ms");
+
+                    //if(complex / 1000 > 20){
+                    //    AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+                    //    confirm.setTitle("Varování!");
+                    //    confirm.setMessage("Přibližná doba čekání bude asi %TIME% sekund."
+                    //            .replace("%TIME%", String.valueOf(complex / 1000))
+                    //    );
+                    //    confirm.setPositiveButton("Třídit", (dialog1, which1) -> {
+                    //        pDialog.setMessage(Utilities.getRandomDialogStringWhileSorting());
+                    //        pDialog.show();
+                    //        startService(sortIntent);
+                    //    });
+                    //    confirm.show();
+                    //}else{
+                        pDialog.setMessage(Utilities.getRandomDialogStringWhileSorting());
+                        pDialog.show();
+                        startService(sortIntent);
+                    //}
                 });
                 builder.create().show();
             }catch (Exception e){
