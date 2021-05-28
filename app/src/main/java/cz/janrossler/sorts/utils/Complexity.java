@@ -1,4 +1,4 @@
-package cz.janrossler.sorts;
+package cz.janrossler.sorts.utils;
 
 import androidx.annotation.NonNull;
 

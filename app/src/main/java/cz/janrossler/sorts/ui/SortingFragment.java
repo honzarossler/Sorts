@@ -26,7 +26,7 @@ import org.json.JSONArray;
 
 import java.util.Calendar;
 
-import cz.janrossler.sorts.NumberManager;
+import cz.janrossler.sorts.utils.NumberManager;
 import cz.janrossler.sorts.R;
 import cz.janrossler.sorts.adapter.SessionsAdapter;
 

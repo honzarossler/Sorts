@@ -11,8 +11,8 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.janrossler.sorts.NumberManager;
-import cz.janrossler.sorts.SortingService;
+import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.SortingService;
 
 @SuppressWarnings("deprecation")
 public class AsyncSorting extends AsyncTask<String, String, String> {

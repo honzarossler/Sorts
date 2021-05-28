@@ -5,7 +5,7 @@ import android.content.Context;
 import java.util.Calendar;
 import java.util.List;
 
-import cz.janrossler.sorts.NumberManager;
+import cz.janrossler.sorts.utils.NumberManager;
 
 public abstract class Sortable {
     public static final String BUBBLE = "BubbleSort";

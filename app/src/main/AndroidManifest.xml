@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cz.janrossler.sorts">
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
@@ -11,11 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sorts">
         <activity
+            android:name=".TheoryActivity"
+            android:exported="true" />
+        <activity
             android:name=".SessionActivity"
             android:exported="true" />
 
         <service
-            android:name=".SortingService"
+            android:name=".utils.SortingService"
             android:enabled="true"
             android:exported="false" />
 

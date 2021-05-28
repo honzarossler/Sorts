@@ -1,0 +1,16 @@
+{
+  "head": {
+    "title": {
+      "text": "QuickSort"
+    },
+    "folder": "quick"
+  },
+  "body": {
+    "_": [
+      {
+        "text": "%folder%/about.md",
+        "image": "%folder%/quick_sort_visual.gif"
+      }
+    ]
+  }
+}

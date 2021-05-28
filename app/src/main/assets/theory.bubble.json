@@ -1,0 +1,16 @@
+{
+  "head": {
+    "title": {
+      "text": "BubbleSort"
+    },
+    "folder": "bubble"
+  },
+  "body": {
+    "_": [
+      {
+        "text": "%folder%/about.md",
+        "image": "%folder%/bubble_sort_visual.gif"
+      }
+    ]
+  }
+}

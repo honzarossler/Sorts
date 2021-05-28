@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.janrossler.sorts.adapter.SessionPreviewAdapter;
+import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.SortingService;
+import cz.janrossler.sorts.utils.Utilities;
 
 @SuppressWarnings({"FieldCanBeLocal", "deprecation"})
 public class SessionActivity extends AppCompatActivity implements SortingService.Callbacks {
