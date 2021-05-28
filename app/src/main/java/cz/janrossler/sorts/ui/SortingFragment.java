@@ -93,13 +93,18 @@ public class SortingFragment extends Fragment {
                     int min = Integer.parseInt(edit_min.getText().toString());
                     int max = Integer.parseInt(edit_max.getText().toString());
 
-                    if(length > 0 && max > min){
+                    int max_length = 2000000;
+                    boolean very_large = length > max_length
+                            || min > max_length
+                            || max > max_length;
+
+                    if(length > 0 && max > min && !very_large){
                         numberManager.createSession(session, true);
                         numberManager.createList(session, length, min, max);
 
                         update();
-
-                        alertDialog.dismiss();
+                    }else if(very_large){
+                        Toast.makeText(activity, "Vaše čísla jsou moc velká pro zpracování.", Toast.LENGTH_LONG).show();
                     }
                 }catch (Exception e){
                     e.printStackTrace();
