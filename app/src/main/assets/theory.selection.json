@@ -1,0 +1,16 @@
+{
+  "head": {
+    "title": {
+      "text": "SelectionSort"
+    },
+    "folder": "selection"
+  },
+  "body": {
+    "_": [
+      {
+        "text": "%folder%/about.md",
+        "image": "%folder%/selection_sort_visual.gif"
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "head": {
+    "title": {
+      "text": "RadixSort"
+    },
+    "folder": "radix"
+  },
+  "body": {
+    "_": [
+      {
+        "text": "%folder%/about.md",
+        "image": "%folder%/radixsort_small_steps.png"
+      },
+      {
+        "image": "%folder%/radix_sort_visual.gif"
+      }
+    ]
+  }
+}

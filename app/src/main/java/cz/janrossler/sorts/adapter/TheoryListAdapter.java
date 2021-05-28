@@ -30,7 +30,7 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
     @NonNull
     @Override
     public TheoryListAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(context, R.layout.recyclerview_session_layout, null);
+        View view = View.inflate(context, R.layout.recyclerview_theory_sort, null);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
         return new TheoryListAdapter.Holder(view);
@@ -38,11 +38,10 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
 
     @Override
     public void onBindViewHolder(@NonNull TheoryListAdapter.Holder holder, int position) {
-        holder.session_detail.setText("Kliknutím zobrazíte teorii.");
         try{
             JSONObject item = theories.getJSONObject(position);
 
-            holder.session_name.setText(item.getString("name"));
+            holder._name.setText(item.getString("name"));
 
             holder.session_more.setOnClickListener(v -> {
                 try {
@@ -55,7 +54,7 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
             });
         }catch (Exception e){
             e.fillInStackTrace();
-            holder.session_name.setText("<UNKNOWN_THEORY_ERROR>");
+            holder._name.setText("<UNKNOWN_THEORY_ERROR>");
         }
     }
 
@@ -65,14 +64,12 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
-        TextView session_name;
-        TextView session_detail;
+        TextView _name;
         FloatingActionButton session_more;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
-            session_name = itemView.findViewById(R.id.session_name);
-            session_detail = itemView.findViewById(R.id.detail);
+            _name = itemView.findViewById(R.id._name);
             session_more = itemView.findViewById(R.id.fab_more);
         }
     }
