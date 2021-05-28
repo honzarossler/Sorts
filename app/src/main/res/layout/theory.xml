@@ -14,7 +14,5 @@
         android:id="@+id/_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="150dp"
-        android:maxHeight="250dp"
         tools:ignore="ContentDescription" />
 </LinearLayout>

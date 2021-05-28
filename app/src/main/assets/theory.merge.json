@@ -1,0 +1,16 @@
+{
+  "head": {
+    "title": {
+      "text": "MergeSort"
+    },
+    "folder": "merge"
+  },
+  "body": {
+    "_": [
+      {
+        "text": "%folder%/about.md",
+        "image": "%folder%/merge_sort_visual.gif"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "head": {
+    "title": {
+      "text": "CountingSort"
+    },
+    "folder": "counting"
+  },
+  "body": {
+    "_": [
+      {
+        "text": "%folder%/about.md",
+        "image": "%folder%/counting_sort_visual.gif"
+      }
+    ]
+  }
+}

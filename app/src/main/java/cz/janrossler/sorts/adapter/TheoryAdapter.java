@@ -30,7 +30,7 @@ public class TheoryAdapter extends RecyclerView.Adapter<TheoryAdapter.Holder> {
         this.theories = theories;
         markwon = Markwon.builder(context)
                 .usePlugin(MarkwonInlineParserPlugin.create())
-                .usePlugin(JLatexMathPlugin.create(20 * context.getResources().getDisplayMetrics().density, builder -> {
+                .usePlugin(JLatexMathPlugin.create(16 * context.getResources().getDisplayMetrics().density, builder -> {
                     builder.inlinesEnabled(true);
                 }))
                 .build();
