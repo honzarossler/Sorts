@@ -17,6 +17,8 @@ import org.json.JSONObject;
 
 import cz.janrossler.sorts.R;
 import cz.janrossler.sorts.SessionActivity;
+import cz.janrossler.sorts.TreeViewActivity;
+import cz.janrossler.sorts.utils.Utilities;
 
 public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Holder> {
     private Context context;
@@ -43,10 +45,21 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Holder
 
             holder.session_name.setText(item.getString("session"));
             holder.session_detail.setText("Velikost seznamu: %length%".replace("%length%", item.getString("length")));
+            holder.session_tree.setVisibility(item.getInt("length") <= Utilities.MAX_TREE_SIZE ? View.VISIBLE : View.GONE);
 
             holder.session_more.setOnClickListener(v -> {
                 try {
                     Intent intent = new Intent(context, SessionActivity.class)
+                            .putExtra("session", item.getString("session"));
+                    context.startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            holder.session_tree.setOnClickListener(v -> {
+                try {
+                    Intent intent = new Intent(context, TreeViewActivity.class)
                             .putExtra("session", item.getString("session"));
                     context.startActivity(intent);
                 } catch (JSONException e) {
@@ -69,12 +82,14 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Holder
         TextView session_name;
         TextView session_detail;
         FloatingActionButton session_more;
+        FloatingActionButton session_tree;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             session_name = itemView.findViewById(R.id.session_name);
             session_detail = itemView.findViewById(R.id.detail);
             session_more = itemView.findViewById(R.id.fab_more);
+            session_tree = itemView.findViewById(R.id.fab_tree);
         }
     }
 }

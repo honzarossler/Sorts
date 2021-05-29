@@ -18,6 +18,7 @@ import cz.janrossler.sorts.adapter.NodeAdapter;
 import cz.janrossler.sorts.utils.BinarySearchTree;
 import cz.janrossler.sorts.utils.Node;
 import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.Utilities;
 
 public class TreeViewActivity extends AppCompatActivity {
     private NumberManager numberManager;
@@ -41,7 +42,7 @@ public class TreeViewActivity extends AppCompatActivity {
 
         List<Node> nodes = new ArrayList<>();
 
-        if(unsorted.length() <= 1000){
+        if(unsorted.length() <= Utilities.MAX_TREE_SIZE){
             BinarySearchTree.Recursive tree = new BinarySearchTree.Recursive();
             Node node = null;
             for(int i = 0; i < unsorted.length(); i++){

@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -118,6 +119,8 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         adapter = new SessionPreviewAdapter(this, unsorted, sorted);
         session_preview.setAdapter(adapter);
         session_preview.setLayoutManager(new LinearLayoutManager(this));
+
+        fab_tree.setVisibility(unsorted.length() <= Utilities.MAX_TREE_SIZE ? View.VISIBLE : View.GONE);
 
         fab_sort_now.setOnClickListener(v -> {
             try {
