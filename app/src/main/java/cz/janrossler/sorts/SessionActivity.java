@@ -46,10 +46,12 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     private TextView sort_time;
     private FloatingActionButton fab_sort_now;
     private FloatingActionButton fab_delete_session;
+    private FloatingActionButton fab_tree;
     private RecyclerView session_preview;
     private SessionPreviewAdapter adapter;
 
     private ProgressDialog pDialog;
+    private ProgressDialog pSearchDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         sort_time = findViewById(R.id.sort_time);
         fab_sort_now = findViewById(R.id.fab_sort_now);
         fab_delete_session = findViewById(R.id.fab_delete_session);
+        fab_tree = findViewById(R.id.fab_tree);
         session_preview = findViewById(R.id.session_preview);
 
         sortIntent = new Intent(SessionActivity.this, SortingService.class);
@@ -76,6 +79,11 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         pDialog = new ProgressDialog(this);
         pDialog.setIndeterminate(true);
         pDialog.setCancelable(false);
+
+        pSearchDialog = new ProgressDialog(this);
+        pSearchDialog.setIndeterminate(true);
+        pSearchDialog.setCancelable(false);
+        pSearchDialog.setMessage("Počítám výskyty čísel");
 
         update();
     }
@@ -198,6 +206,11 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             });
             builder.setNegativeButton("Zachovat", null);
             builder.show();
+        });
+
+        fab_tree.setOnClickListener(v -> {
+            Intent i = new Intent(this, TreeViewActivity.class).putExtra("session", intent.getStringExtra("session"));
+            startActivity(i);
         });
     }
 

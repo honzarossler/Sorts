@@ -5,39 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SessionActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
         <TextView
             android:id="@+id/instance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:text="Informace o instanci"
-            android:textStyle="bold"
             android:textSize="18sp"
-            android:padding="8dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/total_length"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Seznam čísel: 1000"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:text="Seznam čísel: 1000" />
 
         <TextView
             android:id="@+id/sort_technology"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Třídicí algoritmus: BubbleSort"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:text="Třídicí algoritmus: BubbleSort" />
 
         <TextView
             android:id="@+id/sort_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Doba trvání: 20s"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:text="Doba trvání: 20s" />
 
         <View
             android:layout_width="match_parent"
@@ -48,26 +52,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Neseřazeno"
-                android:padding="8dp"/>
+                android:padding="8dp"
+                android:text="Neseřazeno" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical|end"
-                android:text="Seřazeno"
-                android:padding="8dp"/>
+                android:padding="8dp"
+                android:text="Seřazeno" />
         </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/session_preview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -87,6 +95,16 @@
         android:src="@drawable/ic_baseline_delete_24"
         android:layout_margin="16dp"
         app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/fab_tree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_tree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_account_tree_24"
+        android:layout_margin="16dp"
         app:layout_constraintBottom_toTopOf="@+id/fab_sort_now"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
