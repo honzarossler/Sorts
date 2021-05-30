@@ -15,7 +15,7 @@
     "complexity": "O(N^2)",
     "recommended_length": {
       "min": 0,
-      "max": 10000,
+      "max": 100000,
       "out_of_range": false
     }
   },
@@ -25,7 +25,7 @@
     "complexity": "O(N)",
     "recommended_length": {
       "min": 0,
-      "max": 10000000,
+      "max": 1000000,
       "out_of_range": true
     }
   },
@@ -45,8 +45,8 @@
     "complexity": "O(N^2)",
     "recommended_length": {
       "min": 0,
-      "max": 10000,
-      "out_of_range": true
+      "max": 100000,
+      "out_of_range": false
     }
   },
   {
@@ -65,7 +65,7 @@
     "complexity": "O(N^2)",
     "recommended_length": {
       "min": 0,
-      "max": 10000000,
+      "max": 100000,
       "out_of_range": true
     }
   },
@@ -85,7 +85,17 @@
     "complexity": "O(N^2)",
     "recommended_length": {
       "min": 0,
-      "max": 10000,
+      "max": 100000,
+      "out_of_range": false
+    }
+  },
+  {
+    "name": "ShakerSort",
+    "theory": "theory.shaker.json",
+    "complexity": "O(N^2)",
+    "recommended_length": {
+      "min": 0,
+      "max": 100000,
       "out_of_range": false
     }
   }
