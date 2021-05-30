@@ -40,6 +40,16 @@
     }
   },
   {
+    "name": "InsertionSort",
+    "theory": "theory.insertion.json",
+    "complexity": "O(N^2)",
+    "recommended_length": {
+      "min": 0,
+      "max": 10000,
+      "out_of_range": true
+    }
+  },
+  {
     "name": "MergeSort",
     "theory": "theory.merge.json",
     "complexity": "O(N log(N))",

@@ -16,6 +16,7 @@ public abstract class Sortable {
     public static final String RADIX = "RadixSort";
     public static final String HEAP = "HeapSort";
     public static final String SELECTION = "SelectionSort";
+    public static final String INSERTION = "InsertionSort";
 
     protected boolean isSorting = false;
     protected String session;

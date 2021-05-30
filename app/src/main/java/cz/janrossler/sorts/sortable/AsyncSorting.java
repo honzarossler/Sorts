@@ -52,6 +52,9 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
             case Sortable.SELECTION:
                 sort = new SelectionSort(context, sessions[0]);
                 break;
+            case Sortable.INSERTION:
+                sort = new InsertionSort(context, sessions[0]);
+                break;
         }
 
         if(!sortAlgorithm.equals("") && sort != null){
