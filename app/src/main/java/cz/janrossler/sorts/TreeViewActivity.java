@@ -1,15 +1,19 @@
 package cz.janrossler.sorts;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.text.InputType;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +22,16 @@ import cz.janrossler.sorts.adapter.NodeAdapter;
 import cz.janrossler.sorts.utils.BinarySearchTree;
 import cz.janrossler.sorts.utils.Node;
 import cz.janrossler.sorts.utils.NumberManager;
-import cz.janrossler.sorts.utils.Utilities;
 
 public class TreeViewActivity extends AppCompatActivity {
     private NumberManager numberManager;
     private Intent intent;
-    private JSONArray unsorted = new JSONArray();
+    private boolean usingSession;
+    private Node node;
 
     private RecyclerView tree;
+    private LinearLayout tool_layout;
+    private FloatingActionButton tool_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,40 +39,56 @@ public class TreeViewActivity extends AppCompatActivity {
         numberManager = new NumberManager(this);
 
         intent = getIntent();
-        if(intent == null || !intent.hasExtra("session")) finish();
+        if(intent == null) finish();
 
-        List<Integer> list_unsorted = numberManager.getUnsortedSessionList(intent.getStringExtra("session"));
-
-        for(int i = 0; i < list_unsorted.size(); i++)
-            unsorted.put(list_unsorted.get(i));
-
-        List<Node> nodes = new ArrayList<>();
-
-        if(unsorted.length() <= Utilities.MAX_TREE_SIZE){
-            BinarySearchTree.Recursive tree = new BinarySearchTree.Recursive();
-            Node node = null;
-            for(int i = 0; i < unsorted.length(); i++){
-                try {
-                    node = tree.insert(node, unsorted.getInt(i));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if(node != null){
-                nodes.add(node);
-            }else{
-                Toast.makeText(this, "Nelze vytvořit strom.", Toast.LENGTH_LONG).show();
-            }
-        }else {
-            Toast.makeText(this, "Nelze sestavit strom z vysokého počtu čísel.", Toast.LENGTH_LONG).show();
-        }
+        usingSession = intent.hasExtra("session");
 
         setContentView(R.layout.activity_tree_view);
         tree = findViewById(R.id.tree);
+        tool_layout = findViewById(R.id.tool_layout);
+        tool_add = findViewById(R.id.tool_add);
 
-        NodeAdapter adapter = new NodeAdapter(this, nodes);
-        tree.setLayoutManager(new GridLayoutManager(this, 1));
-        tree.setAdapter(adapter);
+        if(usingSession){
+            List<Integer> numbers = numberManager
+                    .getUnsortedSessionList(intent.getStringExtra("session"));
+
+            node = BinarySearchTree.createFromList(numbers);
+        }
+
+        tool_layout.setVisibility(usingSession ? View.GONE : View.VISIBLE);
+
+        tool_add.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Zadejte číslo pro přidání.");
+
+            EditText edit = new EditText(this);
+            edit.setHint("...");
+            edit.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edit.setRawInputType(Configuration.KEYBOARD_12KEY);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            edit.setLayoutParams(params);
+
+            builder.setView(edit);
+            builder.setPositiveButton("Přidat", (dialog, which) -> {
+                BinarySearchTree.Recursive recursive = new BinarySearchTree.Recursive();
+                node = recursive.insert(node, Integer.parseInt(edit.getText().toString()));
+                update();
+            });
+            builder.setNegativeButton("Zrušit", null);
+            builder.show();
+        });
+
+        update();
+    }
+
+    private void update(){
+        if(node != null){
+            List<Node> nodes = new ArrayList<>();
+            nodes.add(node);
+
+            NodeAdapter adapter = new NodeAdapter(this, nodes);
+            tree.setLayoutManager(new GridLayoutManager(this, 1));
+            tree.setAdapter(adapter);
+        }
     }
 }

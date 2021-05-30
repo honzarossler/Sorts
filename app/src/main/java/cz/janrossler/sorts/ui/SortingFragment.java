@@ -1,6 +1,7 @@
 package cz.janrossler.sorts.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 
 import java.util.Calendar;
 
+import cz.janrossler.sorts.TreeViewActivity;
 import cz.janrossler.sorts.utils.NumberManager;
 import cz.janrossler.sorts.R;
 import cz.janrossler.sorts.adapter.SessionsAdapter;
@@ -34,6 +36,7 @@ public class SortingFragment extends Fragment {
     private Activity activity;
     private ActionBar actionBar;
     private FloatingActionButton add;
+    private FloatingActionButton tree;
     private RecyclerView sort_sessions;
     private LinearLayout layout_empty;
     private ImageView image_animated;
@@ -50,6 +53,7 @@ public class SortingFragment extends Fragment {
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         sort_sessions = root.findViewById(R.id.sort_sessions);
         add = root.findViewById(R.id.add);
+        tree = root.findViewById(R.id.tree);
         layout_empty = root.findViewById(R.id.layout_empty);
         image_animated = root.findViewById(R.id.image_animated);
 
@@ -115,6 +119,9 @@ public class SortingFragment extends Fragment {
 
             alertDialog.show();
         });
+
+        tree.setOnClickListener(v ->
+                startActivity(new Intent(activity, TreeViewActivity.class)));
 
         return root;
     }

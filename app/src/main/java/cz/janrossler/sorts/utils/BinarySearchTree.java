@@ -1,5 +1,9 @@
 package cz.janrossler.sorts.utils;
 
+import androidx.annotation.NonNull;
+
+import java.util.List;
+
 public class BinarySearchTree {
     /**
      * <p>
@@ -9,6 +13,27 @@ public class BinarySearchTree {
      */
     public BinarySearchTree(){
 
+    }
+
+    /**
+     * <p>
+     *     Přijímá {@link List<Integer>} a ten převádí do {@link Node}, který je pro {@link BinarySearchTree} snadno čitelný.
+     * </p>
+     * @param list Seznam čísel typu {@link Integer}, které budou převedeny do {@link Node}.
+     * @return Vrací {@link Node}.
+     */
+
+    public static Node createFromList(@NonNull List<Integer> list){
+        Node root = null;
+
+        if(list.size() <= Utilities.MAX_TREE_SIZE){
+            BinarySearchTree.Recursive tree = new BinarySearchTree.Recursive();
+            for(int i = 0; i < list.size(); i++){
+                root = tree.insert(root, list.get(i));
+            }
+        }
+
+        return root;
     }
 
     /**

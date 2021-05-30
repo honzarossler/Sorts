@@ -55,5 +55,16 @@
             android:src="@drawable/ic_baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/tree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginEnd="92dp"
+            android:layout_marginBottom="84dp"
+            android:src="@drawable/ic_baseline_account_tree_24"
+            app:layout_constraintBottom_toTopOf="@+id/add"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
