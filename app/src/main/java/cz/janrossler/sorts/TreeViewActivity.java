@@ -32,6 +32,7 @@ public class TreeViewActivity extends AppCompatActivity {
     private RecyclerView tree;
     private LinearLayout tool_layout;
     private FloatingActionButton tool_add;
+    private FloatingActionButton tool_remove;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class TreeViewActivity extends AppCompatActivity {
         tree = findViewById(R.id.tree);
         tool_layout = findViewById(R.id.tool_layout);
         tool_add = findViewById(R.id.tool_add);
+        tool_remove = findViewById(R.id.tool_remove);
 
         if(usingSession){
             List<Integer> numbers = numberManager
@@ -70,8 +72,29 @@ public class TreeViewActivity extends AppCompatActivity {
 
             builder.setView(edit);
             builder.setPositiveButton("Přidat", (dialog, which) -> {
-                BinarySearchTree.Recursive recursive = new BinarySearchTree.Recursive();
-                node = recursive.insert(node, Integer.parseInt(edit.getText().toString()));
+                BinarySearchTree tree = new BinarySearchTree();
+                node = tree.insert(node, Integer.parseInt(edit.getText().toString()));
+                update();
+            });
+            builder.setNegativeButton("Zrušit", null);
+            builder.show();
+        });
+
+        tool_remove.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Zadejte číslo pro odebrání.");
+
+            EditText edit = new EditText(this);
+            edit.setHint("...");
+            edit.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edit.setRawInputType(Configuration.KEYBOARD_12KEY);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            edit.setLayoutParams(params);
+
+            builder.setView(edit);
+            builder.setPositiveButton("Odebrat", (dialog, which) -> {
+                BinarySearchTree tree = new BinarySearchTree();
+                node = tree.remove(node, Integer.parseInt(edit.getText().toString()));
                 update();
             });
             builder.setNegativeButton("Zrušit", null);
@@ -89,6 +112,9 @@ public class TreeViewActivity extends AppCompatActivity {
             NodeAdapter adapter = new NodeAdapter(this, nodes);
             tree.setLayoutManager(new GridLayoutManager(this, 1));
             tree.setAdapter(adapter);
+            tree.setVisibility(View.VISIBLE);
+        }else{
+            tree.setVisibility(View.GONE);
         }
     }
 }

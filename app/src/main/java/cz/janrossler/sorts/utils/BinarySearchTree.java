@@ -2,13 +2,13 @@ package cz.janrossler.sorts.utils;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BinarySearchTree {
     /**
      * <p>
-     *     Třída BinarySearchTree zpracovává uzly čísel. Tato třída však obsahuje 2 vnořené třídy {@link Recursive} a {@link NonRecursive},
-     *     které se liší pouze způsobem zpracovávání podle rekurze a nerekurze.
+     *     Třída BinarySearchTree zpracovává uzly čísel.
      * </p>
      */
     public BinarySearchTree(){
@@ -27,13 +27,81 @@ public class BinarySearchTree {
         Node root = null;
 
         if(list.size() <= Utilities.MAX_TREE_SIZE){
-            BinarySearchTree.Recursive tree = new BinarySearchTree.Recursive();
+            BinarySearchTree tree = new BinarySearchTree();
             for(int i = 0; i < list.size(); i++){
                 root = tree.insert(root, list.get(i));
             }
         }
 
         return root;
+    }
+
+    public Node insert(Node root, int value){
+        if(root == null)
+            root = new Node(value);
+        else if(root.getValue() > value)
+            root.left = insert(root.left, value);
+        else if(root.getValue() < value)
+            root.right = insert(root.right, value);
+        else root.add();
+
+        return root;
+    }
+
+    public SearchResult search(Node root, int value){
+        SearchResult result = new SearchResult();
+
+        if(root == null){
+            result.found = false;
+        }else if(root.getValue() > value){
+            result = search(root.left, value);
+        }else if(root.getValue() < value){
+            result = search(root.right, value);
+        }else{
+            result.found = true;
+            result.value = root.getValue();
+            result.amount  = root.getAmount();
+        }
+        return result;
+    }
+
+    public Node remove(Node root, int value){
+        if(root == null){
+
+        }else if(root.getValue() == value && root.getAmount() > 1){
+            root.remove();
+        }else if(root.getValue() == value && root.getAmount() <= 1){
+            if(root.left != null || root.right != null){
+                root = merge(root.left, root.right);
+            }else{
+                root = null;
+            }
+        }else if(root.getValue() > value)
+            root.left = remove(root.left, value);
+        else if(root.getValue() < value)
+            root.right = remove(root.right, value);
+
+        return root;
+    }
+
+    public Node merge(Node left, Node right){
+        Node node = null;
+        List<Integer> list = new ArrayList<>();
+        if(left != null && right != null){
+            list = left.getValue() > right.getValue()
+                    ? right.toList() : left.toList();
+            node = left.getValue() > right.getValue() ? left : right;
+        }else if(left != null){
+            list = left.toList();
+        }else if(right != null){
+            list = right.toList();
+        }
+
+        for(int i = 0; i < list.size(); i++){
+            node = insert(node, list.get(i));
+        }
+
+        return node;
     }
 
     /**
@@ -46,78 +114,5 @@ public class BinarySearchTree {
         public boolean found = false;
         public int value = 0;
         public int amount = 0;
-    }
-
-    public static class Recursive {
-        public Node insert(Node root, int value){
-            if(root == null)
-                root = new Node(value);
-            else if(root.getValue() > value)
-                root.left = insert(root.left, value);
-            else if(root.getValue() < value)
-                root.right = insert(root.right, value);
-            else root.add();
-
-            return root;
-        }
-
-        public SearchResult search(Node root, int value){
-            SearchResult result = new SearchResult();
-
-            if(root == null){
-                result.found = false;
-            }else if(root.getValue() > value){
-                result = search(root.left, value);
-            }else if(root.getValue() < value){
-                result = search(root.right, value);
-            }else{
-                result.found = true;
-                result.value = root.getValue();
-                result.amount  = root.getAmount();
-            }
-            return result;
-        }
-    }
-
-    public static class NonRecursive {
-        public void insert(Node root, int value){
-            boolean end = false;
-            while (!end) {
-                if (root == null) {
-                    root = new Node(value);
-                    end = true;
-                } else if (root.getValue() > value)
-                    root = root.left;
-                else if (root.getValue() < value)
-                    root = root.right;
-                else {
-                    root.add();
-                    end = true;
-                }
-            }
-        }
-
-        public SearchResult search(Node root, int value){
-            SearchResult result = new SearchResult();
-
-            boolean end = false;
-            while (!end){
-                if(root == null){
-                    result.found = false;
-                    end = true;
-                }else if(root.getValue() > value){
-                    root = root.left;
-                }else if(root.getValue() < value){
-                    root = root.right;
-                }else{
-                    result.found = true;
-                    result.value = root.getValue();
-                    result.amount  = root.getAmount();
-                    end = true;
-                }
-            }
-
-            return result;
-        }
     }
 }

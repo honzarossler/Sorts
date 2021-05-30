@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Utilities {
-    public static final int MAX_TREE_SIZE = 1000;
+    public static final int MAX_TREE_SIZE = 10000;
 
     @NonNull
     public static JSONArray getSortAlgorithms(Context context){
