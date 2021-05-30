@@ -33,6 +33,7 @@ public class TreeViewActivity extends AppCompatActivity {
     private LinearLayout tool_layout;
     private FloatingActionButton tool_add;
     private FloatingActionButton tool_remove;
+    private FloatingActionButton tool_search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class TreeViewActivity extends AppCompatActivity {
         tool_layout = findViewById(R.id.tool_layout);
         tool_add = findViewById(R.id.tool_add);
         tool_remove = findViewById(R.id.tool_remove);
+        tool_search = findViewById(R.id.tool_search);
 
         if(usingSession){
             List<Integer> numbers = numberManager
@@ -96,6 +98,38 @@ public class TreeViewActivity extends AppCompatActivity {
                 BinarySearchTree tree = new BinarySearchTree();
                 node = tree.remove(node, Integer.parseInt(edit.getText().toString()));
                 update();
+            });
+            builder.setNegativeButton("Zrušit", null);
+            builder.show();
+        });
+
+        tool_search.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Zadejte číslo pro vyhledávání.");
+
+            EditText edit = new EditText(this);
+            edit.setHint("...");
+            edit.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edit.setRawInputType(Configuration.KEYBOARD_12KEY);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            edit.setLayoutParams(params);
+
+            builder.setView(edit);
+            builder.setPositiveButton("Hledat", (dialog, which) -> {
+                BinarySearchTree tree = new BinarySearchTree();
+                BinarySearchTree.SearchResult res = tree.search(node, Integer.parseInt(edit.getText().toString()));
+
+                AlertDialog.Builder result = new AlertDialog.Builder(this);
+                result.setTitle("Výsledek hledání");
+                if(res.found){
+                    result.setMessage("Číslo "+res.value+" bylo nalezeno "+ res.amount+"x.");
+                }else{
+                    result.setMessage("Číslo "+res.value+" Nebylo nalezeno.");
+                }
+                result.setPositiveButton("Ok", (dialog1, which1) -> {
+
+                });
+                result.show();
             });
             builder.setNegativeButton("Zrušit", null);
             builder.show();

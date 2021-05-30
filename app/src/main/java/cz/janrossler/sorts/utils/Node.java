@@ -25,10 +25,6 @@ public class Node {
         return amount;
     }
 
-    public boolean isEmpty(){
-        return amount > 0;
-    }
-
     public void add(){
         amount++;
     }
@@ -53,5 +49,14 @@ public class Node {
         }
 
         return list;
+    }
+
+    public int size(){
+        int size = amount;
+
+        if(left != null) size += left.size();
+        if(right != null) size += right.size();
+
+        return size;
     }
 }

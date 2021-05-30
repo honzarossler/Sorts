@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -47,6 +48,10 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.Holder> {
             holder.amount.setText(root.getAmount() + "x");
             holder.bar_bottom.setVisibility(position + 1 == getItemCount() ? View.GONE : View.VISIBLE);
             holder.bar_inside.setVisibility(inside_nodes.size() > 0 ? View.VISIBLE : View.GONE);
+
+            holder.value.setOnClickListener(v -> {
+                Toast.makeText(context, "Velikost uzlu: "+root.size(), Toast.LENGTH_LONG).show();
+            });
 
             NodeAdapter adapter = new NodeAdapter(context, inside_nodes);
             holder.recycler_inside.setLayoutManager(new GridLayoutManager(context, 1));
