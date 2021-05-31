@@ -18,6 +18,7 @@ public abstract class Sortable {
     public static final String SELECTION = "SelectionSort";
     public static final String INSERTION = "InsertionSort";
     public static final String SHAKER = "ShakerSort";
+    public static final String GRAVITY = "GravitySort";
 
     protected boolean isSorting = false;
     protected String session;

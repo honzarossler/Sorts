@@ -58,6 +58,9 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
             case Sortable.SHAKER:
                 sort = new ShakerSort(context, sessions[0]);
                 break;
+            case Sortable.GRAVITY:
+                sort = new GravitySort(context, sessions[0]);
+                break;
         }
 
         if(!sortAlgorithm.equals("") && sort != null){

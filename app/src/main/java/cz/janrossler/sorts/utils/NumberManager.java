@@ -65,6 +65,8 @@ public class NumberManager {
             try{
                 JSONObject _session = getSession(session);
                 _session.put("length", length);
+                _session.put("min", min);
+                _session.put("max", max);
                 smallData.edit().putString(session, _session.toString()).apply();
             }catch (Exception e){
                 e.fillInStackTrace();

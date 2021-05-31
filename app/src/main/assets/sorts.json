@@ -27,6 +27,17 @@
     }
   },
   {
+    "name": "GravitySort",
+    "theory": "theory.gravity.json",
+    "enabled": false,
+    "recommended_length": {
+      "min": 0,
+      "max": 15000,
+      "max_gen": 15000,
+      "out_of_range": false
+    }
+  },
+  {
     "name": "HeapSort",
     "theory": "theory.heap.json",
     "recommended_length": {

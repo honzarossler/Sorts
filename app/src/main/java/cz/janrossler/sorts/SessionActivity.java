@@ -131,6 +131,9 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                 int length = session.has("length")
                         ? session.getInt("length") : 0;
 
+                int max_gen = session.has("max")
+                        ? session.getInt("max") : length;
+
                 //Complexity complexity = new Complexity(length);
 
                 for(int i = 0; i < sorts.length(); i++){
@@ -138,16 +141,22 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     //time.put(sort.getString("name"), sort.getString("complexity"));
                     //allowedSorts.add(sort.getString("name"));
 
+                    if(sort.has("enabled") && !sort.getBoolean("enabled"))
+                        continue;
+
                     if(!sort.has("recommended_length")){
                         allowedSorts.add(sort.getString("name"));
                     }else{
                         JSONObject rl = sort.getJSONObject("recommended_length");
-                        if(rl.has("max")){
-                            if(rl.getInt("max") >= length
-                                    || (rl.has("out_of_range") && rl.getBoolean("out_of_range"))){
+                        boolean hasMax = rl.has("max");
+                        boolean isOutOfRange = rl.has("out_of_range") && rl.getBoolean("out_of_range");
+                        boolean hasMaxGen = rl.has("max_gen");
+
+                        if(!isOutOfRange && !hasMaxGen){
+                            if(hasMax && rl.getInt("max") >= length) {
                                 allowedSorts.add(sort.getString("name"));
                             }
-                        }else{
+                        }else if (hasMaxGen && rl.getInt("max_gen") >= max_gen) {
                             allowedSorts.add(sort.getString("name"));
                         }
                     }

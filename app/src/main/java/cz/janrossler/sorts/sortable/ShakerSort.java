@@ -39,7 +39,7 @@ public class ShakerSort extends Sortable{
             Collections.reverse(numbers);
 
             endTime = Calendar.getInstance();
-            Log.d("BubbleSort", "Done!");
+            Log.d("ShakerSort", "Done!");
 
             if(sortingListener != null) {
                 int time = (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);
