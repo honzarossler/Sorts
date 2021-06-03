@@ -9,7 +9,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,14 +35,14 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     private NumberManager numberManager;
     private JSONObject session;
     private Intent intent;
-    Intent sortIntent;
+    private Intent sortIntent;
     private JSONArray unsorted = new JSONArray();
     private JSONArray sorted = new JSONArray();
     private boolean isAscending = true;
+    private boolean isEditable = false;
     private int defaultIndex = 0;
     private LinearLayoutManager manager;
-
-    SortingService myService;
+    private SortingService myService;
 
     private TextView instance;
     private TextView total_length;
@@ -94,6 +93,27 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         pSearchDialog.setCancelable(false);
         pSearchDialog.setMessage("Počítám výskyty čísel");
 
+        session_preview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx,int dy){
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) {
+                    // Scroll Down
+                    fab_sort_now.hide();
+                    fab_delete_session.hide();
+                    fab_tree.hide();
+                    fab_sort_view.hide();
+                } else if (dy < 0) {
+                    // Scroll Up
+                    fab_sort_now.show();
+                    fab_delete_session.show();
+                    fab_tree.show();
+                    fab_sort_view.show();
+                }
+            }
+        });
+
         fab_sort_view.setOnClickListener(v -> {
             if(isAscending){
                 manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
@@ -127,15 +147,19 @@ public class SessionActivity extends AppCompatActivity implements SortingService
 
         try{
             instance.setText("Informace o instanci: %instance%".replace("%instance%", session.has("session") ? session.getString("session") : ""));
-            total_length.setText("Počet čísel v seznamu: %total%".replace("%total%", session.has("length") ? session.getString("length") : ""));
-            sort_technology.setText("Třídicí algoritmus: %alg%".replace("%alg%", session.has("algorithm") ? session.getString("algorithm") : ""));
-            sort_time.setText("Doba třídění: %time%".replace("%time%", session.has("time") ? session.getString("time")+"s" : "~s"));
+            total_length.setText("%total% čísel".replace("%total%", session.has("length") ? session.getString("length") : ""));
+            sort_technology.setText("%alg%".replace("%alg%", session.has("algorithm") ? session.getString("algorithm") : "Neznámé"));
+            sort_time.setText("%time%".replace("%time%", session.has("time") ? session.getString("time")+"s" : "~s"));
+
+            isEditable = session.has("editable") && session.getBoolean("editable");
         }catch (Exception e){
             e.fillInStackTrace();
             instance.setText("Informace o instanci");
-            total_length.setText("Počet čísel v seznamu:");
-            sort_technology.setText("Třídicí algoritmus:");
-            sort_time.setText("Doba třídění:");
+            total_length.setText("0 čísel");
+            sort_technology.setText("Neznámé");
+            sort_time.setText("~s");
+
+            isEditable = false;
         }
 
         adapter = new SessionPreviewAdapter(this, unsorted, sorted);
@@ -143,7 +167,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         session_preview.setLayoutManager(manager);
         session_preview.scrollToPosition(defaultIndex);
 
-        fab_tree.setVisibility(unsorted.length() <= Utilities.MAX_TREE_SIZE ? View.VISIBLE : View.GONE);
+        fab_tree.setEnabled(unsorted.length() <= Utilities.MAX_TREE_SIZE || isEditable);
 
         fab_sort_now.setOnClickListener(v -> {
             try {

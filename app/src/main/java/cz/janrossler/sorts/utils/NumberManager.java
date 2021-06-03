@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -67,6 +68,32 @@ public class NumberManager {
                 _session.put("length", length);
                 _session.put("min", min);
                 _session.put("max", max);
+                _session.put("editable", false);
+                smallData.edit().putString(session, _session.toString()).apply();
+            }catch (Exception e){
+                e.fillInStackTrace();
+            }
+        }
+    }
+
+    public void pushList(String session, @NonNull List<Integer> list){
+        int min = list.size() > 0 ? list.get(0) : 0;
+        int max = 0;
+
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i) > max) max = list.get(i);
+            if(list.get(i) < min) min = list.get(i);
+        }
+
+        bigData.edit().putString(session + "unsorted", Arrays.toString(list.toArray())).apply();
+
+        if(smallData.contains(session)){
+            try{
+                JSONObject _session = getSession(session);
+                _session.put("length", list.size());
+                _session.put("min", min);
+                _session.put("max", max);
+                _session.put("editable", true);
                 smallData.edit().putString(session, _session.toString()).apply();
             }catch (Exception e){
                 e.fillInStackTrace();

@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cz.janrossler.sorts.adapter.NodeAdapter;
@@ -27,10 +30,11 @@ public class TreeViewActivity extends AppCompatActivity {
     private NumberManager numberManager;
     private Intent intent;
     private boolean usingSession;
+    private boolean isSessionEditable = false;
     private Node node;
+    private JSONObject session;
 
     private RecyclerView tree;
-    private LinearLayout tool_layout;
     private FloatingActionButton tool_add;
     private FloatingActionButton tool_remove;
     private FloatingActionButton tool_search;
@@ -47,19 +51,26 @@ public class TreeViewActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_tree_view);
         tree = findViewById(R.id.tree);
-        tool_layout = findViewById(R.id.tool_layout);
         tool_add = findViewById(R.id.tool_add);
         tool_remove = findViewById(R.id.tool_remove);
         tool_search = findViewById(R.id.tool_search);
 
         if(usingSession){
+            session = numberManager.getSession(intent.getStringExtra("session"));
             List<Integer> numbers = numberManager
                     .getUnsortedSessionList(intent.getStringExtra("session"));
 
             node = BinarySearchTree.createFromList(numbers);
-        }
 
-        tool_layout.setVisibility(usingSession ? View.GONE : View.VISIBLE);
+            try {
+                isSessionEditable = session.has("editable") && session.getBoolean("editable");
+            }catch (Exception e){
+                isSessionEditable = false;
+            }
+        }else session = new JSONObject();
+
+        tool_add.setVisibility(usingSession && !isSessionEditable ? View.GONE : View.VISIBLE);
+        tool_remove.setVisibility(usingSession && !isSessionEditable ? View.GONE : View.VISIBLE);
 
         tool_add.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -150,5 +161,44 @@ public class TreeViewActivity extends AppCompatActivity {
         }else{
             tree.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!usingSession && node != null){
+            AlertDialog.Builder save = new AlertDialog.Builder(this);
+            save.setTitle("Uložit strom");
+            save.setMessage("Chcete uložit tento strom jako novou instanci?");
+            save.setPositiveButton("Uložit", (dialog, which) -> {
+                List<Integer> list = node.toList();
+
+                Calendar calendar = Calendar.getInstance();
+                int y = calendar.get(Calendar.YEAR);
+                int m = calendar.get(Calendar.MONTH) + 1;
+                int d = calendar.get(Calendar.DAY_OF_MONTH);
+                int h = calendar.get(Calendar.HOUR_OF_DAY);
+                int mi = calendar.get(Calendar.MINUTE);
+                String session = y + "-" + m + "-" + d + " " + h + "-" + mi;
+
+                numberManager.createSession(session, true);
+                numberManager.pushList(session, list);
+                super.onBackPressed();
+            });
+            save.setNegativeButton("Smazat", (dialog, which) -> super.onBackPressed());
+            save.setNeutralButton("Zachovat", null);
+            save.show();
+        }else if(usingSession && isSessionEditable && node != null) {
+            AlertDialog.Builder save = new AlertDialog.Builder(this);
+            save.setTitle("Uložit strom");
+            save.setMessage("Chcete uložit tento strom?");
+            save.setPositiveButton("Uložit", (dialog, which) -> {
+                List<Integer> list = node.toList();
+                numberManager.pushList(intent.getStringExtra("session"), list);
+                super.onBackPressed();
+            });
+            save.setNegativeButton("Zahodit", (dialog, which) -> super.onBackPressed());
+            save.setNeutralButton("Zachovat", null);
+            save.show();
+        }else super.onBackPressed();
     }
 }
