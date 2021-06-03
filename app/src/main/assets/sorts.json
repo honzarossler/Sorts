@@ -22,8 +22,8 @@
     "theory": "theory.gravity.json",
     "enabled": true,
     "recommended_length": {
-      "max": 15000,
-      "max_gen": 15000
+      "max": 100000,
+      "max_alloc": 1500000000
     }
   },
   {

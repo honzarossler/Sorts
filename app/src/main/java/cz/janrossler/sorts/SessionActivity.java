@@ -146,18 +146,28 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                         JSONObject rl = sort.getJSONObject("recommended_length");
                         boolean hasMax = rl.has("max");
                         boolean hasMaxGen = rl.has("max_gen");
+                        boolean hasMaxAlloc = rl.has("max_alloc");
 
-                        if(hasMax){
-                            if(hasMaxGen && rl.getInt("max") >= length){
-                                if (rl.getInt("max_gen") >= max_gen)
-                                    allowedSorts.add(sort.getString("name"));
-                            }else if(rl.getInt("max") >= length){
-                                allowedSorts.add(sort.getString("name"));
-                            }
-                        }else if(hasMaxGen){
-                            if (rl.getInt("max_gen") >= max_gen)
-                                allowedSorts.add(sort.getString("name"));
-                        }
+                        boolean maxDone = !hasMax || rl.getInt("max") >= length;
+                        boolean maxGenDone = !hasMaxGen || rl.getInt("max_gen") >= max_gen;
+                        boolean maxAllocDone = !hasMaxAlloc
+                                || rl.getInt("max_alloc")
+                                >= Utilities.getAllocSize(unsorted.length(), unsorted.getInt(0));
+
+                        if(maxDone && maxGenDone && maxAllocDone)
+                            allowedSorts.add(sort.getString("name"));
+
+                        //if(hasMax){
+                        //    if(hasMaxGen && rl.getInt("max") >= length){
+                        //        if (rl.getInt("max_gen") >= max_gen)
+                        //            allowedSorts.add(sort.getString("name"));
+                        //    }else if(rl.getInt("max") >= length){
+                        //        allowedSorts.add(sort.getString("name"));
+                        //    }
+                        //}else if(hasMaxGen){
+                        //    if (rl.getInt("max_gen") >= max_gen)
+                        //        allowedSorts.add(sort.getString("name"));
+                        //}
                     }
                 }
 

@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Utilities {
-    public static final int MAX_TREE_SIZE = 10000;
+    public static final int MAX_TREE_SIZE = 1000;
+    public static final int MAX_GRAVITY_ALLOC = 1500000000;
 
     @NonNull
     public static JSONArray getSortAlgorithms(Context context){
@@ -28,6 +29,10 @@ public class Utilities {
         }
 
         return sorts;
+    }
+
+    public static int getAllocSize(int size, int i){
+        return size * 8 * i;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
