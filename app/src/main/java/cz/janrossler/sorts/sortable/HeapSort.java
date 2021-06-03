@@ -21,9 +21,7 @@ public class HeapSort extends Sortable{
                 heapify(heapEnd, i);
 
             for (int i = heapEnd - 1; i > 0; i--) {
-                int nSwipe = numbers.get(0);
-                numbers.set(0, numbers.get(i));
-                numbers.set(i, nSwipe);
+                swap(0, i);
 
                 heapify(i, 0);
             }
@@ -54,9 +52,7 @@ public class HeapSort extends Sortable{
             largest = r;
 
         if (largest != i) {
-            int nSwipe = numbers.get(i);
-            numbers.set(i, numbers.get(largest));
-            numbers.set(largest, nSwipe);
+            swap(i, largest);
 
             heapify(n, largest);
         }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.Calendar;
-import java.util.Collections;
 
 public class InsertionSort extends Sortable{
     public InsertionSort(Context context, String session) {
@@ -16,17 +15,16 @@ public class InsertionSort extends Sortable{
         startTime = Calendar.getInstance();
 
         try {
-            for(int i = 0; i < numbers.size() - 1; i++){
-                int j = i + 1;
-                int tmp = numbers.get(j);
-                while(j > 0 && tmp > numbers.get(j-1)){
-                    numbers.set(j, numbers.get(j-1));
+            int size = numbers.size();
+            for(int i = 0; i < size; i++){
+                int key = numbers.get(i);
+                int j = i - 1;
+                while(j >= 0 && numbers.get(j-1) > key){
+                    numbers.set(j + 1, numbers.get(j));
                     j--;
                 }
-                numbers.set(j, tmp);
+                numbers.set(j, key);
             }
-
-            Collections.reverse(numbers);
 
             endTime = Calendar.getInstance();
             Log.d("InsertionSort", "Done!");

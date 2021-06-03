@@ -50,10 +50,4 @@ public class ShakerSort extends Sortable{
             if(sortingListener != null) sortingListener.onFailed(e.getMessage());
         }
     }
-
-    private void swap(int i, int j){
-        int s = numbers.get(i);
-        numbers.set(i, numbers.get(j));
-        numbers.set(j, s);
-    }
 }

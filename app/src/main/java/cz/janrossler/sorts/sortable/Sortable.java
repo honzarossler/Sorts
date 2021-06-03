@@ -52,6 +52,12 @@ public abstract class Sortable {
         return numbers;
     }
 
+    protected void swap(int i, int j){
+        int s = numbers.get(i);
+        numbers.set(i, numbers.get(j));
+        numbers.set(j, s);
+    }
+
     public interface SortingListener {
         void onSuccessSort(int seconds);
         void onFailed(String _message);

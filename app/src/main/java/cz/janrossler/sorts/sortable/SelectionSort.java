@@ -24,9 +24,7 @@ public class SelectionSort extends Sortable{
                         min_index = j;
                 }
 
-                int nSwipe = numbers.get(min_index);
-                numbers.set(min_index, numbers.get(i));
-                numbers.set(i, nSwipe);
+                swap(i, min_index);
             }
 
             endTime = Calendar.getInstance();

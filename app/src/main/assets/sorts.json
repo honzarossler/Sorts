@@ -29,7 +29,7 @@
   {
     "name": "GravitySort",
     "theory": "theory.gravity.json",
-    "enabled": false,
+    "enabled": true,
     "recommended_length": {
       "min": 0,
       "max": 15000,

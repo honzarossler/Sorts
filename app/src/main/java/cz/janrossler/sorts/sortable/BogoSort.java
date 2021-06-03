@@ -18,9 +18,7 @@ public class BogoSort extends Sortable{
             while(!isSorted()){
                 for (int i=1; i < numbers.size(); i++){
                     int j = (int)(Math.random() * i);
-                    int temp = numbers.get(i);
-                    numbers.set(i, numbers.get(j));
-                    numbers.set(j, temp);
+                    swap(i,j);
                 }
             }
 

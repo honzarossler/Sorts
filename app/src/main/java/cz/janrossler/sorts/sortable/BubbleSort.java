@@ -18,9 +18,7 @@ public class BubbleSort extends Sortable{
             for (int i = 0; i < numbers.size() - 1; i++) {
                 for (int j = 0; j < numbers.size() - i - 1; j++) {
                     if (numbers.get(j + 1) < numbers.get(j)) {
-                        int swapVar = numbers.get(j + 1);
-                        numbers.set(j + 1, numbers.get(j));
-                        numbers.set(j, swapVar);
+                        swap(j, j + 1);
                     }
                 }
             }

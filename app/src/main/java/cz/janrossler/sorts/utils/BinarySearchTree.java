@@ -67,7 +67,7 @@ public class BinarySearchTree {
 
     public Node remove(Node root, int value){
         if(root == null){
-
+            return null;
         }else if(root.getValue() == value && root.getAmount() > 1){
             root.remove();
         }else if(root.getValue() == value && root.getAmount() <= 1){

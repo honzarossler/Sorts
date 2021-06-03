@@ -47,15 +47,11 @@ public class QuickSort extends Sortable{
         int i = left;
         for (int j = left; j < right; j++) {
             if (numbers.get(j) < numbers.get(right)) {
-                temp = numbers.get(i);
-                numbers.set(i, numbers.get(j));
-                numbers.set(j, temp);
+                swap(i, j);
                 i++;
             }
         }
-        temp = numbers.get(i);
-        numbers.set(i, numbers.get(right));
-        numbers.set(right, temp);
+        swap(i, right);
         return i;
     }
 }
