@@ -39,6 +39,9 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     Intent sortIntent;
     private JSONArray unsorted = new JSONArray();
     private JSONArray sorted = new JSONArray();
+    private boolean isAscending = true;
+    private int defaultIndex = 0;
+    private LinearLayoutManager manager;
 
     SortingService myService;
 
@@ -49,6 +52,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     private FloatingActionButton fab_sort_now;
     private FloatingActionButton fab_delete_session;
     private FloatingActionButton fab_tree;
+    private FloatingActionButton fab_sort_view;
     private RecyclerView session_preview;
     private SessionPreviewAdapter adapter;
 
@@ -73,7 +77,10 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         fab_sort_now = findViewById(R.id.fab_sort_now);
         fab_delete_session = findViewById(R.id.fab_delete_session);
         fab_tree = findViewById(R.id.fab_tree);
+        fab_sort_view = findViewById(R.id.fab_sort_view);
         session_preview = findViewById(R.id.session_preview);
+
+        manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         sortIntent = new Intent(SessionActivity.this, SortingService.class);
         bindService(sortIntent, mConnection, Context.BIND_AUTO_CREATE);
@@ -86,6 +93,20 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         pSearchDialog.setIndeterminate(true);
         pSearchDialog.setCancelable(false);
         pSearchDialog.setMessage("Počítám výskyty čísel");
+
+        fab_sort_view.setOnClickListener(v -> {
+            if(isAscending){
+                manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
+                fab_sort_view.setImageResource(R.drawable.ic_baseline_arrow_drop_down_24);
+                defaultIndex = unsorted.length()-1;
+            }else{
+                manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                fab_sort_view.setImageResource(R.drawable.ic_baseline_arrow_drop_up_24);
+                defaultIndex = 0;
+            }
+            isAscending = !isAscending;
+            update();
+        });
 
         update();
     }
@@ -119,7 +140,8 @@ public class SessionActivity extends AppCompatActivity implements SortingService
 
         adapter = new SessionPreviewAdapter(this, unsorted, sorted);
         session_preview.setAdapter(adapter);
-        session_preview.setLayoutManager(new LinearLayoutManager(this));
+        session_preview.setLayoutManager(manager);
+        session_preview.scrollToPosition(defaultIndex);
 
         fab_tree.setVisibility(unsorted.length() <= Utilities.MAX_TREE_SIZE ? View.VISIBLE : View.GONE);
 

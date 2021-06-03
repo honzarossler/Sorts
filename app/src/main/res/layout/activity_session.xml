@@ -51,7 +51,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,6 +61,13 @@
                 android:gravity="center_vertical"
                 android:padding="8dp"
                 android:text="Neseřazeno" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_sort_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_arrow_drop_up_24"
+                app:fabSize="mini"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -75,6 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbarAlwaysDrawVerticalTrack="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:scrollbars="vertical" />
     </LinearLayout>
 
