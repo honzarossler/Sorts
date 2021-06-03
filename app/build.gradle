@@ -10,8 +10,8 @@ android {
         applicationId "cz.janrossler.sorts"
         minSdk 26
         targetSdk 30
-        versionCode 52
-        versionName "1.1.20"
+        versionCode 53
+        versionName "1.1.21"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

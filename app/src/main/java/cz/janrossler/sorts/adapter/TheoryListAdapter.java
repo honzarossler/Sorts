@@ -40,7 +40,6 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
     public void onBindViewHolder(@NonNull TheoryListAdapter.Holder holder, int position) {
         try{
             JSONObject item = theories.getJSONObject(position);
-
             holder._name.setText(item.getString("name"));
 
             holder.session_more.setOnClickListener(v -> {

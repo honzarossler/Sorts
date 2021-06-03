@@ -18,12 +18,6 @@ public class SessionPreviewAdapter extends RecyclerView.Adapter<SessionPreviewAd
     private JSONArray sorted;
     private Context context;
 
-    public SessionPreviewAdapter(Context context, JSONArray unsorted){
-        this.context = context;
-        this.unsorted = unsorted;
-        this.sorted = new JSONArray();
-    }
-
     public SessionPreviewAdapter(Context context, JSONArray unsorted, JSONArray sorted){
         this.context = context;
         this.unsorted = unsorted;
@@ -67,7 +61,6 @@ public class SessionPreviewAdapter extends RecyclerView.Adapter<SessionPreviewAd
 
         public Holder(@NonNull View itemView) {
             super(itemView);
-
             sorted = itemView.findViewById(R.id.sorted);
             unsorted = itemView.findViewById(R.id.unsorted);
         }

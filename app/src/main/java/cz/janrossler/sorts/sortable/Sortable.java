@@ -2,6 +2,8 @@ package cz.janrossler.sorts.sortable;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,7 +34,6 @@ public abstract class Sortable {
     public Sortable(Context context, String session){
         this.session = session;
         numberManager = new NumberManager(context);
-
         numbers = numberManager.getUnsortedSessionList(session);
     }
 
@@ -74,6 +75,48 @@ public abstract class Sortable {
         }
     }
 
+    public static Sortable getSort(Context context, @NonNull String algorithm, String session){
+        Sortable sort = null;
+
+        switch(algorithm){
+            case Sortable.BUBBLE:
+                sort = new BubbleSort(context, session);
+                break;
+            case Sortable.QUICK:
+                sort = new QuickSort(context, session);
+                break;
+            case Sortable.MERGE:
+                sort = new MergeSort(context, session);
+                break;
+            case Sortable.COUNTING:
+                sort = new CountingSort(context, session);
+                break;
+            case Sortable.RADIX:
+                sort = new RadixSort(context, session);
+                break;
+            case Sortable.BOGO:
+                sort = new BogoSort(context, session);
+                break;
+            case Sortable.HEAP:
+                sort = new HeapSort(context, session);
+                break;
+            case Sortable.SELECTION:
+                sort = new SelectionSort(context, session);
+                break;
+            case Sortable.INSERTION:
+                sort = new InsertionSort(context, session);
+                break;
+            case Sortable.SHAKER:
+                sort = new ShakerSort(context, session);
+                break;
+            case Sortable.GRAVITY:
+                sort = new GravitySort(context, session);
+                break;
+        }
+
+        return sort;
+    }
+
     public int getTime(){
         return (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);
     }
@@ -102,7 +145,7 @@ public abstract class Sortable {
     }
 
     public static class SortException extends Exception{
-        String message = "";
+        String message;
         SortException(String error){
             message = error;
         }

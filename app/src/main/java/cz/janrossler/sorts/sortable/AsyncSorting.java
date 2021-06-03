@@ -30,41 +30,7 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
     }
 
     protected String doInBackground(@NonNull String... sessions) {
-        switch(sortAlgorithm){
-            case Sortable.BUBBLE:
-                sort = new BubbleSort(context, sessions[0]);
-                break;
-            case Sortable.QUICK:
-                sort = new QuickSort(context, sessions[0]);
-                break;
-            case Sortable.MERGE:
-                sort = new MergeSort(context, sessions[0]);
-                break;
-            case Sortable.COUNTING:
-                sort = new CountingSort(context, sessions[0]);
-                break;
-            case Sortable.RADIX:
-                sort = new RadixSort(context, sessions[0]);
-                break;
-            case Sortable.BOGO:
-                sort = new BogoSort(context, sessions[0]);
-                break;
-            case Sortable.HEAP:
-                sort = new HeapSort(context, sessions[0]);
-                break;
-            case Sortable.SELECTION:
-                sort = new SelectionSort(context, sessions[0]);
-                break;
-            case Sortable.INSERTION:
-                sort = new InsertionSort(context, sessions[0]);
-                break;
-            case Sortable.SHAKER:
-                sort = new ShakerSort(context, sessions[0]);
-                break;
-            case Sortable.GRAVITY:
-                sort = new GravitySort(context, sessions[0]);
-                break;
-        }
+        sort = Sortable.getSort(context, sortAlgorithm, sessions[0]);
 
         if(!sortAlgorithm.equals("") && sort != null){
             sort.setSortingListener(new Sortable.SortingListener() {

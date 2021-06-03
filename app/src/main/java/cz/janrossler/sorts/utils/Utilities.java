@@ -3,9 +3,9 @@ package cz.janrossler.sorts.utils;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,24 +20,17 @@ public class Utilities {
 
     @NonNull
     public static JSONArray getSortAlgorithms(Context context){
-        JSONArray sorts = new JSONArray();
-
-        try{
-            sorts = new JSONArray(loadSortsFromAsset(context));
-        }catch (Exception e){
-            e.fillInStackTrace();
-        }
-
-        return sorts;
+        return loadSortsFromAsset(context);
     }
 
     public static int getAllocSize(int size, int i){
         return size * 8 * i;
     }
 
+    @NonNull
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    @Nullable
-    private static String loadSortsFromAsset(@NonNull Context context) {
+    private static JSONArray loadSortsFromAsset(@NonNull Context context) {
+        JSONArray array;
         String json;
         try {
             InputStream is = context.getAssets().open("sorts.json");
@@ -46,11 +39,12 @@ public class Utilities {
             is.read(buffer);
             is.close();
             json = new String(buffer, StandardCharsets.UTF_8);
-        } catch (IOException ex) {
+            array = new JSONArray(json);
+        } catch (IOException | JSONException ex) {
             ex.printStackTrace();
-            return null;
+            return new JSONArray();
         }
-        return json;
+        return array;
     }
 
     public static String getRandomDialogStringWhileSorting(){

@@ -30,7 +30,7 @@ import java.util.Iterator;
 
 public class TheoryReader {
     private Context context;
-    private AssetManager am;
+    private final AssetManager am;
 
     public TheoryReader(@NonNull Context context) {
         this.context = context;
@@ -95,6 +95,7 @@ public class TheoryReader {
      * @return Vrací {@link JSONObject} s teorií a jazykovými mutacemi.
      */
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public JSONObject getTheoryData(String theoryFile){
         JSONObject theory = new JSONObject();
 
@@ -165,6 +166,7 @@ public class TheoryReader {
      * @return Vrací obsah MD souboru, pokud neexistuje, vrací prázdný řetězec.
      */
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private String getTheoryText(String path){
         String text;
         try {

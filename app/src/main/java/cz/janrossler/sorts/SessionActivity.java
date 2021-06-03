@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -95,7 +96,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
 
         session_preview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx,int dy){
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy > 0) {
@@ -150,15 +151,13 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             total_length.setText("%total% čísel".replace("%total%", session.has("length") ? session.getString("length") : ""));
             sort_technology.setText("%alg%".replace("%alg%", session.has("algorithm") ? session.getString("algorithm") : "Neznámé"));
             sort_time.setText("%time%".replace("%time%", session.has("time") ? session.getString("time")+"s" : "~s"));
-
             isEditable = session.has("editable") && session.getBoolean("editable");
         }catch (Exception e){
-            e.fillInStackTrace();
+            e.printStackTrace();
             instance.setText("Informace o instanci");
             total_length.setText("0 čísel");
             sort_technology.setText("Neznámé");
             sort_time.setText("~s");
-
             isEditable = false;
         }
 
@@ -202,18 +201,6 @@ public class SessionActivity extends AppCompatActivity implements SortingService
 
                         if(maxDone && maxGenDone && maxAllocDone)
                             allowedSorts.add(sort.getString("name"));
-
-                        //if(hasMax){
-                        //    if(hasMaxGen && rl.getInt("max") >= length){
-                        //        if (rl.getInt("max_gen") >= max_gen)
-                        //            allowedSorts.add(sort.getString("name"));
-                        //    }else if(rl.getInt("max") >= length){
-                        //        allowedSorts.add(sort.getString("name"));
-                        //    }
-                        //}else if(hasMaxGen){
-                        //    if (rl.getInt("max_gen") >= max_gen)
-                        //        allowedSorts.add(sort.getString("name"));
-                        //}
                     }
                 }
 
@@ -236,26 +223,9 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     sortIntent.putExtra("session", intent.getStringExtra("session"));
                     sortIntent.putExtra("use-sort", charSequences[selectedPosition]);
 
-                    //double complex = complexity.getTimeComplexity(time.get(charSequences[selectedPosition]));
-                    //Log.i("TimeComplexity", complex+" ms");
-
-                    //if(complex / 1000 > 20){
-                    //    AlertDialog.Builder confirm = new AlertDialog.Builder(this);
-                    //    confirm.setTitle("Varování!");
-                    //    confirm.setMessage("Přibližná doba čekání bude asi %TIME% sekund."
-                    //            .replace("%TIME%", String.valueOf(complex / 1000))
-                    //    );
-                    //    confirm.setPositiveButton("Třídit", (dialog1, which1) -> {
-                    //        pDialog.setMessage(Utilities.getRandomDialogStringWhileSorting());
-                    //        pDialog.show();
-                    //        startService(sortIntent);
-                    //    });
-                    //    confirm.show();
-                    //}else{
-                        pDialog.setMessage(Utilities.getRandomDialogStringWhileSorting());
-                        pDialog.show();
-                        startService(sortIntent);
-                    //}
+                    pDialog.setMessage(Utilities.getRandomDialogStringWhileSorting());
+                    pDialog.show();
+                    startService(sortIntent);
                 });
                 builder.create().show();
             }catch (Exception e){

@@ -23,7 +23,7 @@ import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin;
 public class TheoryAdapter extends RecyclerView.Adapter<TheoryAdapter.Holder> {
     private Context context;
     private JSONArray theories;
-    final Markwon markwon;
+    private final Markwon markwon;
 
     public TheoryAdapter(Context context, JSONArray theories){
         this.context = context;

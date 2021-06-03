@@ -70,6 +70,7 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.Holder> {
         View bar_bottom;
         View bar_inside;
         RecyclerView recycler_inside;
+
         public Holder(@NonNull View itemView) {
             super(itemView);
             value = itemView.findViewById(R.id.value);

@@ -1,7 +1,6 @@
 package cz.janrossler.sorts.utils;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,7 @@ public class Node {
     public Node left;
     public Node right;
 
-    private int value;
+    private final int value;
     private int amount = 0;
 
     public Node(int value){
@@ -25,15 +24,13 @@ public class Node {
         return amount;
     }
 
-    public void add(){
+    public void increase(){
         amount++;
     }
 
-    public void remove(){
-        if(amount > 0)
-            amount--;
-        else
-            throw new UncheckedIOException(new IOException("Node is empty."));
+    public void decrease(){
+        if(amount > 0) amount--;
+        else throw new RuntimeException(new IOException("Node is empty."));
     }
 
     public List<Integer> toList(){
@@ -41,12 +38,8 @@ public class Node {
         for (int i = 0; i < amount; i++)
             list.add(getValue());
 
-        if(left != null){
-            list.addAll(left.toList());
-        }
-        if(right != null){
-            list.addAll(right.toList());
-        }
+        if(left != null) list.addAll(left.toList());
+        if(right != null) list.addAll(right.toList());
 
         return list;
     }

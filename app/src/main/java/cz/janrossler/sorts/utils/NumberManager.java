@@ -34,23 +34,14 @@ public class NumberManager {
     }
 
     public void removeSession(String session){
-        if(smallData.contains(session)) {
-            smallData.edit().remove(session).apply();
-        }
-
-        if(bigData.contains(session + "unsorted")) {
-            bigData.edit().remove(session + "unsorted").apply();
-        }
-
-        if(bigData.contains(session + "sorted")) {
-            bigData.edit().remove(session + "sorted").apply();
-        }
-    }
-
-    public boolean isSessionEmpty(String session){
         if(smallData.contains(session))
-            return smallData.getString(session, "").length() < 1;
-        return false;
+            smallData.edit().remove(session).apply();
+
+        if(bigData.contains(session + "unsorted"))
+            bigData.edit().remove(session + "unsorted").apply();
+
+        if(bigData.contains(session + "sorted"))
+            bigData.edit().remove(session + "sorted").apply();
     }
 
     public void createList(String session, int length, int min, int max){
@@ -62,17 +53,15 @@ public class NumberManager {
 
         bigData.edit().putString(session + "unsorted", numbers.toString()).apply();
 
-        if(smallData.contains(session)){
-            try{
-                JSONObject _session = getSession(session);
-                _session.put("length", length);
-                _session.put("min", min);
-                _session.put("max", max);
-                _session.put("editable", false);
-                smallData.edit().putString(session, _session.toString()).apply();
-            }catch (Exception e){
-                e.fillInStackTrace();
-            }
+        try{
+            JSONObject _session = getSession(session);
+            _session.put("length", length);
+            _session.put("min", min);
+            _session.put("max", max);
+            _session.put("editable", false);
+            smallData.edit().putString(session, _session.toString()).apply();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -87,17 +76,15 @@ public class NumberManager {
 
         bigData.edit().putString(session + "unsorted", Arrays.toString(list.toArray())).apply();
 
-        if(smallData.contains(session)){
-            try{
-                JSONObject _session = getSession(session);
-                _session.put("length", list.size());
-                _session.put("min", min);
-                _session.put("max", max);
-                _session.put("editable", true);
-                smallData.edit().putString(session, _session.toString()).apply();
-            }catch (Exception e){
-                e.fillInStackTrace();
-            }
+        try{
+            JSONObject _session = getSession(session);
+            _session.put("length", list.size());
+            _session.put("min", min);
+            _session.put("max", max);
+            _session.put("editable", true);
+            smallData.edit().putString(session, _session.toString()).apply();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -111,7 +98,7 @@ public class NumberManager {
                 smallData.edit().putString(_session, session.toString()).apply();
                 bigData.edit().putString(_session + "sorted", sorted.toString()).apply();
             }catch (Exception e){
-                e.fillInStackTrace();
+                e.printStackTrace();
             }
         }
     }
@@ -132,13 +119,11 @@ public class NumberManager {
         if(bigData.contains(session + "unsorted")){
             try{
                 JSONArray unsorted = new JSONArray(bigData.getString(session + "unsorted", "[]"));
-                for(int i = 0; i < unsorted.length(); i++){
-                    if(unsorted.get(i) instanceof Integer){
+                for(int i = 0; i < unsorted.length(); i++)
+                    if (unsorted.get(i) instanceof Integer)
                         numbers.add(unsorted.getInt(i));
-                    }
-                }
             }catch (Exception e){
-                e.fillInStackTrace();
+                e.printStackTrace();
             }
         }
         return numbers;
@@ -149,13 +134,11 @@ public class NumberManager {
         if(bigData.contains(session + "sorted")){
             try{
                 JSONArray unsorted = new JSONArray(bigData.getString(session + "sorted", "[]"));
-                for(int i = 0; i < unsorted.length(); i++){
-                    if(unsorted.get(i) instanceof Integer){
+                for(int i = 0; i < unsorted.length(); i++)
+                    if (unsorted.get(i) instanceof Integer)
                         numbers.add(unsorted.getInt(i));
-                    }
-                }
             }catch (Exception e){
-                e.fillInStackTrace();
+                e.printStackTrace();
             }
         }
         return numbers;
@@ -166,15 +149,13 @@ public class NumberManager {
 
         try{
             Map<String,?> keys = smallData.getAll();
-
             for(Map.Entry<String,?> entry : keys.entrySet()){
                 JSONObject session = new JSONObject(smallData.getString(entry.getKey(), "{}"));
                 session.put("session", entry.getKey());
-
                 sessions.put(session);
             }
         }catch (Exception e){
-            e.fillInStackTrace();
+            e.printStackTrace();
         }
 
         return sessions;

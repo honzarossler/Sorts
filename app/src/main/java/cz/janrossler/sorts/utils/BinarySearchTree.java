@@ -11,9 +11,7 @@ public class BinarySearchTree {
      *     Třída BinarySearchTree zpracovává uzly čísel.
      * </p>
      */
-    public BinarySearchTree(){
-
-    }
+    public BinarySearchTree(){}
 
     /**
      * <p>
@@ -43,21 +41,20 @@ public class BinarySearchTree {
             root.left = insert(root.left, value);
         else if(root.getValue() < value)
             root.right = insert(root.right, value);
-        else root.add();
-
+        else root.increase();
         return root;
     }
 
     public SearchResult search(Node root, int value){
         SearchResult result = new SearchResult();
 
-        if(root == null){
+        if(root == null)
             result.found = false;
-        }else if(root.getValue() > value){
+        else if(root.getValue() > value)
             result = search(root.left, value);
-        }else if(root.getValue() < value){
+        else if(root.getValue() < value)
             result = search(root.right, value);
-        }else{
+        else{
             result.found = true;
             result.value = root.getValue();
             result.amount  = root.getAmount();
@@ -68,19 +65,16 @@ public class BinarySearchTree {
     public Node remove(Node root, int value){
         if(root == null){
             return null;
-        }else if(root.getValue() == value && root.getAmount() > 1){
-            root.remove();
-        }else if(root.getValue() == value && root.getAmount() <= 1){
-            if(root.left != null || root.right != null){
+        }else if(root.getValue() == value && root.getAmount() > 1)
+            root.decrease();
+        else if(root.getValue() == value && root.getAmount() <= 1)
+            if (root.left != null || root.right != null)
                 root = merge(root.left, root.right);
-            }else{
-                root = null;
-            }
-        }else if(root.getValue() > value)
+            else root = null;
+        else if(root.getValue() > value)
             root.left = remove(root.left, value);
         else if(root.getValue() < value)
             root.right = remove(root.right, value);
-
         return root;
     }
 
