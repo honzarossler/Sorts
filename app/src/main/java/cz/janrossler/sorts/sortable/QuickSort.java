@@ -1,9 +1,6 @@
 package cz.janrossler.sorts.sortable;
 
 import android.content.Context;
-import android.util.Log;
-
-import java.util.Calendar;
 
 public class QuickSort extends Sortable{
     public QuickSort(Context context, String session) {
@@ -11,25 +8,10 @@ public class QuickSort extends Sortable{
     }
 
     @Override
-    public void start() {
-        startTime = Calendar.getInstance();
-
-        try {
-            int left = 0;
-            int right = numbers.size() - 1;
-            sort(left, right);
-
-            endTime = Calendar.getInstance();
-            Log.d("QuickSort", "Done!");
-
-            if(sortingListener != null) {
-                int time = (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);
-                sortingListener.onSuccessSort(time);
-            }
-        }catch (Exception e){
-            e.fillInStackTrace();
-            if(sortingListener != null) sortingListener.onFailed(e.getMessage());
-        }
+    public void start() throws Exception {
+        int left = 0;
+        int right = numbers.size() - 1;
+        sort(left, right);
     }
 
     private void sort(int left, int right){
@@ -41,9 +23,7 @@ public class QuickSort extends Sortable{
     }
 
     private int divide(int left, int right, int pivot){
-        int temp = numbers.get(pivot);
-        numbers.set(pivot, numbers.get(right));
-        numbers.set(right, temp);
+        swap(pivot, right);
         int i = left;
         for (int j = left; j < right; j++) {
             if (numbers.get(j) < numbers.get(right)) {

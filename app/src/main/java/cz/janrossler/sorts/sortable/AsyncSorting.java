@@ -98,7 +98,7 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
                     publishProgress();
                 }
             });
-            sort.start();
+            sort.doSort();
         }else{
             publishProgress();
         }

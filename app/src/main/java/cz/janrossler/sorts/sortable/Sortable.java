@@ -45,7 +45,38 @@ public abstract class Sortable {
         return this.sortingListener;
     }
 
-    public abstract void start();
+    protected abstract void start() throws Exception;
+
+    public void doSort(){
+        startTime = Calendar.getInstance();
+        try{
+            start();
+            endTime = Calendar.getInstance();
+
+            if(sortingListener != null) {
+                if(isSorted())
+                    sortingListener.onSuccessSort(getTime());
+                else
+                    throw new SortException("Seznam nebyl úspěšně seřazen.");
+            }
+        }catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            if (sortingListener != null) sortingListener.onFailed("Třídění proběhlo mimo seznam.");
+        }catch (OutOfMemoryError e){
+            e.printStackTrace();
+            if (sortingListener != null) sortingListener.onFailed("Seznam je příliž velký na třídění.");
+        }catch (SortException e){
+            e.printStackTrace();
+            if(sortingListener != null) sortingListener.onFailed(e.message);
+        }catch (Exception e){
+            e.printStackTrace();
+            if(sortingListener != null) sortingListener.onFailed("Stala se neočekávaná chyba.");
+        }
+    }
+
+    public int getTime(){
+        return (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);
+    }
 
     public List<Integer> getSortedList() throws Exception {
         if(isSorting) throw new Exception("The numbers are still being sorted.");
@@ -68,5 +99,12 @@ public abstract class Sortable {
     public interface SortingListener {
         void onSuccessSort(int seconds);
         void onFailed(String _message);
+    }
+
+    public static class SortException extends Exception{
+        String message = "";
+        SortException(String error){
+            message = error;
+        }
     }
 }

@@ -1,9 +1,6 @@
 package cz.janrossler.sorts.sortable;
 
 import android.content.Context;
-import android.util.Log;
-
-import java.util.Calendar;
 
 public class SelectionSort extends Sortable{
     public SelectionSort(Context context, String session) {
@@ -11,32 +8,17 @@ public class SelectionSort extends Sortable{
     }
 
     @Override
-    public void start() {
-        startTime = Calendar.getInstance();
+    public void start() throws Exception {
+        int size = numbers.size();
 
-        try {
-            int size = numbers.size();
-
-            for (int i = 0; i < size - 1; i++) {
-                int min_index = i;
-                for (int j = i + 1; j < size; j++) {
-                    if (numbers.get(j) < numbers.get(min_index))
-                        min_index = j;
-                }
-
-                swap(i, min_index);
+        for (int i = 0; i < size - 1; i++) {
+            int min_index = i;
+            for (int j = i + 1; j < size; j++) {
+                if (numbers.get(j) < numbers.get(min_index))
+                    min_index = j;
             }
 
-            endTime = Calendar.getInstance();
-            Log.d("SelectionSort", "Done!");
-
-            if(sortingListener != null) {
-                int time = (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);
-                sortingListener.onSuccessSort(time);
-            }
-        }catch (Exception e){
-            e.fillInStackTrace();
-            if(sortingListener != null) sortingListener.onFailed(e.getMessage());
+            swap(i, min_index);
         }
     }
 }

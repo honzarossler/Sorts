@@ -1,9 +1,6 @@
 package cz.janrossler.sorts.sortable;
 
 import android.content.Context;
-import android.util.Log;
-
-import java.util.Calendar;
 
 public class HeapSort extends Sortable{
     public HeapSort(Context context, String session) {
@@ -11,30 +8,15 @@ public class HeapSort extends Sortable{
     }
 
     @Override
-    public void start() {
-        startTime = Calendar.getInstance();
+    public void start() throws Exception {
+        int heapEnd = numbers.size();
 
-        try {
-            int heapEnd = numbers.size();
+        for (int i = heapEnd / 2 - 1; i >= 0; i--)
+            heapify(heapEnd, i);
 
-            for (int i = heapEnd / 2 - 1; i >= 0; i--)
-                heapify(heapEnd, i);
-
-            for (int i = heapEnd - 1; i > 0; i--) {
-                swap(i, 0);
-                heapify(i, 0);
-            }
-
-            endTime = Calendar.getInstance();
-            Log.d("HeapSort", "Done!");
-
-            if(sortingListener != null) {
-                int time = (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);
-                sortingListener.onSuccessSort(time);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            if(sortingListener != null) sortingListener.onFailed(e.getMessage());
+        for (int i = heapEnd - 1; i > 0; i--) {
+            swap(i, 0);
+            heapify(i, 0);
         }
     }
 

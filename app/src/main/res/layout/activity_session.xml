@@ -84,6 +84,8 @@
             android:layout_height="wrap_content"
             android:scrollbarAlwaysDrawVerticalTrack="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:fastScrollEnabled="true"
+            android:fastScrollAlwaysVisible="true"
             android:scrollbars="vertical" />
     </LinearLayout>
 
