@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +40,8 @@ public class TreeViewActivity extends AppCompatActivity {
     private FloatingActionButton tool_add;
     private FloatingActionButton tool_remove;
     private FloatingActionButton tool_search;
+    private FloatingActionButton tool_save;
+    private ImageView locked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +55,12 @@ public class TreeViewActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_tree_view);
         tree = findViewById(R.id.tree);
+        locked = findViewById(R.id.locked);
         tool_add = findViewById(R.id.tool_add);
         tool_remove = findViewById(R.id.tool_remove);
         tool_search = findViewById(R.id.tool_search);
+        tool_save = findViewById(R.id.tool_save);
+        locked.setVisibility(View.GONE);
 
         if(usingSession){
             session = numberManager.getSession(intent.getStringExtra("session"));
@@ -67,10 +74,12 @@ public class TreeViewActivity extends AppCompatActivity {
             }catch (Exception e){
                 isSessionEditable = false;
             }
+            locked.setVisibility(!isSessionEditable ? View.VISIBLE : View.GONE);
         }else session = new JSONObject();
 
         tool_add.setVisibility(usingSession && !isSessionEditable ? View.GONE : View.VISIBLE);
         tool_remove.setVisibility(usingSession && !isSessionEditable ? View.GONE : View.VISIBLE);
+        tool_save.setVisibility(usingSession && !isSessionEditable ? View.GONE : View.VISIBLE);
 
         tool_add.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -143,6 +152,20 @@ public class TreeViewActivity extends AppCompatActivity {
                 result.show();
             });
             builder.setNegativeButton("Zrušit", null);
+            builder.show();
+        });
+
+        tool_save.setOnClickListener(v -> {
+            List<Integer> list = node.toList();
+            numberManager.pushList(intent.getStringExtra("session"), list);
+            Toast.makeText(this, "Uloženo.",Toast.LENGTH_LONG).show();
+        });
+
+        locked.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Proč je tento strom uzamčený?");
+            builder.setMessage("Tato instance byla vytvořena pomocí generátoru náhodných čísel a pro možné problémy s načítáním stromu jsou editační možnosti vypnuty. Pokud chcete strom upravit, vytvořte si nový strom a uložte jej.");
+            builder.setPositiveButton("Ok", null);
             builder.show();
         });
 
