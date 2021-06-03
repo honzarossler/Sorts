@@ -3,101 +3,64 @@
     "name": "BogoSort",
     "theory": "theory.bogo.json",
     "recommended_length": {
-      "min": 0,
-      "max": 10,
-      "out_of_range": false
+      "max": 10
     }
   },
   {
     "name": "BubbleSort",
     "theory": "theory.bubble.json",
     "recommended_length": {
-      "min": 0,
-      "max": 100000,
-      "out_of_range": false
+      "max": 100000
     }
   },
   {
     "name": "CountingSort",
-    "theory": "theory.counting.json",
-    "recommended_length": {
-      "min": 0,
-      "max": 1000000,
-      "out_of_range": true
-    }
+    "theory": "theory.counting.json"
   },
   {
     "name": "GravitySort",
     "theory": "theory.gravity.json",
     "enabled": true,
     "recommended_length": {
-      "min": 0,
       "max": 15000,
-      "max_gen": 15000,
-      "out_of_range": false
+      "max_gen": 15000
     }
   },
   {
     "name": "HeapSort",
-    "theory": "theory.heap.json",
-    "recommended_length": {
-      "min": 0,
-      "max": 1000000,
-      "out_of_range": true
-    }
+    "theory": "theory.heap.json"
   },
   {
     "name": "InsertionSort",
     "theory": "theory.insertion.json",
     "recommended_length": {
-      "min": 0,
-      "max": 100000,
-      "out_of_range": false
+      "max": 100000
     }
   },
   {
     "name": "MergeSort",
-    "theory": "theory.merge.json",
-    "recommended_length": {
-      "min": 0,
-      "max": 1000000,
-      "out_of_range": true
-    }
+    "theory": "theory.merge.json"
   },
   {
     "name": "QuickSort",
-    "theory": "theory.quick.json",
-    "recommended_length": {
-      "min": 0,
-      "max": 100000,
-      "out_of_range": true
-    }
+    "theory": "theory.quick.json"
   },
   {
     "name": "RadixSort",
-    "theory": "theory.radix.json",
-    "recommended_length": {
-      "min": 0,
-      "max": 10000000,
-      "out_of_range": true
-    }
+    "theory": "theory.radix.json"
   },
   {
     "name": "SelectionSort",
     "theory": "theory.selection.json",
     "recommended_length": {
-      "min": 0,
-      "max": 100000,
-      "out_of_range": false
+      "max": 100000
     }
   },
   {
     "name": "ShakerSort",
     "theory": "theory.shaker.json",
     "recommended_length": {
-      "min": 0,
-      "max": 100000,
-      "out_of_range": false
+      "max": 100000
     }
   }
 ]

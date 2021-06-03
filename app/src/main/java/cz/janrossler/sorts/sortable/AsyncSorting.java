@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cz.janrossler.sorts.utils.NumberManager;
@@ -21,6 +22,8 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
     public SortingService.Callbacks callbacks;
     public String sortAlgorithm = "";
     private Sortable sort;
+
+    private final HashMap<String, String> answers = new HashMap<>();
 
     public AsyncSorting(Context context){
         this.context = context;
@@ -85,11 +88,13 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    answers.remove(sortAlgorithm);
                     publishProgress();
                 }
 
                 @Override
                 public void onFailed(String _message) {
+                    answers.put(sortAlgorithm, _message);
                     publishProgress();
                 }
             });
@@ -104,6 +109,10 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-        if(callbacks != null) callbacks.updateClient();
+        if(callbacks != null) {
+            if(answers.containsKey(sortAlgorithm)){
+                callbacks.sortFailed(answers.get(sortAlgorithm));
+            }else callbacks.updateClient();
+        }
     }
 }

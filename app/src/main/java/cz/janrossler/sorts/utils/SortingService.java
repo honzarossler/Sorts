@@ -43,5 +43,6 @@ public class SortingService extends Service {
 
     public interface Callbacks{
         void updateClient();
+        void sortFailed(String message);
     }
 }

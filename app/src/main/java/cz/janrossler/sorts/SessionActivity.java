@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -125,7 +126,6 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         fab_sort_now.setOnClickListener(v -> {
             try {
                 JSONArray sorts = Utilities.getSortAlgorithms(this);
-                //HashMap<String,String> time = new HashMap<>();
                 List<String> allowedSorts = new ArrayList<>();
 
                 int length = session.has("length")
@@ -134,12 +134,8 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                 int max_gen = session.has("max")
                         ? session.getInt("max") : length;
 
-                //Complexity complexity = new Complexity(length);
-
                 for(int i = 0; i < sorts.length(); i++){
                     JSONObject sort = sorts.getJSONObject(i);
-                    //time.put(sort.getString("name"), sort.getString("complexity"));
-                    //allowedSorts.add(sort.getString("name"));
 
                     if(sort.has("enabled") && !sort.getBoolean("enabled"))
                         continue;
@@ -149,15 +145,18 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     }else{
                         JSONObject rl = sort.getJSONObject("recommended_length");
                         boolean hasMax = rl.has("max");
-                        boolean isOutOfRange = rl.has("out_of_range") && rl.getBoolean("out_of_range");
                         boolean hasMaxGen = rl.has("max_gen");
 
-                        if(!isOutOfRange && !hasMaxGen){
-                            if(hasMax && rl.getInt("max") >= length) {
+                        if(hasMax){
+                            if(hasMaxGen && rl.getInt("max") >= length){
+                                if (rl.getInt("max_gen") >= max_gen)
+                                    allowedSorts.add(sort.getString("name"));
+                            }else if(rl.getInt("max") >= length){
                                 allowedSorts.add(sort.getString("name"));
                             }
-                        }else if (hasMaxGen && rl.getInt("max_gen") >= max_gen) {
-                            allowedSorts.add(sort.getString("name"));
+                        }else if(hasMaxGen){
+                            if (rl.getInt("max_gen") >= max_gen)
+                                allowedSorts.add(sort.getString("name"));
                         }
                     }
                 }
@@ -245,5 +244,12 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     public void updateClient() {
         update();
         pDialog.dismiss();
+    }
+
+    @Override
+    public void sortFailed(String message) {
+        update();
+        pDialog.dismiss();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

@@ -21,8 +21,7 @@ public class HeapSort extends Sortable{
                 heapify(heapEnd, i);
 
             for (int i = heapEnd - 1; i > 0; i--) {
-                swap(0, i);
-
+                swap(i, 0);
                 heapify(i, 0);
             }
 
@@ -34,7 +33,7 @@ public class HeapSort extends Sortable{
                 sortingListener.onSuccessSort(time);
             }
         }catch (Exception e){
-            e.fillInStackTrace();
+            e.printStackTrace();
             if(sortingListener != null) sortingListener.onFailed(e.getMessage());
         }
     }
@@ -48,12 +47,11 @@ public class HeapSort extends Sortable{
         if (l < n && numbers.get(l) > numbers.get(largest))
             largest = l;
 
-        if (r < n && numbers.get(r) > numbers.get(l))
+        if (r < n && numbers.get(r) > numbers.get(largest))
             largest = r;
 
         if (largest != i) {
-            swap(i, largest);
-
+            swap(largest, i);
             heapify(n, largest);
         }
     }

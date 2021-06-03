@@ -58,6 +58,13 @@ public abstract class Sortable {
         numbers.set(j, s);
     }
 
+    public boolean isSorted() {
+        for (int i = 1; i < numbers.size(); i++)
+            if (numbers.get(i) < numbers.get(i - 1))
+                return false;
+        return true;
+    }
+
     public interface SortingListener {
         void onSuccessSort(int seconds);
         void onFailed(String _message);

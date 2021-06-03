@@ -34,11 +34,4 @@ public class BogoSort extends Sortable{
             if(sortingListener != null) sortingListener.onFailed(e.getMessage());
         }
     }
-
-    private boolean isSorted() {
-        for (int i = 1; i < numbers.size(); i++)
-            if (numbers.get(i) < numbers.get(i - 1))
-                return false;
-        return true;
-    }
 }
