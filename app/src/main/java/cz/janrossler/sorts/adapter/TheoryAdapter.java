@@ -22,7 +22,6 @@ import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.MarkwonSpansFactory;
 import io.noties.markwon.SpanFactory;
-import io.noties.markwon.core.CoreProps;
 import io.noties.markwon.core.MarkwonTheme;
 import io.noties.markwon.ext.latex.JLatexMathPlugin;
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin;
@@ -46,16 +45,9 @@ public class TheoryAdapter extends RecyclerView.Adapter<TheoryAdapter.Holder> {
                     public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
                         final SpanFactory origin = builder.requireFactory(Heading.class);
 
-                        // register you own
-                        builder.setFactory(Heading.class, (configuration, props) -> {
-                            // here you can also check for heading level for further customizations
-                            final int level = CoreProps.HEADING_LEVEL.require(props);
-
-                            // return an array of spans (origin heading + our color)
-                            return new Object[]{
-                                    origin.getSpans(configuration, props),
-                                    new ForegroundColorSpan(context.getColor(R.color.pink_700))
-                            };
+                        builder.setFactory(Heading.class, (configuration, props) -> new Object[]{
+                                origin.getSpans(configuration, props),
+                                new ForegroundColorSpan(context.getColor(R.color.pink_700))
                         });
                     }
                 })
