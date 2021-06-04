@@ -1,0 +1,19 @@
+{
+  "head": {
+    "title": {
+      "text": "GravitySort"
+    },
+    "folder": "gravity"
+  },
+  "body": {
+    "_": [
+      {
+        "text": "%folder%/about.md",
+        "image": "%folder%/visualise.jpg"
+      },
+      {
+        "image": "%folder%/gravity_sort_visual.gif"
+      }
+    ]
+  }
+}

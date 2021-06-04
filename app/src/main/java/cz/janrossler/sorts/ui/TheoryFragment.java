@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +19,6 @@ import cz.janrossler.sorts.utils.TheoryReader;
 
 public class TheoryFragment extends Fragment {
     private Activity activity;
-    private ActionBar actionBar;
     private RecyclerView theories_list;
 
     private TheoryReader reader;
@@ -38,13 +34,7 @@ public class TheoryFragment extends Fragment {
         TheoryListAdapter adapter = new TheoryListAdapter(activity, theories);
 
         View root = activity.getLayoutInflater().inflate(R.layout.fragment_dashboard, null);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
         theories_list = root.findViewById(R.id.theories);
-
-        ((AppCompatActivity) activity).setSupportActionBar(toolbar);
-        actionBar = ((AppCompatActivity) activity).getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         theories_list.setLayoutManager(new LinearLayoutManager(activity));
         theories_list.setAdapter(adapter);

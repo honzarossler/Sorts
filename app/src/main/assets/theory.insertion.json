@@ -1,0 +1,16 @@
+{
+  "head": {
+    "title": {
+      "text": "InsertionSort"
+    },
+    "folder": "insertion"
+  },
+  "body": {
+    "_": [
+      {
+        "text": "%folder%/about.md",
+        "image": "%folder%/insertion_sort_visual.gif"
+      }
+    ]
+  }
+}

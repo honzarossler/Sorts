@@ -12,10 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,14 +24,13 @@ import org.json.JSONArray;
 
 import java.util.Calendar;
 
-import cz.janrossler.sorts.TreeViewActivity;
-import cz.janrossler.sorts.utils.NumberManager;
 import cz.janrossler.sorts.R;
+import cz.janrossler.sorts.TreeViewActivity;
 import cz.janrossler.sorts.adapter.SessionsAdapter;
+import cz.janrossler.sorts.utils.NumberManager;
 
 public class SortingFragment extends Fragment {
     private Activity activity;
-    private ActionBar actionBar;
     private FloatingActionButton add;
     private FloatingActionButton tree;
     private RecyclerView sort_sessions;
@@ -50,7 +46,6 @@ public class SortingFragment extends Fragment {
         activity = getActivity();
         assert activity != null;
         View root = activity.getLayoutInflater().inflate(R.layout.fragment_home, null);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
         sort_sessions = root.findViewById(R.id.sort_sessions);
         add = root.findViewById(R.id.add);
         tree = root.findViewById(R.id.tree);
@@ -64,11 +59,6 @@ public class SortingFragment extends Fragment {
 
         numberManager = new NumberManager(activity);
         update();
-
-        ((AppCompatActivity) activity).setSupportActionBar(toolbar);
-        actionBar = ((AppCompatActivity) activity).getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         add.setOnClickListener(v -> {
             final AlertDialog alertDialog;
@@ -145,7 +135,6 @@ public class SortingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         update();
     }
 }
