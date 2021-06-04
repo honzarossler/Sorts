@@ -2,6 +2,7 @@ package cz.janrossler.sorts.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,11 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.commonmark.node.Heading;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import cz.janrossler.sorts.R;
+import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
+import io.noties.markwon.MarkwonSpansFactory;
+import io.noties.markwon.SpanFactory;
+import io.noties.markwon.core.CoreProps;
+import io.noties.markwon.core.MarkwonTheme;
 import io.noties.markwon.ext.latex.JLatexMathPlugin;
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin;
 
@@ -29,9 +36,33 @@ public class TheoryAdapter extends RecyclerView.Adapter<TheoryAdapter.Holder> {
         this.context = context;
         this.theories = theories;
         markwon = Markwon.builder(context)
+                .usePlugin(new AbstractMarkwonPlugin() {
+                    @Override
+                    public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
+                        builder.headingBreakColor(context.getColor(R.color.pink_700));
+                        builder.build();
+                    }
+                    @Override
+                    public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
+                        final SpanFactory origin = builder.requireFactory(Heading.class);
+
+                        // register you own
+                        builder.setFactory(Heading.class, (configuration, props) -> {
+                            // here you can also check for heading level for further customizations
+                            final int level = CoreProps.HEADING_LEVEL.require(props);
+
+                            // return an array of spans (origin heading + our color)
+                            return new Object[]{
+                                    origin.getSpans(configuration, props),
+                                    new ForegroundColorSpan(context.getColor(R.color.pink_700))
+                            };
+                        });
+                    }
+                })
                 .usePlugin(MarkwonInlineParserPlugin.create())
                 .usePlugin(JLatexMathPlugin.create(16 * context.getResources().getDisplayMetrics().density, builder -> {
                     builder.inlinesEnabled(true);
+                    builder.build();
                 }))
                 .build();
     }
