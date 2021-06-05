@@ -9,8 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,8 +39,12 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
         try{
             JSONObject item = theories.getJSONObject(position);
             holder._name.setText(item.getString("name"));
+            if(item.has("hint")){
+                holder._hint.setVisibility(View.VISIBLE);
+                holder._hint.setText(item.getString("hint"));
+            }else holder._hint.setVisibility(View.GONE);
 
-            holder.session_more.setOnClickListener(v -> {
+            holder.itemView.setOnClickListener(v -> {
                 try {
                     Intent intent = new Intent(context, TheoryActivity.class)
                             .putExtra("theory", item.getString("theory"));
@@ -52,7 +54,7 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
                 }
             });
         }catch (Exception e){
-            e.fillInStackTrace();
+            e.printStackTrace();
             holder._name.setText("<UNKNOWN_THEORY_ERROR>");
         }
     }
@@ -64,12 +66,12 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
 
     public static class Holder extends RecyclerView.ViewHolder {
         TextView _name;
-        FloatingActionButton session_more;
+        TextView _hint;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             _name = itemView.findViewById(R.id._name);
-            session_more = itemView.findViewById(R.id.fab_more);
+            _hint = itemView.findViewById(R.id._hint);
         }
     }
 }

@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * <p>
@@ -65,6 +66,7 @@ public class TheoryReader {
 
     public JSONArray getAllTheories(){
         JSONArray theories = new JSONArray();
+        String lang = Locale.getDefault().toString();
 
         try{
             JSONArray arr = Utilities.getSortAlgorithms(context);
@@ -75,6 +77,13 @@ public class TheoryReader {
                     JSONObject theory = new JSONObject();
                     theory.put("name", thr.getString("name"));
                     theory.put("theory", thr.getString("theory"));
+                    if(thr.has("hints")){
+                        if(thr.getJSONObject("hints").has(lang)){
+                            theory.put("hint", thr.getJSONObject("hints").getString(lang));
+                        }else if(thr.getJSONObject("hints").has("_")){
+                            theory.put("hint", thr.getJSONObject("hints").getString("_"));
+                        }
+                    }
 
                     theories.put(theory);
                 }

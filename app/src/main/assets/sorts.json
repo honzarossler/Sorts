@@ -4,6 +4,10 @@
     "theory": "theory.bogo.json",
     "recommended_length": {
       "max": 10
+    },
+    "hints": {
+      "_": "Inefficient sorting algorithm",
+      "cs_CZ": "Neefektivní algoritmus pro třídění"
     }
   },
   {
@@ -11,11 +15,19 @@
     "theory": "theory.bubble.json",
     "recommended_length": {
       "max": 100000
+    },
+    "hints": {
+      "_": "Bubble sorting method",
+      "cs_CZ": "Bublinkový způsob třídění"
     }
   },
   {
     "name": "CountingSort",
-    "theory": "theory.counting.json"
+    "theory": "theory.counting.json",
+    "hints": {
+      "_": "Method of sorting using mathematics",
+      "cs_CZ": "Způsob třídění pomocí matematiky"
+    }
   },
   {
     "name": "GravitySort",
@@ -24,36 +36,64 @@
     "recommended_length": {
       "max": 100000,
       "max_alloc": 1500000000
+    },
+    "hints": {
+      "_": "Just let gravity do its job",
+      "cs_CZ": "Nechme gravitaci pracovat"
     }
   },
   {
     "name": "HeapSort",
-    "theory": "theory.heap.json"
+    "theory": "theory.heap.json",
+    "hints": {
+      "_": "First, set up a heap and sort it out",
+      "cs_CZ": "Nejprve založ haldu a tu setřiď"
+    }
   },
   {
     "name": "InsertionSort",
     "theory": "theory.insertion.json",
     "recommended_length": {
       "max": 100000
+    },
+    "hints": {
+      "_": "Take the numbers and enter them where they belong",
+      "cs_CZ": "Ber čísla a vkládej je tam kam patří"
     }
   },
   {
     "name": "MergeSort",
-    "theory": "theory.merge.json"
+    "theory": "theory.merge.json",
+    "hints": {
+      "_": "Divide in halves and gradually sort",
+      "cs_CZ": "Rozděl na poloviny a postupně setřiď"
+    }
   },
   {
     "name": "QuickSort",
-    "theory": "theory.quick.json"
+    "theory": "theory.quick.json",
+    "hints": {
+      "_": "Sorting by pivot",
+      "cs_CZ": "Setřídění pomocí pivota"
+    }
   },
   {
     "name": "RadixSort",
-    "theory": "theory.radix.json"
+    "theory": "theory.radix.json",
+    "hints": {
+      "_": "Form yourself as a sorting algorithm and let CountingSort work",
+      "cs_CZ": "Tvař se jako třídicí algoritmus a nech pracovat CountingSort"
+    }
   },
   {
     "name": "SelectionSort",
     "theory": "theory.selection.json",
     "recommended_length": {
       "max": 100000
+    },
+    "hints": {
+      "_": "Choose the numbers that belong to this position",
+      "cs_CZ": "Vybírej čísla, která patří na tuhle pozici"
     }
   },
   {
@@ -61,6 +101,10 @@
     "theory": "theory.shaker.json",
     "recommended_length": {
       "max": 100000
+    },
+    "hints": {
+      "_": "Isn't it a good idea to send BubbleSort back?",
+      "cs_CZ": "Není dobrý nápad poslat BubbleSort i pozpátku?"
     }
   }
 ]
