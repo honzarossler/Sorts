@@ -1,16 +1,16 @@
-# O CountingSort algoritmu
+# About CountingSort
 
-Tento algoritmus je velmi výkonný a stabilní se složitostí $$ O(n + k) $$, který vymyslel *Harold Seward* v roce 1954. 
+This algorithm is very powerful and stable with the complexity $$ O(n + k) $$ invented by *Harold Seward* in 1954.
 
-CountingSort nepracuje na rozdíl od BubbleSortu nebo QuickSortu na principu porovnávání, ale na bázi výpočtu jejich výskytů.
+Unlike BubbleSort or QuickSort, CountingSort does not work on the principle of comparison, but on the basis of calculating their occurrences.
 
-## Princip
+## Principle
 
-Využívá se znalosti nejmenší a nejvyšší řazené hodnoty, diky které může algoritmus vytvořit pole četností hodnot 
-a toto pole posléze přepočítat na pole posledních indexů. Řazení probíhá průchodem zprava doleva a ukládání hodnot na správné místo v seřazeném poli.
+Knowledge of the smallest and highest sorted values is used, thanks to which the algorithm can create an array of frequencies of values
+and then recalculate this field to the last index field. Sorting is done by going from right to left and saving the values to the right place in the sorted field.
 
-## Výhody a nevýhody
+## Advantages and disadvantages
 
-Obří výhodou algoritmu je jeho složitost $$ O(n + k) $$, která zajistí opravdu plynulé řazení pro obrovské seznamy.
+A huge advantage of the algorithm is its complexity $$ O(n + k) $$, which ensures a really smooth sorting for huge lists.
 
-Nevýhodou je zase potřeba vytvoření dodatečkého pole indexů a četností, nebo schopnost řadit pouze diskrétní hodnoty.
+The disadvantage is the need to create an additional array of indexes and frequencies, or the ability to sort only discrete values.

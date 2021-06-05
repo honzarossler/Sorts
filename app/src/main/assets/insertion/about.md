@@ -1,12 +1,12 @@
-# O InsertionSort algoritmu
+# About InsertionSort
 
-Jedná se o stabilní řadicí algoritmus, který funguje na principu porovnávání řazených hodnot se složitostí $$ O(n^2) $$.
+It is a stable sorting algorithm that works on the principle of comparing sorted values with the complexity $$ O(n^2) $$.
 
-## Princip
+## Principle
 
-Tento algoritmus dělí seznam na 2 části, seřazenou a neseřazenou, kde vždycky první prvek z neseřazené časti správně zařadí 
-do již seřazené části a jakmile nezůstane žádný neseřazený prvek, seznam je seřazen.
+This algorithm divides the list into 2 parts, sorted and unsorted, where the first element from the unordered part always sorts correctly
+to an already sorted section, and as soon as no unsorted element remains, the list is sorted.
 
-## Časová složitost
+## Time complexity
 
-Ačkoli se uvádí časová složitost $$ O(n^2) $$, přestává to platit s téměř seřazeným listem, kde je složitost $$ O(n) $$.
+Although the time complexity $$ O(n^2) $$ is given, it ceases to apply with an almost sorted sheet, where the complexity $$ O(n) $$.

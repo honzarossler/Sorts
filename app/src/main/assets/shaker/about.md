@@ -1,7 +1,7 @@
-# O InsertionSort algoritmu
+# About ShakerSort
 
-Jedná se o stabilní řadicí algoritmus s časovou složitostí $$ O(n^2) $$. ShakerSort je vylepšená verze BubbleSortu.
+It is a stable sorting algorithm with time complexity $$ O(n^2) $$. ShakerSort is an improved version of BubbleSort.
 
-## Princip
+## Principle
 
-Řazení je velice podobné k BubbleSortu, ale řazení probíhá z obou stran seznamu.
+Sorting is very similar to BubbleSort, but sorting takes place from both sides of the list.

@@ -1,12 +1,12 @@
-# O MergeSort algoritmu
+# About MergeSort
 
-Tento algoritmus je stabilní typu *rozděl a panuj* se složitostí $$ O(n \cdot log n) $$.
+This algorithm is of stable type *divide and conquer* with complexity $$ O(n \cdot log n) $$.
 
-MergeSort pracuje na bázi slévání již seřazených částí pole za pomoci dodatečného pole a byl vymyšlen v roce 1945 *Johnem von Neumannem*.
+MergeSort works by merging already arranged parts of a field with the help of an additional field and was invented in 1945 by *John von Neumann*.
 
-## Princip
+## Principle
 
-MergeSort je komplexnější na úrovni práce s více částmi. Algoritmus si rekurzivně rozděluje pole na poloviny dokud nenarazí na smyšlené pole o velikosti jednoho prvku, 
-které je už samo o sobě seřazené. Následně probíhá slévání prvků tak, že kontroluje hodnotu prvků v obou polovin a vytvoří setříděný celek.
+MergeSort is more complex at the multi-part level. The algorithm recursively splits the field in half until it encounters a fictional field the size of one element,
+which is already sorted by itself. Subsequently, the elements are merged by checking the value of the elements in both halves and forming a sorted unit.
 
-Po slévání posledních dvou polovin vzniká plně seřazené pole od nejmenší po největší prvkem.
+After merging the last two halves, a fully aligned field is created from the smallest to the largest element.

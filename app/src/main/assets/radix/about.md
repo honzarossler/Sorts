@@ -1,14 +1,14 @@
-# O RadixSort algoritmu
+# About RadixSort
 
-Jedná se o stabilní řadicí algoritmus, který je vhodný především pro řazení polí s vysokým množstvím totožných čísel.
+It is a stable sorting algorithm, which is especially suitable for sorting fields with a high number of identical numbers.
 
-## Princip
+## Principle
 
-RadixSort funguje narozdíl od ostatních algoritmů tak, že sám využívá jiný stabilní třídicí algoritmus, nejčastěji se jedná o CountingSort. 
-Volání jiného algoritmu je však systématické. Seřazování probíhá dle míst samotných čísel (např. podle jednotek, desítek, stovek, ...) 
-a následně jsou všechna čísla seřazená dle všech míst čísel.
+Unlike other algorithms, RadixSort works by using another stable sorting algorithm, most often CountingSort.
+However, calling another algorithm is systematic. Sorting takes place according to the places of the numbers themselves (eg according to units, tens, hundreds, ...)
+and then all numbers are sorted according to all places of the numbers.
 
-## Složitost algoritmu
+## Time complexity
 
-Zde se nachází tzv. asymptotická složitost. Ta se může lišit dle různých kritérií, často se značí $$ O((n+b) \cdot log_b(k)) $$, 
-obecně ji lze zapsat i jako $$ O(m \cdot C(n)) $$, kde $$ C(n) $$ je složitost algoritmu, který RadixSort používá.
+Here is the so-called asymptotic complexity. This can vary according to various criteria, often denoted by $$ O((n + b) \cdot log_b(k)) $$,
+in general, it can also be written as $$ O(m \cdot C(n)) $$, where $$ C(n) $$ is the complexity of the algorithm used by RadixSort.

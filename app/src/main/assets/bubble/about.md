@@ -1,14 +1,14 @@
-# O BubbleSort algoritmu
+# About BubbleSort
 
-Jedná se o jednoduchý a stabilní řadící algoritmus.
+It is a simple and stable sorting algorithm.
 
-## Princip
+## Principle
 
-Svůj název získal díky způsobu řazení, který se dá přirovnat k bublinkám, které pokud jsou lehčí, ve vodě stoupají rychleji.
-Porovnává postupně dvě čísla vedle sebe a menší vždy prohodí tak, aby byl blíže ke konci seznamu a se stejnou logikou pokračuje na dalších indexech.
-Na konci iterace je tímto způsobem na konci seznamu seřazené nejmenší číslo (tedy na svém místě) a začíná nová iterace bez této poslední iterace.
+It got its name thanks to the method of sorting, which can be compared to bubbles, which, if lighter, rise faster in the water.
+It compares two numbers side by side in turn, and the smaller one is always swapped so that it is closer to the end of the list and continues with the same logic on other indexes.
+At the end of the iteration, the smallest number (ie in place) is sorted at the end of the list in this way, and a new iteration begins without this last iteration.
 
-## Složitost algoritmu
+## Algorithm complexity
 
-BubbleSort patří do skupiny složitosti $$ O(n^2) $$, přičemž se jedná o časově velmi náročný algoritmus.
-Doba řazení na 1 000 000 čísel se odhaduje od 45 minut po 2,5 hodiny závisle na výkonu zařízení.
+BubbleSort belongs to the group of complexity $$ O(n^2) $$, and it is a very time-consuming algorithm.
+Shifting time per 1,000,000 numbers is estimated from 45 minutes to 2.5 hours depending on the performance of the device.

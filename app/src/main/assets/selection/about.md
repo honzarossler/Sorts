@@ -1,9 +1,9 @@
-# O SelectionSort algoritmu
+# About SelectionSort
 
-Jedná se o nestabilní řadicí algoritmus se složitostí $$ O(n^2) $$. Ve srovnání s dalšími algoritmy 
-o podobné složitosti (např. BubbleSort) je rychlejší, ale pomalejší než InsertionSort.
+It is an unstable sorting algorithm with complexity $$ O(n^2) $$. Compared to other algorithms
+of similar complexity (eg BubbleSort) is faster but slower than InsertionSort.
 
-## Princip
+## Principle
 
-Tento algoritmus vybírá postupně nejmenší či největší prvek a přemístí jej na začátek zbytku pole. Po setřídění prvku se pole zmenší 
-o jednu a ignoruje seřazené pozice.
+This algorithm sequentially selects the smallest and largest elements and moves them to the beginning of the rest of the array. After sorting the element, the field shrinks
+by one and ignores sorted positions.

@@ -14,6 +14,15 @@
       {
         "image": "%folder%/radix_sort_visual.gif"
       }
+    ],
+    "cs_CZ": [
+      {
+        "text": "%folder%/about_csCZ.md",
+        "image": "%folder%/radixsort_small_steps.png"
+      },
+      {
+        "image": "%folder%/radix_sort_visual.gif"
+      }
     ]
   }
 }

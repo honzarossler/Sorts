@@ -68,8 +68,7 @@ public class TheoryActivity extends AppCompatActivity {
 
         for(int i = 0; i < langs.length; i++) {
             if(!langs[i].equals("_")){
-                Locale loc = new Locale(langs[i]);
-                langsChar[i] = loc.getDisplayLanguage(loc);
+                langsChar[i] = Locale.getDefault().getDisplayCountry(new Locale(langs[i]));
             }else {
                 if(defIndex < 0)
                     defIndex = i;

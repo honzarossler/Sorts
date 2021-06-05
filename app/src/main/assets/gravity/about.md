@@ -1,17 +1,17 @@
-# O GravitySort algoritmu
+# About GravitySort
 
-Také bývá nazývaný jako BeadSort, je přirozený třídicí algoritmus. Byl inspirován přírodními jevy a byl navržen 
-tak, aby pamatoval na objekty jako na korálky, na které spadá vliv gravitace.
+Also called BeadSort, it is a natural sorting algorithm. It was inspired by natural phenomena and was designed
+so that he can think of objects as beads that are affected by gravity.
 
-## Princip
+## Principle
 
-Tento algoritmus si vykládá čísla jako korálky, které jsou umístěny na provázkách a provozuje podobný jev jako 
-gravitace.
+This algorithm interprets numbers as beads that are placed on strings and operates a similar phenomenon as
+gravitation.
 
-Toto chování je docíleno rozdělením čísel na součet po jedné, které rozloží v řadě a následně tyto bity posouvá 
-na poslední možné pozice ve sloupcích. Následně dojde k součtu těchto jednotek a vrátí setříděný seznam.
+This behavior is achieved by dividing the numbers into a sum one by one, which arranges them in a row and then shifts these bits
+to the last possible position in the columns. Subsequently, these units are summed and the sorted list is returned.
 
-## Časová složitost
+## Time complexity
 
-Jedná se o přirozený algoritmus, který v reálném světě reaguje složitostí **O(1)**, avšak v programování je potřeba 
-zavést způsob k seřazení jednotek v řadách a časová složitost stoupá k $$ O(n^2) $$.
+It is a natural algorithm that reacts in the real world with the complexity of **O(1)**, but in programming it is necessary
+introduce a way to arrange the units in rows, and the time complexity increases to $$ O(n^2) $$.

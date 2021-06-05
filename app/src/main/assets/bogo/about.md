@@ -1,15 +1,15 @@
-# O BogoSort algoritmu
+# About BogoSort
 
-BogoSort (StupidSort, SlowSort) je algoritmus, který poukazuje na nejhorší možný postup při řazení prvků. Nemá žádné praktické využití, 
-avšak při nízkém počtu prvků (do 5 prvků) může být rychlý. V opačném případě při 1000 číslech stihnete možná zkouknout celou Ulici.
+BogoSort (StupidSort, SlowSort) is an algorithm that points to the worst possible procedure for sorting elements. It has no practical use,
+however, with a low number of elements (up to 5 elements) it can be fast. Otherwise, with 1000 numbers, you may have time to try the whole Netflix.
 
-Díky svému systému řazení se k němu váže složitost $$ O(n \cdot n!) $$, protože zde existuje $$ n! $$ možných permutací pole.
+Thanks to its sorting system, the complexity of $$ O (n \cdot n!) $$ is connected to it, because there is $$ n! $$ possible field permutations.
 
-## Princip
+## Principle
 
-Tento algoritmus v každém svém kroku kontroluje, zda je pole seřazeno. Pokud pole seřazeno není, celé pole promíchá a probíhá vše na novo.
+This algorithm checks at each step whether the field is sorted. If the field is not sorted, the whole field is shuffled and everything is done anew.
 
-## Pseudokód
+## Scheme
 
 ```
 function bogosort(array)

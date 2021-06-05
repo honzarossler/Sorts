@@ -11,6 +11,12 @@
         "text": "%folder%/about.md",
         "image": "%folder%/insertion_sort_visual.gif"
       }
+    ],
+    "cs_CZ": [
+      {
+        "text": "%folder%/about_csCZ.md",
+        "image": "%folder%/insertion_sort_visual.gif"
+      }
     ]
   }
 }
