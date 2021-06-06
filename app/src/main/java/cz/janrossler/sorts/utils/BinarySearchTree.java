@@ -2,6 +2,9 @@ package cz.janrossler.sorts.utils;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +27,29 @@ public class BinarySearchTree {
     public static Node createFromList(@NonNull List<Integer> list){
         Node root = null;
 
-        if(list.size() <= Utilities.MAX_TREE_SIZE){
+        try{
             BinarySearchTree tree = new BinarySearchTree();
             for(int i = 0; i < list.size(); i++){
                 root = tree.insert(root, list.get(i));
+            }
+        }catch (OutOfMemoryError e){
+            e.printStackTrace();
+        }
+
+        return root;
+    }
+
+    public static Node createFromList(@NonNull JSONArray list){
+        Node root = null;
+
+        if(list.length() <= Utilities.MAX_TREE_SIZE){
+            BinarySearchTree tree = new BinarySearchTree();
+            for(int i = 0; i < list.length(); i++){
+                try {
+                    root = tree.insert(root, list.getInt(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -47,6 +69,7 @@ public class BinarySearchTree {
 
     public SearchResult search(Node root, int value){
         SearchResult result = new SearchResult();
+        result.value = value;
 
         if(root == null)
             result.found = false;
@@ -56,8 +79,7 @@ public class BinarySearchTree {
             result = search(root.right, value);
         else{
             result.found = true;
-            result.value = root.getValue();
-            result.amount  = root.getAmount();
+            result.amount = root.getAmount();
         }
         return result;
     }

@@ -27,6 +27,7 @@ import cz.janrossler.sorts.adapter.NodeAdapter;
 import cz.janrossler.sorts.utils.BinarySearchTree;
 import cz.janrossler.sorts.utils.Node;
 import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.Utilities;
 
 public class TreeViewActivity extends AppCompatActivity {
     private NumberManager numberManager;
@@ -156,25 +157,27 @@ public class TreeViewActivity extends AppCompatActivity {
         });
 
         tool_save.setOnClickListener(v -> {
-            List<Integer> list = node.toList();
-            String session;
+            if(node != null){
+                List<Integer> list = node.toList();
+                String session;
 
-            if(usingSession){
-                session = intent.getStringExtra("session");
-            }else{
-                Calendar calendar = Calendar.getInstance();
-                int y = calendar.get(Calendar.YEAR);
-                int m = calendar.get(Calendar.MONTH) + 1;
-                int d = calendar.get(Calendar.DAY_OF_MONTH);
-                int h = calendar.get(Calendar.HOUR_OF_DAY);
-                int mi = calendar.get(Calendar.MINUTE);
-                session = y + "-" + m + "-" + d + " " + h + "-" + mi;
+                if(usingSession){
+                    session = intent.getStringExtra("session");
+                }else{
+                    Calendar calendar = Calendar.getInstance();
+                    int y = calendar.get(Calendar.YEAR);
+                    int m = calendar.get(Calendar.MONTH) + 1;
+                    int d = calendar.get(Calendar.DAY_OF_MONTH);
+                    int h = calendar.get(Calendar.HOUR_OF_DAY);
+                    int mi = calendar.get(Calendar.MINUTE);
+                    session = y + "-" + m + "-" + d + " " + h + "-" + mi;
 
-                numberManager.createSession(session, true);
-            }
+                    numberManager.createSession(session, true);
+                }
 
-            numberManager.pushList(session, list);
-            Toast.makeText(this, "Uloženo.",Toast.LENGTH_LONG).show();
+                numberManager.pushList(session, list);
+                Toast.makeText(this, "Uloženo.",Toast.LENGTH_LONG).show();
+            }else Toast.makeText(this, "Nelze uložit prázdný strom.",Toast.LENGTH_LONG).show();
         });
 
         locked.setOnClickListener(v -> {
@@ -196,9 +199,17 @@ public class TreeViewActivity extends AppCompatActivity {
             NodeAdapter adapter = new NodeAdapter(this, nodes);
             tree.setLayoutManager(new GridLayoutManager(this, 1));
             tree.setAdapter(adapter);
+
             tree.setVisibility(View.VISIBLE);
+            if(!tool_remove.isShown()) tool_remove.show();
+            if(!tool_save.isShown()) tool_save.show();
+            if(node.size() > Utilities.MAX_TREE_SIZE) tool_add.hide();
+            else tool_add.show();
         }else{
             tree.setVisibility(View.GONE);
+            tool_remove.hide();
+            tool_save.hide();
+            tool_add.show();
         }
     }
 

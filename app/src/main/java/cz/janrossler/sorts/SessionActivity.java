@@ -6,10 +6,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -28,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.janrossler.sorts.adapter.SessionPreviewAdapter;
+import cz.janrossler.sorts.sortable.AsyncSearch;
+import cz.janrossler.sorts.utils.BinarySearchTree;
 import cz.janrossler.sorts.utils.NumberManager;
 import cz.janrossler.sorts.utils.SortingService;
 import cz.janrossler.sorts.utils.Utilities;
@@ -54,6 +61,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     private FloatingActionButton fab_delete_session;
     private FloatingActionButton fab_tree;
     private FloatingActionButton fab_sort_view;
+    private FloatingActionButton fab_search;
     private RecyclerView session_preview;
     private SessionPreviewAdapter adapter;
 
@@ -79,6 +87,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         fab_delete_session = findViewById(R.id.fab_delete_session);
         fab_tree = findViewById(R.id.fab_tree);
         fab_sort_view = findViewById(R.id.fab_sort_view);
+        fab_search = findViewById(R.id.fab_search);
         session_preview = findViewById(R.id.session_preview);
 
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -93,7 +102,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         pSearchDialog = new ProgressDialog(this);
         pSearchDialog.setIndeterminate(true);
         pSearchDialog.setCancelable(false);
-        pSearchDialog.setMessage("Počítám výskyty čísel");
+        pSearchDialog.setMessage("Hledám číslo ...");
 
         session_preview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -106,12 +115,14 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     fab_delete_session.hide();
                     if(unsorted.length() <= Utilities.MAX_TREE_SIZE || isEditable) fab_tree.hide();
                     fab_sort_view.hide();
+                    fab_search.hide();
                 } else if (dy < 0) {
                     // Scroll Up
                     fab_sort_now.show();
                     fab_delete_session.show();
                     if(unsorted.length() <= Utilities.MAX_TREE_SIZE || isEditable) fab_tree.show();
                     fab_sort_view.show();
+                    fab_search.show();
                 }
             }
         });
@@ -128,6 +139,41 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             }
             isAscending = !isAscending;
             update();
+        });
+
+        fab_search.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Zadejte číslo pro vyhledávání.");
+
+            EditText edit = new EditText(this);
+            edit.setHint("...");
+            edit.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edit.setRawInputType(Configuration.KEYBOARD_12KEY);
+            LinearLayout.LayoutParams params =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+            edit.setLayoutParams(params);
+
+            builder.setView(edit);
+            builder.setPositiveButton("Hledat", (dialog, which) -> {
+                try {
+                    pSearchDialog.show();
+                    AsyncSearch search = new AsyncSearch(
+                            this,
+                            intent.getStringExtra("session"),
+                            (AsyncSearch.Result) sResult -> {
+                        pSearchDialog.dismiss();
+                        showResultDialog(sResult);
+                    });
+                    search.execute(Integer.parseInt(edit.getText().toString()));
+                }catch (Exception e){
+                    e.printStackTrace();
+                    pSearchDialog.dismiss();
+                }
+            });
+            builder.setNegativeButton("Zrušit", null);
+            builder.show();
         });
 
         update();
@@ -250,6 +296,21 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             Intent i = new Intent(this, TreeViewActivity.class).putExtra("session", intent.getStringExtra("session"));
             startActivity(i);
         });
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showResultDialog(@NonNull BinarySearchTree.SearchResult result){
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.bsd_search_result, null);
+        TextView text = view.findViewById(R.id.text);
+        if(result.found)
+            text.setText("Číslo "+result.value+" bylo nalezeno "+ result.amount+"x.");
+        else
+            text.setText("Číslo "+result.value+" nebylo nalezeno.");
+
+        dialog.setTitle("Výsledek vyhledávání");
+        dialog.setContentView(view);
+        dialog.show();
     }
 
     private final ServiceConnection mConnection = new ServiceConnection() {
