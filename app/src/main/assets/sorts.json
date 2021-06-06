@@ -24,9 +24,6 @@
   {
     "name": "BucketSort",
     "theory": "theory.bucket.json",
-    "recommended_length": {
-      "max": 100000
-    },
     "hints": {
       "_": "Bucket sorting method"
     }
@@ -108,10 +105,7 @@
   },
   {
     "name": "ShellSort",
-    "theory": "theory.shell.json",
-    "recommended_length": {
-      "max": 100000
-    }
+    "theory": "theory.shell.json"
   },
   {
     "name": "ShakerSort",
