@@ -107,6 +107,13 @@
     }
   },
   {
+    "name": "ShellSort",
+    "theory": "theory.shell.json",
+    "recommended_length": {
+      "max": 100000
+    }
+  },
+  {
     "name": "ShakerSort",
     "theory": "theory.shaker.json",
     "recommended_length": {

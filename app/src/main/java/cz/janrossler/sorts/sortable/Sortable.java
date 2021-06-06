@@ -1,9 +1,11 @@
 package cz.janrossler.sorts.sortable;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public abstract class Sortable {
     public static final String SHAKER = "ShakerSort";
     public static final String GRAVITY = "GravitySort";
     public static final String BUCKET = "BucketSort";
+    public static final String SHELL = "ShellSort";
 
     protected boolean isSorting = false;
     protected String session;
@@ -58,8 +61,10 @@ public abstract class Sortable {
             if(sortingListener != null) {
                 if(isSorted())
                     sortingListener.onSuccessSort(getTime());
-                else
+                else {
+                    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
                     throw new SortException("Seznam nebyl úspěšně seřazen.");
+                }
             }
         }catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
@@ -115,6 +120,9 @@ public abstract class Sortable {
                 break;
             case Sortable.BUCKET:
                 sort = new BucketSort(context, session);
+                break;
+            case Sortable.SHELL:
+                sort = new ShellSort(context, session);
                 break;
         }
 
