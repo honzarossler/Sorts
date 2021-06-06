@@ -22,6 +22,16 @@
     }
   },
   {
+    "name": "BucketSort",
+    "theory": "theory.bucket.json",
+    "recommended_length": {
+      "max": 100000
+    },
+    "hints": {
+      "_": "Bucket sorting method"
+    }
+  },
+  {
     "name": "CountingSort",
     "theory": "theory.counting.json",
     "hints": {

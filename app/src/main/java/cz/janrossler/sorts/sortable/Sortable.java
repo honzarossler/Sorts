@@ -21,6 +21,7 @@ public abstract class Sortable {
     public static final String INSERTION = "InsertionSort";
     public static final String SHAKER = "ShakerSort";
     public static final String GRAVITY = "GravitySort";
+    public static final String BUCKET = "BucketSort";
 
     protected boolean isSorting = false;
     protected String session;
@@ -111,6 +112,9 @@ public abstract class Sortable {
                 break;
             case Sortable.GRAVITY:
                 sort = new GravitySort(context, session);
+                break;
+            case Sortable.BUCKET:
+                sort = new BucketSort(context, session);
                 break;
         }
 
