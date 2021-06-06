@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -129,7 +129,7 @@ public class SortingFragment extends Fragment {
 
         adapter = new SessionsAdapter(activity, sessions);
         sort_sessions.setAdapter(adapter);
-        sort_sessions.setLayoutManager(new LinearLayoutManager(activity));
+        sort_sessions.setLayoutManager(new GridLayoutManager(activity, 2));
     }
 
     @Override

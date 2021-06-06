@@ -44,20 +44,21 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
                 holder._hint.setVisibility(View.VISIBLE);
                 holder._hint.setText(item.getString("hint"));
             }else holder._hint.setVisibility(View.GONE);
-
-            holder.itemView.setOnClickListener(v -> {
-                try {
-                    Intent intent = new Intent(context, TheoryActivity.class)
-                            .putExtra("theory", item.getString("theory"));
-                    context.startActivity(intent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            });
         }catch (Exception e){
             e.printStackTrace();
             holder.itemView.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            try {
+                JSONObject item = theories.getJSONObject(position);
+                Intent intent = new Intent(context, TheoryActivity.class)
+                        .putExtra("theory", item.getString("theory"));
+                context.startActivity(intent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

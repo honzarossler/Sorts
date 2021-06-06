@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,13 +104,13 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     // Scroll Down
                     fab_sort_now.hide();
                     fab_delete_session.hide();
-                    fab_tree.hide();
+                    if(unsorted.length() <= Utilities.MAX_TREE_SIZE || isEditable) fab_tree.hide();
                     fab_sort_view.hide();
                 } else if (dy < 0) {
                     // Scroll Up
                     fab_sort_now.show();
                     fab_delete_session.show();
-                    fab_tree.show();
+                    if(unsorted.length() <= Utilities.MAX_TREE_SIZE || isEditable) fab_tree.show();
                     fab_sort_view.show();
                 }
             }
@@ -166,7 +167,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         session_preview.setLayoutManager(manager);
         session_preview.scrollToPosition(defaultIndex);
 
-        fab_tree.setEnabled(unsorted.length() <= Utilities.MAX_TREE_SIZE || isEditable);
+        fab_tree.setVisibility(unsorted.length() <= Utilities.MAX_TREE_SIZE || isEditable ? View.VISIBLE : View.GONE);
 
         fab_sort_now.setOnClickListener(v -> {
             try {

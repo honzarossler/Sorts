@@ -32,7 +32,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Holder
     @NonNull
     @Override
     public SessionsAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(context, R.layout.recyclerview_session_layout, null);
+        View view = View.inflate(context, R.layout.grid_session_layout, null);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
         return new Holder(view);
