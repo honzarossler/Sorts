@@ -17,7 +17,7 @@ import cz.janrossler.sorts.R;
 import cz.janrossler.sorts.TheoryActivity;
 
 public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Holder> {
-    private Context context;
+    private final Context context;
     private JSONArray theories;
 
     public TheoryListAdapter(Context context, JSONArray theories){
@@ -36,6 +36,7 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
 
     @Override
     public void onBindViewHolder(@NonNull TheoryListAdapter.Holder holder, int position) {
+        holder.itemView.setVisibility(View.VISIBLE);
         try{
             JSONObject item = theories.getJSONObject(position);
             holder._name.setText(item.getString("name"));
@@ -55,7 +56,7 @@ public class TheoryListAdapter extends RecyclerView.Adapter<TheoryListAdapter.Ho
             });
         }catch (Exception e){
             e.printStackTrace();
-            holder._name.setText("<UNKNOWN_THEORY_ERROR>");
+            holder.itemView.setVisibility(View.GONE);
         }
     }
 
