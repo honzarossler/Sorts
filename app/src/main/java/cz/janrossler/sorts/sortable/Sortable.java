@@ -130,7 +130,7 @@ public abstract class Sortable {
     }
 
     public int getTime(){
-        return (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);
+        return (int) (endTime.getTime().getTime() - startTime.getTime().getTime());
     }
 
     public List<Integer> getSortedList() throws Exception {
@@ -152,7 +152,7 @@ public abstract class Sortable {
     }
 
     public interface SortingListener {
-        void onSuccessSort(int seconds);
+        void onSuccessSort(int milliseconds);
         void onFailed(String _message);
     }
 

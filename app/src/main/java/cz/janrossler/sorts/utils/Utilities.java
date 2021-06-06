@@ -1,9 +1,11 @@
 package cz.janrossler.sorts.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.Contract;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -13,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class Utilities {
     public static final int MAX_TREE_SIZE = 1000;
@@ -59,5 +62,16 @@ public class Utilities {
         strings.add("Pokud jsi použil BogoSort, přeji hodně štěstí s čekáním na výsledek.");
 
         return strings.get(ThreadLocalRandom.current().nextInt(0, strings.size()));
+    }
+
+    @SuppressLint("DefaultLocale")
+    @NonNull
+    @Contract(pure = true)
+    public static String getTimeFormat(int millis){
+        return String.format("%02d min, %02d sec",
+                TimeUnit.MILLISECONDS.toMinutes(millis),
+                TimeUnit.MILLISECONDS.toSeconds(millis) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+        );
     }
 }

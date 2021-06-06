@@ -151,7 +151,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             instance.setText("Informace o instanci: %instance%".replace("%instance%", session.has("session") ? session.getString("session") : ""));
             total_length.setText("%total% čísel".replace("%total%", session.has("length") ? session.getString("length") : ""));
             sort_technology.setText("%alg%".replace("%alg%", session.has("algorithm") ? session.getString("algorithm") : "Neznámé"));
-            sort_time.setText("%time%".replace("%time%", session.has("time") ? session.getString("time")+"s" : "~s"));
+            sort_time.setText("%time%".replace("%time%", session.has("time") ? Utilities.getTimeFormat(session.getInt("time")) : "~s"));
             isEditable = session.has("editable") && session.getBoolean("editable");
         }catch (Exception e){
             e.printStackTrace();

@@ -1,9 +1,6 @@
 package cz.janrossler.sorts.sortable;
 
 import android.content.Context;
-import android.util.Log;
-
-import java.util.Calendar;
 
 import cz.janrossler.sorts.utils.Utilities;
 
@@ -55,14 +52,6 @@ public class GravitySort extends Sortable{
                 for(int j = 0; j < max && grid[numbers.size() - 1 - i][j] == '*';j++)
                     putt++;
                 numbers.set(i, putt);
-            }
-
-            endTime = Calendar.getInstance();
-            Log.d("GravitySort", "Done!");
-
-            if(sortingListener != null) {
-                int time = (int) ((endTime.getTime().getTime() - startTime.getTime().getTime()) / 1000);
-                sortingListener.onSuccessSort(time);
             }
         }else{
             throw new SortException("Objekt je příliš velký.");
