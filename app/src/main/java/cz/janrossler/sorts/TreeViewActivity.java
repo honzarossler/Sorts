@@ -1,10 +1,10 @@
 package cz.janrossler.sorts;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +34,9 @@ public class TreeViewActivity extends AppCompatActivity {
     private Intent intent;
     private boolean usingSession;
     private boolean isSessionEditable = false;
+    private boolean isSearchOpen = false;
+    private boolean isAddOpen = false;
+    private boolean isRemoveOpen = false;
     private Node node;
     private JSONObject session;
 
@@ -42,6 +45,17 @@ public class TreeViewActivity extends AppCompatActivity {
     private FloatingActionButton tool_remove;
     private FloatingActionButton tool_search;
     private FloatingActionButton tool_save;
+
+    private LinearLayout floating_layout_search;
+    private EditText edit_search;
+    private FloatingActionButton float_search;
+    private LinearLayout floating_layout_add;
+    private EditText edit_add;
+    private FloatingActionButton float_add;
+    private LinearLayout floating_layout_remove;
+    private EditText edit_remove;
+    private FloatingActionButton float_remove;
+
     private ImageView locked;
 
     @Override
@@ -63,6 +77,17 @@ public class TreeViewActivity extends AppCompatActivity {
         tool_save = findViewById(R.id.tool_save);
         locked.setVisibility(View.GONE);
 
+        floating_layout_search = findViewById(R.id.floating_layout_search);
+        edit_search = findViewById(R.id.edit_search);
+        float_search = findViewById(R.id.float_search);
+        floating_layout_add = findViewById(R.id.floating_layout_add);
+        edit_add = findViewById(R.id.edit_add);
+        float_add = findViewById(R.id.float_add);
+        floating_layout_remove = findViewById(R.id.floating_layout_remove);
+        edit_remove = findViewById(R.id.edit_remove);
+        float_remove = findViewById(R.id.float_remove);
+
+
         if(usingSession){
             session = numberManager.getSession(intent.getStringExtra("session"));
             List<Integer> numbers = numberManager
@@ -83,80 +108,24 @@ public class TreeViewActivity extends AppCompatActivity {
         tool_save.setVisibility(usingSession && !isSessionEditable ? View.GONE : View.VISIBLE);
 
         tool_add.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.dialog_message_enter_number_add));
-
-            EditText edit = new EditText(this);
-            edit.setHint("...");
-            edit.setInputType(InputType.TYPE_CLASS_NUMBER);
-            edit.setRawInputType(Configuration.KEYBOARD_12KEY);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            edit.setLayoutParams(params);
-
-            builder.setView(edit);
-            builder.setPositiveButton(getString(R.string.action_add), (dialog, which) -> {
-                BinarySearchTree tree = new BinarySearchTree();
-                node = tree.insert(node, Integer.parseInt(edit.getText().toString()));
-                update();
-            });
-            builder.setNegativeButton(getString(R.string.action_cancel), null);
-            builder.show();
+            isSearchOpen = false;
+            isAddOpen = !isAddOpen;
+            isRemoveOpen = false;
+            updateActions();
         });
 
         tool_remove.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.dialog_message_enter_number_remove));
-
-            EditText edit = new EditText(this);
-            edit.setHint("...");
-            edit.setInputType(InputType.TYPE_CLASS_NUMBER);
-            edit.setRawInputType(Configuration.KEYBOARD_12KEY);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            edit.setLayoutParams(params);
-
-            builder.setView(edit);
-            builder.setPositiveButton(getString(R.string.action_remove), (dialog, which) -> {
-                BinarySearchTree tree = new BinarySearchTree();
-                node = tree.remove(node, Integer.parseInt(edit.getText().toString()));
-                update();
-            });
-            builder.setNegativeButton(getString(R.string.action_cancel), null);
-            builder.show();
+            isSearchOpen = false;
+            isAddOpen = false;
+            isRemoveOpen = !isRemoveOpen;
+            updateActions();
         });
 
         tool_search.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.dialog_message_enter_number_search));
-
-            EditText edit = new EditText(this);
-            edit.setHint("...");
-            edit.setInputType(InputType.TYPE_CLASS_NUMBER);
-            edit.setRawInputType(Configuration.KEYBOARD_12KEY);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            edit.setLayoutParams(params);
-
-            builder.setView(edit);
-            builder.setPositiveButton(getString(R.string.action_search), (dialog, which) -> {
-                BinarySearchTree tree = new BinarySearchTree();
-                BinarySearchTree.SearchResult res = tree.search(node, Integer.parseInt(edit.getText().toString()));
-
-                AlertDialog.Builder result = new AlertDialog.Builder(this);
-                result.setTitle(getString(R.string.dialog_message_search_result_title));
-                if(res.found){
-                    result.setMessage(getString(R.string.dialog_message_search_result_positive)
-                            .replace("%num%", String.valueOf(res.value))
-                            .replace("%amount%", String.valueOf(res.amount)));
-                }else{
-                    result.setMessage(getString(R.string.dialog_message_search_result_negative)
-                            .replace("%num%", String.valueOf(res.value)));
-                }
-                result.setPositiveButton(getString(R.string.action_ok), (dialog1, which1) -> {
-
-                });
-                result.show();
-            });
-            builder.setNegativeButton(getString(R.string.action_cancel), null);
-            builder.show();
+            isSearchOpen = !isSearchOpen;
+            isAddOpen = false;
+            isRemoveOpen = false;
+            updateActions();
         });
 
         tool_save.setOnClickListener(v -> {
@@ -183,6 +152,101 @@ public class TreeViewActivity extends AppCompatActivity {
             }else Toast.makeText(this, "Nelze uložit prázdný strom.",Toast.LENGTH_LONG).show();
         });
 
+        float_search.setOnClickListener(v -> {
+            if(edit_search.getText().length() > 0){
+                BinarySearchTree tree = new BinarySearchTree();
+                BinarySearchTree.SearchResult res = tree.search(node, Integer.parseInt(edit_search.getText().toString()));
+
+                AlertDialog.Builder result = new AlertDialog.Builder(this);
+                result.setTitle(getString(R.string.dialog_message_search_result_title));
+                if(res.found){
+                    result.setMessage(getString(R.string.dialog_message_search_result_positive)
+                            .replace("%num%", String.valueOf(res.value))
+                            .replace("%amount%", String.valueOf(res.amount)));
+                }else{
+                    result.setMessage(getString(R.string.dialog_message_search_result_negative)
+                            .replace("%num%", String.valueOf(res.value)));
+                }
+                result.setPositiveButton(getString(R.string.action_ok), (dialog1, which1) -> {
+
+                });
+                result.show();
+            }
+        });
+
+        float_add.setOnClickListener(v -> {
+            if(edit_add.getText().length() > 0){
+                BinarySearchTree tree = new BinarySearchTree();
+                node = tree.insert(node, Integer.parseInt(edit_add.getText().toString()));
+                update();
+            }
+        });
+
+        float_remove.setOnClickListener(v -> {
+            if(edit_remove.getText().length() > 0){
+                BinarySearchTree tree = new BinarySearchTree();
+                node = tree.remove(node, Integer.parseInt(edit_remove.getText().toString()));
+                update();
+            }
+        });
+
+        edit_search.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                Utilities.hideKeyboard(this);
+                float_search.callOnClick();
+                return true;
+            }
+            return false;
+        });
+
+        edit_add.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                Utilities.hideKeyboard(this);
+                float_add.callOnClick();
+                return true;
+            }
+            return false;
+        });
+
+        edit_remove.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                Utilities.hideKeyboard(this);
+                float_remove.callOnClick();
+                return true;
+            }
+            return false;
+        });
+
+        edit_search.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN &&
+                    keyCode == KeyEvent.KEYCODE_ENTER){
+                Utilities.hideKeyboard(this);
+                float_search.callOnClick();
+                return true;
+            }
+            return false;
+        });
+
+        edit_add.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN &&
+                    keyCode == KeyEvent.KEYCODE_ENTER){
+                Utilities.hideKeyboard(this);
+                float_add.callOnClick();
+                return true;
+            }
+            return false;
+        });
+
+        edit_remove.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN &&
+                    keyCode == KeyEvent.KEYCODE_ENTER){
+                Utilities.hideKeyboard(this);
+                float_remove.callOnClick();
+                return true;
+            }
+            return false;
+        });
+
         locked.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Proč je tento strom uzamčený?");
@@ -202,7 +266,13 @@ public class TreeViewActivity extends AppCompatActivity {
             NodeAdapter adapter = new NodeAdapter(this, nodes);
             tree.setLayoutManager(new GridLayoutManager(this, 1));
             tree.setAdapter(adapter);
+        }
 
+        updateActions();
+    }
+
+    private void updateActions(){
+        if(node != null){
             tree.setVisibility(View.VISIBLE);
             if(!usingSession || isSessionEditable){
                 if(!tool_remove.isShown()) tool_remove.show();
@@ -220,6 +290,48 @@ public class TreeViewActivity extends AppCompatActivity {
                 tool_add.show();
                 tool_search.hide();
             }
+        }
+
+        if(isSearchOpen && tool_search.isShown()){
+            edit_search.setText("");
+            floating_layout_search.setVisibility(View.VISIBLE);
+            tool_search.setImageResource(R.drawable.ic_baseline_close_24);
+
+            if(tool_save.isShown()) tool_save.hide();
+            if(tool_remove.isShown()) tool_remove.hide();
+            if(tool_add.isShown()) tool_add.hide();
+        }else{
+            isSearchOpen = false;
+            floating_layout_search.setVisibility(View.GONE);
+            tool_search.setImageResource(R.drawable.ic_baseline_search_24);
+        }
+
+        if(isAddOpen && tool_add.isShown()){
+            edit_add.setText("");
+            floating_layout_add.setVisibility(View.VISIBLE);
+            tool_add.setImageResource(R.drawable.ic_baseline_close_24);
+
+            if(tool_save.isShown()) tool_save.hide();
+            if(tool_remove.isShown()) tool_remove.hide();
+            if(tool_search.isShown()) tool_search.hide();
+        }else{
+            isAddOpen = false;
+            floating_layout_add.setVisibility(View.GONE);
+            tool_add.setImageResource(R.drawable.ic_baseline_add_24);
+        }
+
+        if(isRemoveOpen && tool_remove.isShown()){
+            edit_remove.setText("");
+            floating_layout_remove.setVisibility(View.VISIBLE);
+            tool_remove.setImageResource(R.drawable.ic_baseline_close_24);
+
+            if(tool_save.isShown()) tool_save.hide();
+            if(tool_add.isShown()) tool_add.hide();
+            if(tool_search.isShown()) tool_search.hide();
+        }else{
+            isRemoveOpen = false;
+            floating_layout_remove.setVisibility(View.GONE);
+            tool_remove.setImageResource(R.drawable.ic_baseline_remove_24);
         }
     }
 
