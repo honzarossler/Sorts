@@ -41,4 +41,8 @@
     <string name="action_ok">Ok</string>
     <string name="action_save">Uložit</string>
     <string name="treeview_add_first">Kliknutím na + přidáte nový uzel</string>
+    <string name="dialog_title_unsupported">Nepodporovaná operace</string>
+    <string name="dialog_message_unsupported">Tato operace není podporována.</string>
+    <string name="dialog_message_result_number">Hledané číslo: %num%</string>
+    <string name="dialog_message_result_amount">Počet výskytů: %amount%</string>
 </resources>

@@ -1,5 +1,6 @@
 package cz.janrossler.sorts;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
@@ -28,6 +30,7 @@ import cz.janrossler.sorts.adapter.NodeAdapter;
 import cz.janrossler.sorts.utils.BinarySearchTree;
 import cz.janrossler.sorts.utils.Node;
 import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.Template;
 import cz.janrossler.sorts.utils.Utilities;
 
 public class TreeViewActivity extends AppCompatActivity {
@@ -166,20 +169,30 @@ public class TreeViewActivity extends AppCompatActivity {
                 BinarySearchTree tree = new BinarySearchTree();
                 BinarySearchTree.SearchResult res = tree.search(node, Integer.parseInt(edit_search.getText().toString()));
 
-                AlertDialog.Builder result = new AlertDialog.Builder(this);
-                result.setTitle(getString(R.string.dialog_message_search_result_title));
-                if(res.found){
-                    result.setMessage(getString(R.string.dialog_message_search_result_positive)
-                            .replace("%num%", String.valueOf(res.value))
-                            .replace("%amount%", String.valueOf(res.amount)));
-                }else{
-                    result.setMessage(getString(R.string.dialog_message_search_result_negative)
-                            .replace("%num%", String.valueOf(res.value)));
-                }
-                result.setPositiveButton(getString(R.string.action_ok), (dialog1, which1) -> {
+                //AlertDialog.Builder result = new AlertDialog.Builder(this);
+                //result.setTitle(getString(R.string.dialog_message_search_result_title));
+                //if(res.found){
+                //    result.setMessage(getString(R.string.dialog_message_search_result_positive)
+                //            .replace("%num%", String.valueOf(res.value))
+                //            .replace("%amount%", String.valueOf(res.amount)));
+                //}else{
+                //    result.setMessage(getString(R.string.dialog_message_search_result_negative)
+                //            .replace("%num%", String.valueOf(res.value)));
+                //}
+                //result.setPositiveButton(getString(R.string.action_ok), null);
+                //result.show();
 
-                });
-                result.show();
+                DialogInterface dialog = Template.getDialogFor(this,
+                        Template.DIALOG_SEARCH_RESULT, res);
+                if(dialog instanceof AlertDialog){
+                    ((AlertDialog) dialog).show();
+                }else if(dialog instanceof BottomSheetDialog){
+                    ((BottomSheetDialog) dialog).show();
+                }else Toast.makeText(this,
+                        getString(R.string.dialog_message_search_result_positive)
+                                .replace("%num%", String.valueOf(res.value))
+                                .replace("%amount%", String.valueOf(res.amount)),
+                        Toast.LENGTH_LONG).show();
             }
         });
 

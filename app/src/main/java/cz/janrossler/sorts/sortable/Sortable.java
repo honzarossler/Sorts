@@ -13,7 +13,7 @@ import cz.janrossler.sorts.utils.NumberManager;
 
 public abstract class Sortable {
     public static final String BUBBLE = "BubbleSort";
-    public static final String COUNTING = "CountingSort";
+    public static final String COUNTING = "CountingSort"; // FIXME: Index is shifted
     public static final String QUICK = "QuickSort";
     public static final String MERGE = "MergeSort";
     public static final String BOGO = "BogoSort";
@@ -45,7 +45,6 @@ public abstract class Sortable {
         this.sortingListener = listener;
     }
 
-    @SuppressWarnings("unused")
     public SortingListener getSortingListener(){
         return this.sortingListener;
     }

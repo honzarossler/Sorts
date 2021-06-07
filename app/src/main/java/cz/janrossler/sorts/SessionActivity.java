@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
@@ -34,9 +35,9 @@ import java.util.List;
 
 import cz.janrossler.sorts.adapter.SessionPreviewAdapter;
 import cz.janrossler.sorts.sortable.AsyncSearch;
-import cz.janrossler.sorts.utils.BinarySearchTree;
 import cz.janrossler.sorts.utils.NumberManager;
 import cz.janrossler.sorts.utils.SortingService;
+import cz.janrossler.sorts.utils.Template;
 import cz.janrossler.sorts.utils.Utilities;
 
 @SuppressWarnings({"FieldCanBeLocal", "deprecation"})
@@ -163,8 +164,19 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                             this,
                             intent.getStringExtra("session"),
                             (AsyncSearch.Result) sResult -> {
-                        pSearchDialog.dismiss();
-                        showResultDialog(sResult);
+                                pSearchDialog.dismiss();
+
+                                DialogInterface dialogFor = Template.getDialogFor(this,
+                                        Template.DIALOG_SEARCH_RESULT, sResult);
+                                if(dialogFor instanceof AlertDialog){
+                                    ((AlertDialog) dialogFor).show();
+                                }else if(dialogFor instanceof BottomSheetDialog){
+                                    ((BottomSheetDialog) dialogFor).show();
+                                }else Toast.makeText(this,
+                                        getString(R.string.dialog_message_search_result_positive)
+                                                .replace("%num%", String.valueOf(sResult.value))
+                                                .replace("%amount%", String.valueOf(sResult.amount)),
+                                        Toast.LENGTH_LONG).show();
                     });
                     search.execute(Integer.parseInt(edit.getText().toString()));
                 }catch (Exception e){
@@ -308,26 +320,6 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             Intent i = new Intent(this, TreeViewActivity.class).putExtra("session", intent.getStringExtra("session"));
             startActivity(i);
         });
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void showResultDialog(@NonNull BinarySearchTree.SearchResult result){
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
-        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.bsd_search_result, null);
-        TextView text = view.findViewById(R.id.text);
-        if(result.found)
-            text.setText(getString(R.string.dialog_message_search_result_positive)
-                    .replace("%num%", String.valueOf(result.value))
-                    .replace("%amount%", String.valueOf(result.amount))
-            );
-        else
-            text.setText(getString(R.string.dialog_message_search_result_negative)
-                    .replace("%num%", String.valueOf(result.value))
-            );
-
-        dialog.setTitle(getText(R.string.dialog_message_search_result_title));
-        dialog.setContentView(view);
-        dialog.show();
     }
 
     private final ServiceConnection mConnection = new ServiceConnection() {

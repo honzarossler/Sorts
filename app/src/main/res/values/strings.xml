@@ -40,4 +40,8 @@
     <string name="action_ok">Ok</string>
     <string name="action_save">Save</string>
     <string name="treeview_add_first">Click + to add a new node</string>
+    <string name="dialog_title_unsupported">Unsupported operation</string>
+    <string name="dialog_message_unsupported">This operation is not supported.</string>
+    <string name="dialog_message_result_number">Searched number: %num%</string>
+    <string name="dialog_message_result_amount">Number of occurrences: %amount%</string>
 </resources>
