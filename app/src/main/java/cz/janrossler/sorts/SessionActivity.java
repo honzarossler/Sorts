@@ -179,6 +179,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         update();
     }
 
+    @SuppressLint("SetTextI18n")
     void update(){
         session = numberManager.getSession(intent.getStringExtra("session"));
         sorted = new JSONArray();
@@ -312,7 +313,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     @SuppressLint("SetTextI18n")
     private void showResultDialog(@NonNull BinarySearchTree.SearchResult result){
         BottomSheetDialog dialog = new BottomSheetDialog(this);
-        View view = getLayoutInflater().inflate(R.layout.bsd_search_result, null);
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.bsd_search_result, null);
         TextView text = view.findViewById(R.id.text);
         if(result.found)
             text.setText(getString(R.string.dialog_message_search_result_positive)

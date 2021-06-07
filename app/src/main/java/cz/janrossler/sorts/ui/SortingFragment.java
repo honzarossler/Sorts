@@ -1,5 +1,6 @@
 package cz.janrossler.sorts.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,26 +33,21 @@ import cz.janrossler.sorts.utils.Utilities;
 
 public class SortingFragment extends Fragment {
     private Activity activity;
-    private FloatingActionButton add;
-    private FloatingActionButton tree;
     private RecyclerView sort_sessions;
     private LinearLayout layout_empty;
-    private ImageView image_animated;
 
     private NumberManager numberManager;
-    private SessionsAdapter adapter;
-    private JSONArray sessions;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
         assert activity != null;
-        View root = activity.getLayoutInflater().inflate(R.layout.fragment_home, null);
+        @SuppressLint("InflateParams") View root = activity.getLayoutInflater().inflate(R.layout.fragment_home, null);
         sort_sessions = root.findViewById(R.id.sort_sessions);
-        add = root.findViewById(R.id.add);
-        tree = root.findViewById(R.id.tree);
+        FloatingActionButton add = root.findViewById(R.id.add);
+        FloatingActionButton tree = root.findViewById(R.id.tree);
         layout_empty = root.findViewById(R.id.layout_empty);
-        image_animated = root.findViewById(R.id.image_animated);
+        ImageView image_animated = root.findViewById(R.id.image_animated);
 
         Glide.with(activity)
                 .load(R.drawable.ic_sorting)
@@ -126,7 +122,7 @@ public class SortingFragment extends Fragment {
     }
 
     private void update(){
-        sessions = numberManager.getAllSessions();
+        JSONArray sessions = numberManager.getAllSessions();
 
         if(sessions.length() < 1){
             layout_empty.setVisibility(View.VISIBLE);
@@ -136,7 +132,7 @@ public class SortingFragment extends Fragment {
             sort_sessions.setVisibility(View.VISIBLE);
         }
 
-        adapter = new SessionsAdapter(activity, sessions);
+        SessionsAdapter adapter = new SessionsAdapter(activity, sessions);
         sort_sessions.setAdapter(adapter);
         sort_sessions.setLayoutManager(new GridLayoutManager(activity, 2));
     }

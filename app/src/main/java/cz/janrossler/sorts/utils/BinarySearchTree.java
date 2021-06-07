@@ -3,7 +3,6 @@ package cz.janrossler.sorts.utils;
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,33 +23,30 @@ public class BinarySearchTree {
      * @return Vrací {@link Node}.
      */
 
-    public static Node createFromList(@NonNull List<Integer> list){
+    @SuppressWarnings("rawtypes")
+    public static <T> Node createFromList(@NonNull T list){
         Node root = null;
 
         try{
             BinarySearchTree tree = new BinarySearchTree();
-            for(int i = 0; i < list.size(); i++){
-                root = tree.insert(root, list.get(i));
-            }
-        }catch (OutOfMemoryError e){
-            e.printStackTrace();
-        }
-
-        return root;
-    }
-
-    public static Node createFromList(@NonNull JSONArray list){
-        Node root = null;
-
-        if(list.length() <= Utilities.MAX_TREE_SIZE){
-            BinarySearchTree tree = new BinarySearchTree();
-            for(int i = 0; i < list.length(); i++){
-                try {
-                    root = tree.insert(root, list.getInt(i));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            if(list instanceof List){
+                List l = (List) list;
+                for(int i = 0; i < l.size(); i++){
+                    root = tree.insert(root, (Integer) l.get(i));
                 }
-            }
+            }else if(list instanceof JSONArray){
+                JSONArray a = (JSONArray) list;
+                for(int i = 0; i < a.length(); i++){
+                    root = tree.insert(root, a.getInt(i));
+                }
+            }else if(list instanceof Integer[]){
+                Integer[] num = (Integer[]) list;
+                for (Integer i : num) {
+                    root = tree.insert(root, i);
+                }
+            }else throw new Exception("Imcompatible type.");
+        } catch (OutOfMemoryError | Exception e){
+            e.printStackTrace();
         }
 
         return root;

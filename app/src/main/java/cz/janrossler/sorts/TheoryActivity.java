@@ -22,15 +22,11 @@ import java.util.Locale;
 import cz.janrossler.sorts.adapter.TheoryAdapter;
 import cz.janrossler.sorts.utils.Language;
 import cz.janrossler.sorts.utils.Theory;
-import cz.janrossler.sorts.utils.TheoryReader;
 
 public class TheoryActivity extends AppCompatActivity {
-    private ActionBar actionBar;
     private RecyclerView content;
-    private Intent intent;
 
     private Theory theory;
-    private TheoryReader reader;
     private String thisLang;
 
     @Override
@@ -43,19 +39,21 @@ public class TheoryActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
 
-        intent = getIntent();
+        Intent intent = getIntent();
 
         if (intent == null)
             finish();
 
+        assert intent != null;
         if (!intent.hasExtra("theory"))
             finish();
 
-        reader = new TheoryReader(this);
         theory = new Theory(this, intent.getStringExtra("theory"));
-        actionBar.setTitle(theory.getTitleText());
+        if (actionBar != null) {
+            actionBar.setTitle(theory.getTitleText());
+        }
 
         TheoryAdapter adapter = new TheoryAdapter(this, theory.getLocalizedContent());
 
@@ -95,6 +93,7 @@ public class TheoryActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

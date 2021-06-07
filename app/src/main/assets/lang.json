@@ -1,10 +1,26 @@
 {
   "_": {
     "_": "English",
-    "cs_CZ": "Czech"
+    "cs_CZ": "Czech",
+    "sk_SK": "Slovak",
+    "de_DE": "Germany"
   },
   "cs_CZ": {
     "_": "Anglicky",
-    "cs_CZ": "Česky"
+    "cs_CZ": "Česky",
+    "sk_SK": "Slovensky",
+    "de_DE": "Německy"
+  },
+  "sk_SK": {
+    "_": "Anglicky",
+    "cs_CZ": "Česky",
+    "sk_SK": "Slovensky",
+    "de_DE": "Německy"
+  },
+  "de_DE": {
+    "_": "Englisch",
+    "cs_CZ": "Tschechisch",
+    "sk_SK": "Slowakisch",
+    "de_DE": "Deutsche"
   }
 }

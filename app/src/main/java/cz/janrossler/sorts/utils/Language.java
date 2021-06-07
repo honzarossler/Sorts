@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.util.Locale;
 
 public class Language {
-    private JSONObject languages;
+    private final JSONObject languages;
     private static Language instance;
 
     private Language(Context context){
