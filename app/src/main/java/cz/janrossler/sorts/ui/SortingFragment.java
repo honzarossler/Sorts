@@ -28,6 +28,7 @@ import cz.janrossler.sorts.R;
 import cz.janrossler.sorts.TreeViewActivity;
 import cz.janrossler.sorts.adapter.SessionsAdapter;
 import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.Utilities;
 
 public class SortingFragment extends Fragment {
     private Activity activity;
@@ -81,13 +82,15 @@ public class SortingFragment extends Fragment {
 
             builder.setView(view);
             alertDialog = builder.create();
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Vytvořit", (dialog, which) -> {
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,
+                    activity.getText(R.string.action_create),
+                    (dialog, which) -> {
                 try {
                     int length = Integer.parseInt(edit_length.getText().toString());
                     int min = Integer.parseInt(edit_min.getText().toString());
                     int max = Integer.parseInt(edit_max.getText().toString());
 
-                    int max_length = 2000000;
+                    int max_length = Utilities.MAX_SESSION_SIZE;
                     boolean very_large = length > max_length
                             || min > max_length
                             || max > max_length;
@@ -98,14 +101,20 @@ public class SortingFragment extends Fragment {
 
                         update();
                     }else if(very_large){
-                        Toast.makeText(activity, "Vaše čísla jsou moc velká pro zpracování.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity,
+                                "Vaše čísla jsou moc velká pro zpracování.",
+                                Toast.LENGTH_LONG).show();
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    Toast.makeText(activity, "Zadejte platné hodnoty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,
+                            activity.getText(R.string.dialog_message_enter_valid_values),
+                            Toast.LENGTH_LONG).show();
                 }
             });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Zrušit", (dialog, which) -> alertDialog.dismiss());
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
+                    activity.getText(R.string.action_cancel),
+                    (dialog, which) -> alertDialog.dismiss());
 
             alertDialog.show();
         });

@@ -84,7 +84,7 @@ public class TreeViewActivity extends AppCompatActivity {
 
         tool_add.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Zadejte číslo pro přidání.");
+            builder.setTitle(getString(R.string.dialog_message_enter_number_add));
 
             EditText edit = new EditText(this);
             edit.setHint("...");
@@ -94,18 +94,18 @@ public class TreeViewActivity extends AppCompatActivity {
             edit.setLayoutParams(params);
 
             builder.setView(edit);
-            builder.setPositiveButton("Přidat", (dialog, which) -> {
+            builder.setPositiveButton(getString(R.string.action_add), (dialog, which) -> {
                 BinarySearchTree tree = new BinarySearchTree();
                 node = tree.insert(node, Integer.parseInt(edit.getText().toString()));
                 update();
             });
-            builder.setNegativeButton("Zrušit", null);
+            builder.setNegativeButton(getString(R.string.action_cancel), null);
             builder.show();
         });
 
         tool_remove.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Zadejte číslo pro odebrání.");
+            builder.setTitle(getString(R.string.dialog_message_enter_number_remove));
 
             EditText edit = new EditText(this);
             edit.setHint("...");
@@ -115,18 +115,18 @@ public class TreeViewActivity extends AppCompatActivity {
             edit.setLayoutParams(params);
 
             builder.setView(edit);
-            builder.setPositiveButton("Odebrat", (dialog, which) -> {
+            builder.setPositiveButton(getString(R.string.action_remove), (dialog, which) -> {
                 BinarySearchTree tree = new BinarySearchTree();
                 node = tree.remove(node, Integer.parseInt(edit.getText().toString()));
                 update();
             });
-            builder.setNegativeButton("Zrušit", null);
+            builder.setNegativeButton(getString(R.string.action_cancel), null);
             builder.show();
         });
 
         tool_search.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Zadejte číslo pro vyhledávání.");
+            builder.setTitle(getString(R.string.dialog_message_enter_number_search));
 
             EditText edit = new EditText(this);
             edit.setHint("...");
@@ -136,23 +136,26 @@ public class TreeViewActivity extends AppCompatActivity {
             edit.setLayoutParams(params);
 
             builder.setView(edit);
-            builder.setPositiveButton("Hledat", (dialog, which) -> {
+            builder.setPositiveButton(getString(R.string.action_search), (dialog, which) -> {
                 BinarySearchTree tree = new BinarySearchTree();
                 BinarySearchTree.SearchResult res = tree.search(node, Integer.parseInt(edit.getText().toString()));
 
                 AlertDialog.Builder result = new AlertDialog.Builder(this);
-                result.setTitle("Výsledek hledání");
+                result.setTitle(getString(R.string.dialog_message_search_result_title));
                 if(res.found){
-                    result.setMessage("Číslo "+res.value+" bylo nalezeno "+ res.amount+"x.");
+                    result.setMessage(getString(R.string.dialog_message_search_result_positive)
+                            .replace("%num%", String.valueOf(res.value))
+                            .replace("%amount%", String.valueOf(res.amount)));
                 }else{
-                    result.setMessage("Číslo "+res.value+" Nebylo nalezeno.");
+                    result.setMessage(getString(R.string.dialog_message_search_result_negative)
+                            .replace("%num%", String.valueOf(res.value)));
                 }
-                result.setPositiveButton("Ok", (dialog1, which1) -> {
+                result.setPositiveButton(getString(R.string.action_ok), (dialog1, which1) -> {
 
                 });
                 result.show();
             });
-            builder.setNegativeButton("Zrušit", null);
+            builder.setNegativeButton(getString(R.string.action_cancel), null);
             builder.show();
         });
 
@@ -184,7 +187,7 @@ public class TreeViewActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Proč je tento strom uzamčený?");
             builder.setMessage("Tato instance byla vytvořena pomocí generátoru náhodných čísel a pro možné problémy s načítáním stromu jsou editační možnosti vypnuty. Pokud chcete strom upravit, vytvořte si nový strom a uložte jej.");
-            builder.setPositiveButton("Ok", null);
+            builder.setPositiveButton(getString(R.string.action_ok), null);
             builder.show();
         });
 
@@ -219,7 +222,7 @@ public class TreeViewActivity extends AppCompatActivity {
             AlertDialog.Builder save = new AlertDialog.Builder(this);
             save.setTitle("Uložit strom");
             save.setMessage("Chcete uložit tento strom jako novou instanci?");
-            save.setPositiveButton("Uložit", (dialog, which) -> {
+            save.setPositiveButton(getString(R.string.action_save), (dialog, which) -> {
                 List<Integer> list = node.toList();
 
                 Calendar calendar = Calendar.getInstance();
@@ -234,20 +237,20 @@ public class TreeViewActivity extends AppCompatActivity {
                 numberManager.pushList(session, list);
                 super.onBackPressed();
             });
-            save.setNegativeButton("Smazat", (dialog, which) -> super.onBackPressed());
-            save.setNeutralButton("Zachovat", null);
+            save.setNegativeButton(getString(R.string.action_delete), (dialog, which) -> super.onBackPressed());
+            save.setNeutralButton(getString(R.string.action_cancel), null);
             save.show();
         }else if(usingSession && isSessionEditable && node != null) {
             AlertDialog.Builder save = new AlertDialog.Builder(this);
             save.setTitle("Uložit strom");
             save.setMessage("Chcete uložit tento strom?");
-            save.setPositiveButton("Uložit", (dialog, which) -> {
+            save.setPositiveButton(getString(R.string.action_save), (dialog, which) -> {
                 List<Integer> list = node.toList();
                 numberManager.pushList(intent.getStringExtra("session"), list);
                 super.onBackPressed();
             });
-            save.setNegativeButton("Zahodit", (dialog, which) -> super.onBackPressed());
-            save.setNeutralButton("Zachovat", null);
+            save.setNegativeButton(getString(R.string.action_delete), (dialog, which) -> super.onBackPressed());
+            save.setNeutralButton(getString(R.string.action_cancel), null);
             save.show();
         }else super.onBackPressed();
     }

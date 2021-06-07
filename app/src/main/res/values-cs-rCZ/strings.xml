@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tříditelna</string>
+    <string name="title_dashboard">Teorie</string>
+    <string name="title_home">Třídit</string>
+    <string name="session_title">Informace o instanci %instance%</string>
+    <string name="session_numbers">%total% čísel</string>
+    <string name="unknown">Neznámé</string>
+    <string name="session_title_unsorted">Neseřazeno</string>
+    <string name="session_title_sorted">Seřazeno</string>
+    <string name="dialog_message_finding_number">Hledám číslo ...</string>
+    <string name="dialog_message_input_search_number">Zadejte číslo pro vyhledávání.</string>
+    <string name="action_search">Hledat</string>
+    <string name="action_cancel">Zrušit</string>
+    <string name="dialog_message_select_algorithm">Zvolte třídicí algoritmus</string>
+    <string name="session_title_delete">Smazat instanci</string>
+    <string name="dialog_message_delete_session_long">Tato instance bude smazána včetně uložených dat. Přejete si pokračovat?</string>
+    <string name="action_delete">Smazat</string>
+    <string name="dialog_message_search_result_positive">Číslo %num% bylo nalezeno %amount%x</string>
+    <string name="dialog_message_search_result_negative">Číslo %num% nebylo nalezeno</string>
+    <string name="dialog_message_search_result_title">Výsledek vyhledávání</string>
+    <string name="instance_new_id">ID instance třídění</string>
+    <string name="instance_new_numbers">Počet čísel pro setřídění</string>
+    <string name="dialog_message_enter_number">Zadejte číslo ...</string>
+    <string name="instance_new_smallest">Nejmenší možné generované číslo</string>
+    <string name="instance_new_biggest">Největší možné generované číslo</string>
+    <string name="instance_new_red_max_allowed">Maximální povolená velikost je 2 000 000 čísel</string>
+    <string name="home_add_first">Kliknutím na + přidáte instanci třídění</string>
+    <string name="action_lang">Jazyk</string>
+    <string name="no_data">Bez informací</string>
+    <string name="action_create">Vytvořit</string>
+    <string name="dialog_message_enter_valid_values">Zadejte platné hodnoty</string>
+    <string name="action_default">Výchozí</string>
+    <string name="dialog_message_select_language">Vyberte jazyk</string>
+    <string name="action_change">Změnit</string>
+    <string name="action_add">Přidat</string>
+    <string name="action_remove">Odebrat</string>
+    <string name="dialog_message_enter_number_add">Zadejte číslo pro přidání</string>
+    <string name="dialog_message_enter_number_remove">Zadejte číslo pro odebrání</string>
+    <string name="dialog_message_enter_number_search">Zadejte číslo pro vyhledávání</string>
+    <string name="action_ok">Ok</string>
+    <string name="action_save">Uložit</string>
+</resources>

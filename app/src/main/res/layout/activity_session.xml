@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Informace o instanci"
+            android:text="@string/session_title"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:gravity="center_vertical"
-                android:text="1000 čísel"
+                android:text="@string/session_numbers"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_baseline_10k_24" />
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:gravity="center_vertical|end"
-                android:text="20s"
+                android:text="~s"
                 android:drawablePadding="8dp"
                 app:drawableEndCompat="@drawable/ic_baseline_timer_24"/>
         </LinearLayout>
@@ -75,7 +75,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:text="Neseřazeno" />
+                android:text="@string/session_title_unsorted" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|end"
                 android:padding="8dp"
-                android:text="Seřazeno" />
+                android:text="@string/session_title_sorted" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

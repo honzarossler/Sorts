@@ -1,5 +1,6 @@
 package cz.janrossler.sorts;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,14 +73,14 @@ public class TheoryActivity extends AppCompatActivity {
             }else {
                 if(defIndex < 0)
                     defIndex = i;
-                langsChar[i] = "Výchozí";
+                langsChar[i] = getString(R.string.action_default);
             }
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Vyberte jazyk");
+        builder.setTitle(getString(R.string.dialog_message_select_language));
         builder.setSingleChoiceItems(langsChar, defIndex, null);
-        builder.setPositiveButton("Změnit", (dialog, which) -> {
+        builder.setPositiveButton(getString(R.string.action_change), (dialog, which) -> {
             int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
             TheoryAdapter adapter =
                     new TheoryAdapter(this, theory.getTranslatedContent(langs[selectedPosition]));
@@ -87,7 +88,7 @@ public class TheoryActivity extends AppCompatActivity {
             content.setLayoutManager(new LinearLayoutManager(this));
             content.setAdapter(adapter);
         });
-        builder.setNegativeButton("Zrušit", null);
+        builder.setNegativeButton(getString(R.string.action_cancel), null);
         builder.show();
     }
 
@@ -99,6 +100,7 @@ public class TheoryActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

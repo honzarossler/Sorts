@@ -44,7 +44,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Holder
             JSONObject item = sessions.getJSONObject(position);
 
             holder.session_name.setText(item.getString("session"));
-            holder.session_detail.setText("Velikost seznamu: %length%".replace("%length%", item.getString("length")));
+            holder.session_detail.setText(context.getString(R.string.session_numbers).replace("%total%", item.getString("length")));
             holder.session_tree.setVisibility(item.getInt("length") <= Utilities.MAX_TREE_SIZE ? View.VISIBLE : View.GONE);
 
             holder.session_more.setOnClickListener(v -> {
@@ -68,8 +68,8 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Holder
             });
         }catch (Exception e){
             e.fillInStackTrace();
-            holder.session_name.setText("<UNKNOWN_SESSION_ERROR>");
-            holder.session_detail.setText("Bez informací");
+            holder.session_name.setText(context.getText(R.string.unknown));
+            holder.session_detail.setText(context.getText(R.string.no_data));
         }
     }
 

@@ -102,7 +102,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         pSearchDialog = new ProgressDialog(this);
         pSearchDialog.setIndeterminate(true);
         pSearchDialog.setCancelable(false);
-        pSearchDialog.setMessage("Hledám číslo ...");
+        pSearchDialog.setMessage(getString(R.string.dialog_message_finding_number));
 
         session_preview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -143,7 +143,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
 
         fab_search.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Zadejte číslo pro vyhledávání.");
+            builder.setTitle(getString(R.string.dialog_message_input_search_number));
 
             EditText edit = new EditText(this);
             edit.setHint("...");
@@ -156,7 +156,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             edit.setLayoutParams(params);
 
             builder.setView(edit);
-            builder.setPositiveButton("Hledat", (dialog, which) -> {
+            builder.setPositiveButton(getString(R.string.action_search), (dialog, which) -> {
                 try {
                     pSearchDialog.show();
                     AsyncSearch search = new AsyncSearch(
@@ -172,14 +172,13 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     pSearchDialog.dismiss();
                 }
             });
-            builder.setNegativeButton("Zrušit", null);
+            builder.setNegativeButton(getString(R.string.action_cancel), null);
             builder.show();
         });
 
         update();
     }
 
-    @SuppressLint("SetTextI18n")
     void update(){
         session = numberManager.getSession(intent.getStringExtra("session"));
         sorted = new JSONArray();
@@ -194,17 +193,29 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             sorted.put(list_sorted.get(i));
 
         try{
-            instance.setText("Informace o instanci: %instance%".replace("%instance%", session.has("session") ? session.getString("session") : ""));
-            total_length.setText("%total% čísel".replace("%total%", session.has("length") ? session.getString("length") : ""));
-            sort_technology.setText("%alg%".replace("%alg%", session.has("algorithm") ? session.getString("algorithm") : "Neznámé"));
-            sort_time.setText("%time%".replace("%time%", session.has("time") ? Utilities.getTimeFormat(session.getInt("time")) : "~s"));
+            instance.setText(
+                    getString(R.string.session_title)
+                            .replace("%instance%", session.has("session")
+                                    ? session.getString("session") : "")
+            );
+            total_length.setText(
+                    getString(R.string.session_numbers)
+                            .replace("%total%", session.has("length")
+                                    ? session.getString("length") : "")
+            );
+            sort_technology.setText(
+                    session.has("algorithm")
+                            ? session.getString("algorithm") : getString(R.string.unknown));
+            sort_time.setText(session.has("time") ? Utilities.getTimeFormat(session.getInt("time")) : "~sec");
             isEditable = session.has("editable") && session.getBoolean("editable");
         }catch (Exception e){
             e.printStackTrace();
-            instance.setText("Informace o instanci");
-            total_length.setText("0 čísel");
-            sort_technology.setText("Neznámé");
-            sort_time.setText("~s");
+            instance.setText(getString(R.string.session_title)
+                    .replace("%instance%",""));
+            total_length.setText(getString(R.string.session_numbers)
+                    .replace("%total%", "0"));
+            sort_technology.setText(getString(R.string.unknown));
+            sort_time.setText("~sec");
             isEditable = false;
         }
 
@@ -259,9 +270,9 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Zvolte třídicí algoritmus.");
+                builder.setTitle(getString(R.string.dialog_message_select_algorithm));
                 builder.setSingleChoiceItems(charSequences, 0, null);
-                builder.setPositiveButton("Třídit", (dialog, which) -> {
+                builder.setPositiveButton(getString(R.string.title_home), (dialog, which) -> {
                     dialog.dismiss();
                     int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                     Log.i("Selected", charSequences[selectedPosition].toString());
@@ -282,13 +293,13 @@ public class SessionActivity extends AppCompatActivity implements SortingService
 
         fab_delete_session.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Smazat instanci");
-            builder.setMessage("Tato operace nenávratně smaže celou instanci včetně uložených dat.\n\nPřejete si pokračovat?");
-            builder.setPositiveButton("Smazat", (dialog, which) -> {
+            builder.setTitle(getString(R.string.session_title_delete));
+            builder.setMessage(getString(R.string.dialog_message_delete_session_long));
+            builder.setPositiveButton(getString(R.string.action_delete), (dialog, which) -> {
                 numberManager.removeSession(intent.getStringExtra("session"));
                 finish();
             });
-            builder.setNegativeButton("Zachovat", null);
+            builder.setNegativeButton(getString(R.string.action_cancel), null);
             builder.show();
         });
 
@@ -304,11 +315,16 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         View view = getLayoutInflater().inflate(R.layout.bsd_search_result, null);
         TextView text = view.findViewById(R.id.text);
         if(result.found)
-            text.setText("Číslo "+result.value+" bylo nalezeno "+ result.amount+"x.");
+            text.setText(getString(R.string.dialog_message_search_result_positive)
+                    .replace("%num%", String.valueOf(result.value))
+                    .replace("%amount%", String.valueOf(result.amount))
+            );
         else
-            text.setText("Číslo "+result.value+" nebylo nalezeno.");
+            text.setText(getString(R.string.dialog_message_search_result_negative)
+                    .replace("%num%", String.valueOf(result.value))
+            );
 
-        dialog.setTitle("Výsledek vyhledávání");
+        dialog.setTitle(getText(R.string.dialog_message_search_result_title));
         dialog.setContentView(view);
         dialog.show();
     }
