@@ -204,18 +204,21 @@ public class TreeViewActivity extends AppCompatActivity {
             tree.setAdapter(adapter);
 
             tree.setVisibility(View.VISIBLE);
-            if(isSessionEditable){
+            if(!usingSession || isSessionEditable){
                 if(!tool_remove.isShown()) tool_remove.show();
                 if(!tool_save.isShown()) tool_save.show();
                 if(node.size() > Utilities.MAX_TREE_SIZE) tool_add.hide();
-                else tool_add.show();
+                else if(!tool_add.isShown()) tool_add.show();
+                if(node.size() < 1) tool_search.hide();
+                else if(!tool_search.isShown()) tool_search.show();
             }
         }else{
             tree.setVisibility(View.GONE);
-            if(isSessionEditable){
+            if(!usingSession || isSessionEditable){
                 tool_remove.hide();
                 tool_save.hide();
                 tool_add.show();
+                tool_search.hide();
             }
         }
     }
