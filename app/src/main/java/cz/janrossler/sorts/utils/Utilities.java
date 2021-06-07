@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,6 +50,26 @@ public class Utilities {
             return new JSONArray();
         }
         return array;
+    }
+
+    @NonNull
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static JSONObject loadLanguagesFromAsset(@NonNull Context context) {
+        JSONObject obj;
+        String json;
+        try {
+            InputStream is = context.getAssets().open("lang.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, StandardCharsets.UTF_8);
+            obj = new JSONObject(json);
+        } catch (IOException | JSONException ex) {
+            ex.printStackTrace();
+            return new JSONObject();
+        }
+        return obj;
     }
 
     public static String getRandomDialogStringWhileSorting(){

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import cz.janrossler.sorts.adapter.TheoryAdapter;
+import cz.janrossler.sorts.utils.Language;
 import cz.janrossler.sorts.utils.Theory;
 import cz.janrossler.sorts.utils.TheoryReader;
 
@@ -68,13 +69,7 @@ public class TheoryActivity extends AppCompatActivity {
         int defIndex = Arrays.asList(langs).contains(thisLang) ? Arrays.asList(langs).indexOf(thisLang) : -1;
 
         for(int i = 0; i < langs.length; i++) {
-            if(!langs[i].equals("_")){
-                langsChar[i] = Locale.getDefault().getDisplayCountry(new Locale(langs[i]));
-            }else {
-                if(defIndex < 0)
-                    defIndex = i;
-                langsChar[i] = getString(R.string.action_default);
-            }
+            langsChar[i] = Language.getInstance(this).getLanguage(langs[i]);
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
