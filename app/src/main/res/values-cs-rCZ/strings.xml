@@ -40,4 +40,5 @@
     <string name="dialog_message_enter_number_search">Zadejte číslo pro vyhledávání</string>
     <string name="action_ok">Ok</string>
     <string name="action_save">Uložit</string>
+    <string name="treeview_add_first">Kliknutím na + přidáte nový uzel</string>
 </resources>

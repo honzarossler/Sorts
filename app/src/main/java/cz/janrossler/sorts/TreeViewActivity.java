@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
@@ -46,6 +47,8 @@ public class TreeViewActivity extends AppCompatActivity {
     private FloatingActionButton tool_search;
     private FloatingActionButton tool_save;
 
+    private LinearLayout tree_empty;
+    private ImageView image_animated;
     private LinearLayout floating_layout_search;
     private EditText edit_search;
     private FloatingActionButton float_search;
@@ -75,6 +78,8 @@ public class TreeViewActivity extends AppCompatActivity {
         tool_remove = findViewById(R.id.tool_remove);
         tool_search = findViewById(R.id.tool_search);
         tool_save = findViewById(R.id.tool_save);
+        tree_empty = findViewById(R.id.tree_empty);
+        image_animated = findViewById(R.id.image_animated);
         locked.setVisibility(View.GONE);
 
         floating_layout_search = findViewById(R.id.floating_layout_search);
@@ -87,6 +92,10 @@ public class TreeViewActivity extends AppCompatActivity {
         edit_remove = findViewById(R.id.edit_remove);
         float_remove = findViewById(R.id.float_remove);
 
+        Glide.with(this)
+                .load(R.drawable.ic_pencil)
+                .placeholder(R.drawable.ic_pencil)
+                .into(image_animated);
 
         if(usingSession){
             session = numberManager.getSession(intent.getStringExtra("session"));
@@ -260,13 +269,14 @@ public class TreeViewActivity extends AppCompatActivity {
 
     private void update(){
         if(node != null){
+            tree_empty.setVisibility(View.GONE);
             List<Node> nodes = new ArrayList<>();
             nodes.add(node);
 
             NodeAdapter adapter = new NodeAdapter(this, nodes);
             tree.setLayoutManager(new GridLayoutManager(this, 1));
             tree.setAdapter(adapter);
-        }
+        }else tree_empty.setVisibility(View.VISIBLE);
 
         updateActions();
     }

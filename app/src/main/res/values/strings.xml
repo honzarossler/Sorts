@@ -39,4 +39,5 @@
     <string name="dialog_message_enter_number_search">Enter number to search</string>
     <string name="action_ok">Ok</string>
     <string name="action_save">Save</string>
+    <string name="treeview_add_first">Click + to add a new node</string>
 </resources>
