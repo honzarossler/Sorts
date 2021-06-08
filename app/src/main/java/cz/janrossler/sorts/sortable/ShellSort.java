@@ -10,7 +10,7 @@ public class ShellSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int gap = numbers.size() / 2;
         while(gap > 0){
             for (int i = 0; i < numbers.size() - gap; i++){

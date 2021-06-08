@@ -30,42 +30,48 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
     }
 
     protected String doInBackground(@NonNull String... sessions) {
-        sort = Sortable.getSort(context, sortAlgorithm, sessions[0]);
+        try {
+            sort = Sort.getByName(context, sortAlgorithm, sessions[0]);
 
-        if(!sortAlgorithm.equals("") && sort != null){
-            sort.setSortingListener(new Sortable.SortingListener() {
-                @Override
-                public void onSuccessSort(int seconds) {
-                    List<Integer> list = new ArrayList<>();
-                    try {
-                        list = sort.getSortedList();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            if (!sortAlgorithm.equals("")) {
+                sort.setSortingListener(new Sortable.SortingListener() {
+                    @Override
+                    public void onSuccessSort(int seconds) {
+                        List<Integer> list = new ArrayList<>();
+                        try {
+                            list = sort.getSortedList();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        JSONArray array = new JSONArray();
+
+                        for (int i = 0; i < list.size(); i++)
+                            array.put(list.get(i));
+
+                        NumberManager numberManager = new NumberManager(context);
+                        try {
+                            numberManager.saveSortingToSession(sessions[0], sortAlgorithm, seconds, array);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        answers.remove(sortAlgorithm);
+                        publishProgress();
                     }
 
-                    JSONArray array = new JSONArray();
-
-                    for(int i = 0; i < list.size(); i++)
-                        array.put(list.get(i));
-
-                    NumberManager numberManager = new NumberManager(context);
-                    try {
-                        numberManager.saveSortingToSession(sessions[0], sortAlgorithm, seconds, array);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    @Override
+                    public void onFailed(String _message) {
+                        answers.put(sortAlgorithm, _message);
+                        publishProgress();
                     }
-                    answers.remove(sortAlgorithm);
-                    publishProgress();
-                }
-
-                @Override
-                public void onFailed(String _message) {
-                    answers.put(sortAlgorithm, _message);
-                    publishProgress();
-                }
-            });
-            sort.doSort();
-        }else{
+                });
+                sort.start();
+            } else {
+                publishProgress();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            answers.put(sortAlgorithm, "Class not exists.");
             publishProgress();
         }
 

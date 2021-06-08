@@ -8,7 +8,7 @@ public class SelectionSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int size = numbers.size();
 
         for (int i = 0; i < size - 1; i++) {

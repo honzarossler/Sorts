@@ -8,7 +8,7 @@ public class QuickSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int left = 0;
         int right = numbers.size() - 1;
         sort(left, right);

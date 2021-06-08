@@ -10,7 +10,7 @@ public class MergeSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int[] list = new int[numbers.size()];
 
         for(int i = 0; i < numbers.size(); i++)

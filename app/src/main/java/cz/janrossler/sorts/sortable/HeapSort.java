@@ -8,7 +8,7 @@ public class HeapSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int heapEnd = numbers.size();
 
         for (int i = heapEnd / 2 - 1; i >= 0; i--)

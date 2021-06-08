@@ -9,7 +9,7 @@ public class CountingSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int min_key = numbers.get(0);
         int max_key = numbers.get(0);
 

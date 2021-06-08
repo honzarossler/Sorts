@@ -316,13 +316,13 @@ public class TreeViewActivity extends AppCompatActivity {
         }
 
         if(isSearchOpen && tool_search.isShown()){
-            edit_search.setText("");
-            floating_layout_search.setVisibility(View.VISIBLE);
-            tool_search.setImageResource(R.drawable.ic_baseline_close_24);
-
             if(tool_save.isShown()) tool_save.hide();
             if(tool_remove.isShown()) tool_remove.hide();
             if(tool_add.isShown()) tool_add.hide();
+
+            edit_search.setText("");
+            floating_layout_search.setVisibility(View.VISIBLE);
+            tool_search.setImageResource(R.drawable.ic_baseline_close_24);
         }else{
             isSearchOpen = false;
             floating_layout_search.setVisibility(View.GONE);
@@ -330,13 +330,13 @@ public class TreeViewActivity extends AppCompatActivity {
         }
 
         if(isAddOpen && tool_add.isShown()){
-            edit_add.setText("");
-            floating_layout_add.setVisibility(View.VISIBLE);
-            tool_add.setImageResource(R.drawable.ic_baseline_close_24);
-
             if(tool_save.isShown()) tool_save.hide();
             if(tool_remove.isShown()) tool_remove.hide();
             if(tool_search.isShown()) tool_search.hide();
+
+            edit_add.setText("");
+            floating_layout_add.setVisibility(View.VISIBLE);
+            tool_add.setImageResource(R.drawable.ic_baseline_close_24);
         }else{
             isAddOpen = false;
             floating_layout_add.setVisibility(View.GONE);
@@ -344,13 +344,13 @@ public class TreeViewActivity extends AppCompatActivity {
         }
 
         if(isRemoveOpen && tool_remove.isShown()){
-            edit_remove.setText("");
-            floating_layout_remove.setVisibility(View.VISIBLE);
-            tool_remove.setImageResource(R.drawable.ic_baseline_close_24);
-
             if(tool_save.isShown()) tool_save.hide();
             if(tool_add.isShown()) tool_add.hide();
             if(tool_search.isShown()) tool_search.hide();
+
+            edit_remove.setText("");
+            floating_layout_remove.setVisibility(View.VISIBLE);
+            tool_remove.setImageResource(R.drawable.ic_baseline_close_24);
         }else{
             isRemoveOpen = false;
             floating_layout_remove.setVisibility(View.GONE);

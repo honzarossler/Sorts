@@ -8,7 +8,7 @@ public class BogoSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         while(!isSorted()){
             for (int i=1; i < numbers.size(); i++){
                 int j = (int)(Math.random() * i);

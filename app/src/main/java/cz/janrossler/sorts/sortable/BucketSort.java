@@ -11,7 +11,7 @@ public class BucketSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int bucketCount = numbers.size();
 
         if(bucketCount <= 1) return;

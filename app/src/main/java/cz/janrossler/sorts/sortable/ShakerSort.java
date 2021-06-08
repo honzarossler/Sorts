@@ -10,7 +10,7 @@ public class ShakerSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         for(int i = 0; i < numbers.size() / 2; i++){
             boolean swapped = false;
 

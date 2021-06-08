@@ -8,7 +8,7 @@ public class RadixSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int size = numbers.size();
         int max = numbers.get(0);
         for (int i = 1; i < size; i++)

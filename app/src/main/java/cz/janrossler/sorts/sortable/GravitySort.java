@@ -17,7 +17,7 @@ public class GravitySort extends Sortable{
      */
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int max = numbers.get(0);
         if(Utilities.MAX_GRAVITY_ALLOC >= numbers.size() * 8 * max){
             for(int i = 1; i < numbers.size(); i++)

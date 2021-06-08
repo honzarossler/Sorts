@@ -8,7 +8,7 @@ public class InsertionSort extends Sortable{
     }
 
     @Override
-    public void start() throws Exception {
+    public void sortNow() throws Exception {
         int size = numbers.size();
         for(int i = 1; i < size; i++){
             int j = i - 1;
