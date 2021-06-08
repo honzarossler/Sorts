@@ -313,6 +313,8 @@ public class TreeViewActivity extends AppCompatActivity {
                 tool_add.show();
                 tool_search.hide();
             }
+
+            isRemoveOpen = false;
         }
 
         if(isSearchOpen && tool_search.isShown()){

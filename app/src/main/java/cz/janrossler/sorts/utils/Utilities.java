@@ -22,9 +22,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class Utilities {
-    public static final int MAX_TREE_SIZE = 1000;
+    public static final int MAX_TREE_SIZE = 1500;
     public static final int MAX_SESSION_SIZE = 2000000;
-    public static final int MAX_GRAVITY_ALLOC = 1500000000;
+    public static final int MAX_GRAVITY_ALLOC = 1000000000;
 
     @NonNull
     public static JSONArray getSortAlgorithms(Context context){

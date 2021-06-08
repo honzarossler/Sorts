@@ -75,11 +75,13 @@ public class TheoryActivity extends AppCompatActivity {
         builder.setSingleChoiceItems(langsChar, defIndex, null);
         builder.setPositiveButton(getString(R.string.action_change), (dialog, which) -> {
             int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
-            TheoryAdapter adapter =
-                    new TheoryAdapter(this, theory.getTranslatedContent(langs[selectedPosition]));
+            if(selectedPosition >= 0) {
+                TheoryAdapter adapter =
+                        new TheoryAdapter(this, theory.getTranslatedContent(langs[selectedPosition]));
 
-            content.setLayoutManager(new LinearLayoutManager(this));
-            content.setAdapter(adapter);
+                content.setLayoutManager(new LinearLayoutManager(this));
+                content.setAdapter(adapter);
+            }
         });
         builder.setNegativeButton(getString(R.string.action_cancel), null);
         builder.show();
