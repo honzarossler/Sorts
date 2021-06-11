@@ -49,9 +49,9 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.Holder> {
             holder.bar_bottom.setVisibility(position + 1 == getItemCount() ? View.GONE : View.VISIBLE);
             holder.bar_inside.setVisibility(inside_nodes.size() > 0 ? View.VISIBLE : View.GONE);
 
-            holder.value.setOnClickListener(v -> {
-                Toast.makeText(context, "Velikost uzlu: "+root.size(), Toast.LENGTH_LONG).show();
-            });
+            holder.value.setOnClickListener(v ->
+                    Toast.makeText(context, "Velikost uzlu: "+root.size(), Toast.LENGTH_LONG)
+                            .show());
 
             NodeAdapter adapter = new NodeAdapter(context, inside_nodes);
             holder.recycler_inside.setLayoutManager(new GridLayoutManager(context, 1));

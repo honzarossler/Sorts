@@ -51,6 +51,7 @@ public class Session {
         return length;
     }
 
+    @SuppressWarnings("unused")
     public int getMin() {
         return min;
     }

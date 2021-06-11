@@ -17,6 +17,7 @@ import cz.janrossler.sorts.R;
 public abstract class Template {
     public static final String DIALOG_SEARCH_RESULT = "dialog_search_result";
 
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
     @NonNull
     public static <T> DialogInterface getDialogFor(Activity activity, @NonNull String type, T data){
         DialogInterface dialog;
@@ -24,8 +25,7 @@ public abstract class Template {
         switch (type){
             case DIALOG_SEARCH_RESULT:
                 BottomSheetDialog builderSearchResult = new BottomSheetDialog(activity, R.style.TransparentDialogTheme);
-                View view = activity.getLayoutInflater()
-                        .inflate(R.layout.dialog_search_result, null);
+                View view = View.inflate(activity, R.layout.dialog_search_result, null);
                 ImageView image_animated = view.findViewById(R.id.image_animated);
                 TextView text_number = view.findViewById(R.id.text_number);
                 TextView text_amount = view.findViewById(R.id.text_amount);

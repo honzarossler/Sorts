@@ -1,6 +1,5 @@
 package cz.janrossler.sorts.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,7 +27,7 @@ public class TheoryFragment extends Fragment {
         JSONArray theories = reader.getAllTheories();
         TheoryListAdapter adapter = new TheoryListAdapter(activity, theories);
 
-        @SuppressLint("InflateParams") View root = activity.getLayoutInflater().inflate(R.layout.fragment_dashboard, null);
+        View root = View.inflate(activity, R.layout.fragment_dashboard, null);
         RecyclerView theories_list = root.findViewById(R.id.theories);
 
         theories_list.setLayoutManager(new LinearLayoutManager(activity));

@@ -7,9 +7,12 @@ import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 import cz.janrossler.sorts.utils.BinarySearchTree;
 import cz.janrossler.sorts.utils.Node;
 import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.Session;
 
 public class AsyncSearch extends AsyncTask<Integer, String, String> {
     @SuppressLint("StaticFieldLeak")
@@ -27,8 +30,19 @@ public class AsyncSearch extends AsyncTask<Integer, String, String> {
     protected String doInBackground(@NonNull Integer... search) {
         BinarySearchTree tree = new BinarySearchTree();
         NumberManager numberManager = new NumberManager(context);
-        Node node = BinarySearchTree.createFromList(numberManager.getUnsortedSessionList(session, 0));
-        res = tree.search(node, search[0]);
+        Session session = numberManager.getSession(this.session);
+        List<String> chunks = session.getChunks();
+        res = new BinarySearchTree.SearchResult();
+        res.value = search[0];
+
+        for(int i = 0; i < chunks.size(); i++){
+            Node node = BinarySearchTree.createFromList(numberManager.getUnsortedSessionList(this.session, i));
+            BinarySearchTree.SearchResult pres = tree.search(node, search[0]);
+            if(pres.found) {
+                res.amount += pres.amount;
+                res.found = true;
+            }
+        }
 
         publishProgress();
         return null;

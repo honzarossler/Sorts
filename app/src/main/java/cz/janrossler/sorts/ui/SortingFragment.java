@@ -1,6 +1,5 @@
 package cz.janrossler.sorts.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -32,6 +31,7 @@ import cz.janrossler.sorts.TreeViewActivity;
 import cz.janrossler.sorts.adapter.SessionsAdapter;
 import cz.janrossler.sorts.utils.NumberManager;
 
+@SuppressWarnings("deprecation")
 public class SortingFragment extends Fragment {
     private Activity activity;
     private RecyclerView sort_sessions;
@@ -44,7 +44,7 @@ public class SortingFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
         assert activity != null;
-        @SuppressLint("InflateParams") View root = activity.getLayoutInflater().inflate(R.layout.fragment_home, null);
+        View root = View.inflate(activity, R.layout.fragment_home, null);
         sort_sessions = root.findViewById(R.id.sort_sessions);
         FloatingActionButton add = root.findViewById(R.id.add);
         FloatingActionButton tree = root.findViewById(R.id.tree);
@@ -93,17 +93,11 @@ public class SortingFragment extends Fragment {
                     int min = Integer.parseInt(edit_min.getText().toString());
                     int max = Integer.parseInt(edit_max.getText().toString());
 
-                    //int max_length = Utilities.MAX_SESSION_SIZE;
-                    //boolean very_large = length > max_length
-                    //        || min > max_length
-                    //        || max > max_length;
-
-                    //if(length > 0 && max > min && !very_large){}
                     AsyncCreateSession asyncCreateSession = new AsyncCreateSession(numberManager, () -> {
-                        //numberManager.createList(session, length, min, max);
                         pDialog.dismiss();
                         update();
                     });
+
                     pDialog.show();
                     asyncCreateSession.length = length;
                     asyncCreateSession.min = min;
@@ -151,6 +145,7 @@ public class SortingFragment extends Fragment {
         update();
     }
 
+    @SuppressWarnings("unused")
     private static class AsyncCreateSession extends AsyncTask<String, String, Void>{
         NumberManager manager;
         OnAsync async;

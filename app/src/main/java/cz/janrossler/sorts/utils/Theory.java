@@ -13,12 +13,10 @@ import java.util.Map;
 public class Theory {
     private static final String TITLE_TEXT = "title.text";
 
-    private Context context;
-    private HashMap<String,String> head = new HashMap<>();
-    private HashMap<String, JSONArray> body = new HashMap<>();
+    private final HashMap<String,String> head = new HashMap<>();
+    private final HashMap<String, JSONArray> body = new HashMap<>();
 
     public Theory(Context context, String theory){
-        this.context = context;
         TheoryReader reader = new TheoryReader(context);
         JSONObject data = reader.getTheoryData(theory);
 

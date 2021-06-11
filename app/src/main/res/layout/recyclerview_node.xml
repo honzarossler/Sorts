@@ -47,7 +47,7 @@
             <TextView
                 android:id="@+id/value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="50dp"
                 android:gravity="center"
                 android:text="0"
@@ -57,12 +57,13 @@
             <TextView
                 android:id="@+id/amount"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="25dp"
                 android:gravity="center"
                 android:text="1x"
                 android:textSize="16sp"
                 android:padding="9dp"
+                android:layout_marginStart="-2dp"
                 android:background="@drawable/node_amount" />
         </LinearLayout>
         <View

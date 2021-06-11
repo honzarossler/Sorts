@@ -80,5 +80,6 @@
         android:text="@string/instance_new_red_max_allowed"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="14sp"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -32,6 +32,7 @@ import cz.janrossler.sorts.utils.Session;
 import cz.janrossler.sorts.utils.Template;
 import cz.janrossler.sorts.utils.Utilities;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class TreeViewActivity extends AppCompatActivity {
     private NumberManager numberManager;
     private Intent intent;
@@ -165,19 +166,6 @@ public class TreeViewActivity extends AppCompatActivity {
             if(edit_search.getText().length() > 0){
                 BinarySearchTree tree = new BinarySearchTree();
                 BinarySearchTree.SearchResult res = tree.search(node, Integer.parseInt(edit_search.getText().toString()));
-
-                //AlertDialog.Builder result = new AlertDialog.Builder(this);
-                //result.setTitle(getString(R.string.dialog_message_search_result_title));
-                //if(res.found){
-                //    result.setMessage(getString(R.string.dialog_message_search_result_positive)
-                //            .replace("%num%", String.valueOf(res.value))
-                //            .replace("%amount%", String.valueOf(res.amount)));
-                //}else{
-                //    result.setMessage(getString(R.string.dialog_message_search_result_negative)
-                //            .replace("%num%", String.valueOf(res.value)));
-                //}
-                //result.setPositiveButton(getString(R.string.action_ok), null);
-                //result.show();
 
                 DialogInterface dialog = Template.getDialogFor(this,
                         Template.DIALOG_SEARCH_RESULT, res);

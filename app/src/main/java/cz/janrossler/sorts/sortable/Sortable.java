@@ -11,6 +11,7 @@ import java.util.List;
 import cz.janrossler.sorts.utils.NumberManager;
 import cz.janrossler.sorts.utils.Session;
 
+@SuppressWarnings("unused")
 public abstract class Sortable implements SortableList {
     protected boolean isSorting = false;
     protected String session_name;
@@ -174,10 +175,6 @@ public abstract class Sortable implements SortableList {
 
                     if(sortingListener != null) {
                         sortingListener.onChunkSorted((int) timer.getTotalCompare(), new int[]{j - 1, j});
-                        //if(isSorted()) { }else {
-                        //    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
-                        //    throw new SortException("Seznam nebyl úspěšně seřazen.");
-                        //}
                     }
                 }
 
@@ -190,10 +187,6 @@ public abstract class Sortable implements SortableList {
 
                     if(sortingListener != null) {
                         sortingListener.onChunkSorted((int) timer.getTotalCompare(), new int[]{j - 1, j});
-                        //if(isSorted()) { }else {
-                        //    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
-                        //    throw new SortException("Seznam nebyl úspěšně seřazen.");
-                        //}
                     }
                 }
             }else{
@@ -204,12 +197,13 @@ public abstract class Sortable implements SortableList {
 
                 if(sortingListener != null) {
                     sortingListener.onChunkSorted((int) timer.getTotalCompare(), new int[]{0});
-                    //if(isSorted()) { }else {
-                    //    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
-                    //    throw new SortException("Seznam nebyl úspěšně seřazen.");
-                    //}
                 }
             }
+
+            //if(isSorted()) { }else {
+            //    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
+            //    throw new SortException("Seznam nebyl úspěšně seřazen.");
+            //}
 
             if(sortingListener != null) sortingListener.onSorted();
         }catch (ArrayIndexOutOfBoundsException e) {

@@ -315,7 +315,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     sortIntent.putExtra("session", intent.getStringExtra("session"));
                     sortIntent.putExtra("use-sort", charSequences[selectedPosition]);
 
-                    pDialog.setMessage(Utilities.getRandomDialogStringWhileSorting());
+                    pDialog.setMessage("Třídím čísla ...");
                     pDialog.show();
                     startService(sortIntent);
                 });

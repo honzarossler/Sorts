@@ -24,14 +24,24 @@ public class NumberManager {
     }
 
     public void removeSession(String session){
-        if(smallData.contains(session))
-            smallData.edit().remove(session).apply();
+        try {
+            if (smallData.contains(session)) {
+                Session sess = new Session(new JSONObject(smallData.getString(session, "{}")));
 
-        if(bigData.contains(session + "unsorted"))
-            bigData.edit().remove(session + "unsorted").apply();
+                List<String> chunks = sess.getChunks();
+                for(String chunk : chunks){
+                    if(bigData.contains(session + "unsorted_" + chunk))
+                        bigData.edit().remove(session + "unsorted_" + chunk).apply();
 
-        if(bigData.contains(session + "sorted"))
-            bigData.edit().remove(session + "sorted").apply();
+                    if(bigData.contains(session + "sorted_" + chunk))
+                        bigData.edit().remove(session + "sorted_" + chunk).apply();
+                }
+
+                smallData.edit().remove(session).apply();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void createList(String session, int length, int min, int max){

@@ -30,7 +30,7 @@ import java.util.Locale;
  */
 
 public class TheoryReader {
-    private Context context;
+    private final Context context;
     private final AssetManager am;
 
     public TheoryReader(@NonNull Context context) {
@@ -104,7 +104,6 @@ public class TheoryReader {
      * @return Vrací {@link JSONObject} s teorií a jazykovými mutacemi.
      */
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public JSONObject getTheoryData(String theoryFile){
         JSONObject theory = new JSONObject();
 
@@ -116,9 +115,11 @@ public class TheoryReader {
                 InputStream is = am.open(theoryFile);
                 int size = is.available();
                 byte[] buffer = new byte[size];
-                is.read(buffer);
+                int readedBytes = is.read(buffer);
                 is.close();
                 json = new String(buffer, StandardCharsets.UTF_8);
+
+                Log.d("ReadedData", "Readed " + readedBytes + " bytes.");
             } catch (IOException ex) {
                 ex.printStackTrace();
                 json = "{}";
@@ -175,16 +176,17 @@ public class TheoryReader {
      * @return Vrací obsah MD souboru, pokud neexistuje, vrací prázdný řetězec.
      */
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private String getTheoryText(String path){
         String text;
         try {
             InputStream is = am.open(path);
             int size = is.available();
             byte[] buffer = new byte[size];
-            is.read(buffer);
+            int readedBytes = is.read(buffer);
             is.close();
             text = new String(buffer, StandardCharsets.UTF_8);
+
+            Log.d("ReadedData", "Readed " + readedBytes + " bytes.");
         } catch (Exception e) {
             Log.w("TheoryReader", "assetExists failed: "+e.toString());
             text = "";
