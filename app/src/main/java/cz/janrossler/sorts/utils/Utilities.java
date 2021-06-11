@@ -22,10 +22,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class Utilities {
-    public static final int MAX_TREE_SIZE = 1500;
-    public static final int MAX_SESSION_SIZE = 2000000;
-    public static final int MAX_GRAVITY_ALLOC = 1000000000;
-    public static final int MAX_CHUNK_SIZE = 500000;
+    public static final int MAX_TREE_SIZE = 1_500;
+    public static final int MAX_GRAVITY_ALLOC = 1_000_000_000;
+    public static final int MAX_CHUNK_SIZE = 500_000;
 
     @NonNull
     public static JSONArray getSortAlgorithms(Context context){
@@ -36,8 +35,8 @@ public class Utilities {
         return size * 8 * i;
     }
 
-    @NonNull
     @SuppressWarnings("ResultOfMethodCallIgnored")
+    @NonNull
     private static JSONArray loadSortsFromAsset(@NonNull Context context) {
         JSONArray array;
         String json;
@@ -85,7 +84,6 @@ public class Utilities {
         strings.add("Promíchávám a kontroluji ...");
         strings.add("Sestupně či vzestupně, to je oč tu běží ...");
         strings.add("Indexuji od nuly ...");
-        strings.add("Pokud jsi použil BogoSort, přeji hodně štěstí s čekáním na výsledek.");
 
         return strings.get(ThreadLocalRandom.current().nextInt(0, strings.size()));
     }

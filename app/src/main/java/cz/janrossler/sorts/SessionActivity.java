@@ -60,6 +60,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     private TextView total_length;
     private TextView sort_technology;
     private TextView sort_time;
+    private TextView sort_page;
     private FloatingActionButton fab_sort_now;
     private FloatingActionButton fab_delete_session;
     private FloatingActionButton fab_tree;
@@ -70,6 +71,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
 
     private ProgressDialog pDialog;
     private ProgressDialog pSearchDialog;
+    private int chunkTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         total_length = findViewById(R.id.total_length);
         sort_technology = findViewById(R.id.sort_technology);
         sort_time = findViewById(R.id.sort_time);
+        sort_page = findViewById(R.id.sort_page);
         fab_sort_now = findViewById(R.id.fab_sort_now);
         fab_delete_session = findViewById(R.id.fab_delete_session);
         fab_tree = findViewById(R.id.fab_tree);
@@ -135,10 +138,12 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                 manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
                 fab_sort_view.setImageResource(R.drawable.ic_baseline_arrow_drop_down_24);
                 defaultIndex = unsorted.length()-1;
+                chunkPage = session.getChunkPages() - 1;
             }else{
                 manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 fab_sort_view.setImageResource(R.drawable.ic_baseline_arrow_drop_up_24);
                 defaultIndex = 0;
+                chunkPage = 0;
             }
             isAscending = !isAscending;
             update();
@@ -165,7 +170,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                     AsyncSearch search = new AsyncSearch(
                             this,
                             intent.getStringExtra("session"),
-                            (AsyncSearch.Result) sResult -> {
+                            sResult -> {
                                 pSearchDialog.dismiss();
 
                                 DialogInterface dialogFor = Template.getDialogFor(this,
@@ -190,12 +195,29 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             builder.show();
         });
 
+        sort_page.setOnClickListener(v -> {
+            CharSequence[] chars = new CharSequence[chunkTotal];
+            for(int i = 0; i < chunkTotal; i++){
+                chars[i] = String.valueOf(i + 1);
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Zvolte stránku");
+            builder.setSingleChoiceItems(chars, chunkPage,null);
+            builder.setPositiveButton(getString(R.string.action_ok), (dialog, which) -> {
+                chunkPage = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                update();
+            });
+            builder.show();
+        });
+
         update();
     }
 
     @SuppressLint("SetTextI18n")
     void update(){
         session = numberManager.getSession(intent.getStringExtra("session"));
+        chunkTotal = session.getChunkPages();
         sorted = new JSONArray();
         unsorted = new JSONArray();
 
@@ -207,6 +229,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         for(int i = 0; i < list_sorted.size(); i++)
             sorted.put(list_sorted.get(i));
 
+        sort_page.setText((chunkPage + 1) + "/" + chunkTotal);
         try{
             instance.setText(
                     getString(R.string.session_title)

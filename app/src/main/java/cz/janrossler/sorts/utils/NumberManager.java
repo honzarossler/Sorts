@@ -15,12 +15,10 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class NumberManager {
-    private SharedPreferences smallData;
-    private SharedPreferences bigData;
-    private Context context;
+    private final SharedPreferences smallData;
+    private final SharedPreferences bigData;
 
     public NumberManager(@NonNull Context context){
-        this.context = context;
         smallData = context.getSharedPreferences("sorting-sessions", Activity.MODE_PRIVATE);
         bigData = context.getSharedPreferences("sorting-lists", Activity.MODE_PRIVATE);
     }
@@ -40,7 +38,8 @@ public class NumberManager {
         Session _session = getSession(session);
 
         List<String> chunks = new ArrayList<>();
-        int chunk_sum = (int)(length / Utilities.MAX_CHUNK_SIZE) + 1;
+        int chunk_sum = length > Utilities.MAX_CHUNK_SIZE
+                ? (length / Utilities.MAX_CHUNK_SIZE) + 1 : 1;
         for(int i = 0; i < chunk_sum; i++){
             chunks.add("pt" + i);
         }
@@ -57,7 +56,10 @@ public class NumberManager {
                     int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
                     numbers.put(randomNum);
                 }
-            bigData.edit().putString(session + "unsorted_" + chunks.get(i), numbers.toString()).apply();
+            if(numbers.length() > 0) {
+                bigData.edit().putString(session + "unsorted_" + chunks.get(i), numbers.toString())
+                        .apply();
+            }else chunk_sum--;
         }
 
         _session.setLength(length);
@@ -92,7 +94,7 @@ public class NumberManager {
         int length = list.size();
 
         List<String> chunks = new ArrayList<>();
-        int chunk_sum = (int)(length / Utilities.MAX_CHUNK_SIZE) + 1;
+        int chunk_sum = (length / Utilities.MAX_CHUNK_SIZE) + 1;
         for(int i = 0; i < chunk_sum; i++){
             chunks.add("pt" + i);
         }
