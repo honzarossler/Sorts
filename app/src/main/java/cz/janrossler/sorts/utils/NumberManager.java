@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,13 +25,6 @@ public class NumberManager {
         bigData = context.getSharedPreferences("sorting-lists", Activity.MODE_PRIVATE);
     }
 
-    public NumberManager createSession(String session, boolean bruteNew){
-        if(!smallData.contains(session) || bruteNew){
-            smallData.edit().putString(session, "").apply();
-        }
-        return this;
-    }
-
     public void removeSession(String session){
         if(smallData.contains(session))
             smallData.edit().remove(session).apply();
@@ -45,80 +37,135 @@ public class NumberManager {
     }
 
     public void createList(String session, int length, int min, int max){
-        JSONArray numbers = new JSONArray();
-        for(int i = 0; i < length; i++){
-            int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
-            numbers.put(randomNum);
+        Session _session = getSession(session);
+
+        List<String> chunks = new ArrayList<>();
+        int chunk_sum = (int)(length / Utilities.MAX_CHUNK_SIZE) + 1;
+        for(int i = 0; i < chunk_sum; i++){
+            chunks.add("pt" + i);
         }
 
-        bigData.edit().putString(session + "unsorted", numbers.toString()).apply();
-
-        try{
-            JSONObject _session = getSession(session);
-            _session.put("length", length);
-            _session.put("min", min);
-            _session.put("max", max);
-            _session.put("editable", false);
-            smallData.edit().putString(session, _session.toString()).apply();
-        }catch (Exception e){
-            e.printStackTrace();
+        for(int i = 0; i < chunks.size(); i++){
+            JSONArray numbers = new JSONArray();
+            if(i == chunks.size() - 1){
+                for(int j = 0; j < length - (Utilities.MAX_CHUNK_SIZE * (chunk_sum - 1)); j++){
+                    int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
+                    numbers.put(randomNum);
+                }
+            }else
+                for(int j = 0; j < Utilities.MAX_CHUNK_SIZE; j++){
+                    int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
+                    numbers.put(randomNum);
+                }
+            bigData.edit().putString(session + "unsorted_" + chunks.get(i), numbers.toString()).apply();
         }
+
+        _session.setLength(length);
+        _session.setMin(min);
+        _session.setMax(max);
+        _session.setIsEditable(false);
+        _session.setChunks(chunk_sum);
+        smallData.edit().putString(session, _session.toObject().toString()).apply();
     }
 
     public void pushList(String session, @NonNull List<Integer> list){
-        int min = list.size() > 0 ? list.get(0) : 0;
+        int min = 0;
         int max = 0;
 
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i) > max) max = list.get(i);
-            if(list.get(i) < min) min = list.get(i);
+        for(int i  = 0; i < list.size(); i++){
+            if(min > list.get(i)) min = list.get(i);
+            if(max < list.get(i)) max = list.get(i);
         }
 
-        bigData.edit().putString(session + "unsorted", Arrays.toString(list.toArray())).apply();
+        int chunks = saveUnsortedList(session, list);
 
-        try{
-            JSONObject _session = getSession(session);
-            _session.put("length", list.size());
-            _session.put("min", min);
-            _session.put("max", max);
-            _session.put("editable", true);
-            smallData.edit().putString(session, _session.toString()).apply();
+        Session _session = getSession(session);
+        _session.setLength(list.size());
+        _session.setMin(min);
+        _session.setMax(max);
+        _session.setIsEditable(true);
+        _session.setChunks(chunks);
+        smallData.edit().putString(session, _session.toObject().toString()).apply();
+    }
+
+    protected int saveUnsortedList(String session, @NonNull List<Integer> list){
+        int length = list.size();
+
+        List<String> chunks = new ArrayList<>();
+        int chunk_sum = (int)(length / Utilities.MAX_CHUNK_SIZE) + 1;
+        for(int i = 0; i < chunk_sum; i++){
+            chunks.add("pt" + i);
+        }
+
+        for(int i = 0; i < chunks.size(); i++){
+            JSONArray numbers = new JSONArray();
+            if(i == chunks.size() - 1){
+                for(int j = 0; j < length - (Utilities.MAX_CHUNK_SIZE * (chunk_sum - 1)); j++){
+                    numbers.put(list.get(j));
+                }
+            }else
+                for(int j = 0; j < Utilities.MAX_CHUNK_SIZE; j++){
+                    numbers.put(list.get(j));
+                }
+            bigData.edit().putString(session + "unsorted_" + chunks.get(i), numbers.toString()).apply();
+        }
+        return chunk_sum;
+    }
+
+    public void saveMergedChunks(String _session, String algorithm, int lastTime, @NonNull JSONArray chunk, @NonNull int[] indexes){
+        Session session = getSession(_session);
+        session.setAlgorithm(algorithm);
+        session.setTime(lastTime);
+
+        smallData.edit().putString(_session, session.toObject().toString()).apply();
+
+        try {
+            List<String> chunks = session.getChunks();
+            int total = indexes.length;
+            JSONArray l = new JSONArray();
+
+            for(int i = 0; i < total; i++){
+                JSONArray s = new JSONArray();
+                for (int j = Utilities.MAX_CHUNK_SIZE * i; j < Utilities.MAX_CHUNK_SIZE * (i + 1); j++)
+                    if(j < chunk.length()) s.put(chunk.getInt(j));
+                l.put(s);
+            }
+
+            for(int i = 0; i < total; i++){
+                JSONArray arr = l.optJSONArray(i);
+                bigData.edit().putString(_session + "sorted_" + chunks.get(indexes[i]), arr.toString()).apply();
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public void saveSortingToSession(String _session, String algorithm, int lastTime, JSONArray sorted){
-        if(smallData.contains(_session)){
-            try{
-                JSONObject session = getSession(_session);
-                session.put("algorithm", algorithm);
-                session.put("time", lastTime);
-
-                smallData.edit().putString(_session, session.toString()).apply();
-                bigData.edit().putString(_session + "sorted", sorted.toString()).apply();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public JSONObject getSession(String _session){
-        JSONObject session = new JSONObject();
+    public Session getSession(String _session){
+        Session session = new Session();
         try {
-            if (smallData.contains(_session)) {
-                session = new JSONObject(smallData.getString(_session, "{}"));
-                session.put("session", _session);
-            }
+            JSONObject sessionO = new JSONObject(smallData.getString(_session, "{}"));
+            sessionO.put("session", _session);
+            session = new Session(sessionO);
         }catch (Exception ignored) {}
         return session;
     }
 
-    public List<Integer> getUnsortedSessionList(String session){
+    public List<Integer> getUnsortedSessionList(String session, int index){
         List<Integer> numbers = new ArrayList<>();
-        if(bigData.contains(session + "unsorted")){
+        Session sess = getSession(session);
+
+        int ii;
+        if(sess.getChunkPages() > index){
+            ii = index;
+        }else{
+            ii = 0;
+        }
+
+        List<String> chunks = sess.getChunks();
+
+        if(bigData.contains(session + "unsorted_" + chunks.get(ii))){
             try{
-                JSONArray unsorted = new JSONArray(bigData.getString(session + "unsorted", "[]"));
+                JSONArray unsorted = new JSONArray(bigData.getString(session + "unsorted_" + chunks.get(ii), "[]"));
                 for(int i = 0; i < unsorted.length(); i++)
                     if (unsorted.get(i) instanceof Integer)
                         numbers.add(unsorted.getInt(i));
@@ -126,14 +173,26 @@ public class NumberManager {
                 e.printStackTrace();
             }
         }
+
         return numbers;
     }
 
-    public List<Integer> getSortedSessionList(String session){
+    public List<Integer> getSortedSessionList(String session, int index){
         List<Integer> numbers = new ArrayList<>();
-        if(bigData.contains(session + "sorted")){
+        Session sess = getSession(session);
+
+        int ii;
+        if(sess.getChunkPages() > index){
+            ii = index;
+        }else{
+            ii = 0;
+        }
+
+        List<String> chunks = sess.getChunks();
+
+        if(bigData.contains(session + "sorted_" + chunks.get(ii))){
             try{
-                JSONArray unsorted = new JSONArray(bigData.getString(session + "sorted", "[]"));
+                JSONArray unsorted = new JSONArray(bigData.getString(session + "sorted_" + chunks.get(ii), "[]"));
                 for(int i = 0; i < unsorted.length(); i++)
                     if (unsorted.get(i) instanceof Integer)
                         numbers.add(unsorted.getInt(i));
@@ -141,6 +200,7 @@ public class NumberManager {
                 e.printStackTrace();
             }
         }
+
         return numbers;
     }
 

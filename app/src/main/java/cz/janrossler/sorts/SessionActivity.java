@@ -36,6 +36,7 @@ import java.util.List;
 import cz.janrossler.sorts.adapter.SessionPreviewAdapter;
 import cz.janrossler.sorts.sortable.AsyncSearch;
 import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.Session;
 import cz.janrossler.sorts.utils.SortingService;
 import cz.janrossler.sorts.utils.Template;
 import cz.janrossler.sorts.utils.Utilities;
@@ -43,7 +44,7 @@ import cz.janrossler.sorts.utils.Utilities;
 @SuppressWarnings({"FieldCanBeLocal", "deprecation"})
 public class SessionActivity extends AppCompatActivity implements SortingService.Callbacks {
     private NumberManager numberManager;
-    private JSONObject session;
+    private Session session;
     private Intent intent;
     private Intent sortIntent;
     private JSONArray unsorted = new JSONArray();
@@ -51,6 +52,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     private boolean isAscending = true;
     private boolean isEditable = false;
     private int defaultIndex = 0;
+    private int chunkPage = 0;
     private LinearLayoutManager manager;
     private SortingService myService;
 
@@ -197,8 +199,8 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         sorted = new JSONArray();
         unsorted = new JSONArray();
 
-        List<Integer> list_sorted = numberManager.getSortedSessionList(intent.getStringExtra("session"));
-        List<Integer> list_unsorted = numberManager.getUnsortedSessionList(intent.getStringExtra("session"));
+        List<Integer> list_sorted = numberManager.getSortedSessionList(intent.getStringExtra("session"), chunkPage);
+        List<Integer> list_unsorted = numberManager.getUnsortedSessionList(intent.getStringExtra("session"), chunkPage);
 
         for(int i = 0; i < list_unsorted.size(); i++)
             unsorted.put(list_unsorted.get(i));
@@ -208,19 +210,17 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         try{
             instance.setText(
                     getString(R.string.session_title)
-                            .replace("%instance%", session.has("session")
-                                    ? session.getString("session") : "")
+                            .replace("%instance%", session.getId())
             );
             total_length.setText(
                     getString(R.string.session_numbers)
-                            .replace("%total%", session.has("length")
-                                    ? session.getString("length") : "")
+                            .replace("%total%", String.valueOf(session.getLength()))
             );
             sort_technology.setText(
-                    session.has("algorithm")
-                            ? session.getString("algorithm") : getString(R.string.unknown));
-            sort_time.setText(session.has("time") ? Utilities.getTimeFormat(session.getInt("time")) : "~sec");
-            isEditable = session.has("editable") && session.getBoolean("editable");
+                    !session.getAlgorithm().equals("")
+                            ? session.getAlgorithm() : getString(R.string.unknown));
+            sort_time.setText(Utilities.getTimeFormat(session.getTime()));
+            isEditable = session.isEditable();
         }catch (Exception e){
             e.printStackTrace();
             instance.setText(getString(R.string.session_title)
@@ -244,11 +244,9 @@ public class SessionActivity extends AppCompatActivity implements SortingService
                 JSONArray sorts = Utilities.getSortAlgorithms(this);
                 List<String> allowedSorts = new ArrayList<>();
 
-                int length = session.has("length")
-                        ? session.getInt("length") : 0;
+                int length = session.getLength();
 
-                int max_gen = session.has("max")
-                        ? session.getInt("max") : length;
+                int max_gen = session.getMax();
 
                 for(int i = 0; i < sorts.length(); i++){
                     JSONObject sort = sorts.getJSONObject(i);

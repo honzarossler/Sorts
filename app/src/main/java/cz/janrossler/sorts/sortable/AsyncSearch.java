@@ -27,7 +27,7 @@ public class AsyncSearch extends AsyncTask<Integer, String, String> {
     protected String doInBackground(@NonNull Integer... search) {
         BinarySearchTree tree = new BinarySearchTree();
         NumberManager numberManager = new NumberManager(context);
-        Node node = BinarySearchTree.createFromList(numberManager.getUnsortedSessionList(session));
+        Node node = BinarySearchTree.createFromList(numberManager.getUnsortedSessionList(session, 0));
         res = tree.search(node, search[0]);
 
         publishProgress();

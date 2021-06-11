@@ -36,7 +36,7 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
             if (!sortAlgorithm.equals("")) {
                 sort.setSortingListener(new Sortable.SortingListener() {
                     @Override
-                    public void onSuccessSort(int seconds) {
+                    public void onChunkSorted(int milliseconds, int[] index) {
                         List<Integer> list = new ArrayList<>();
                         try {
                             list = sort.getSortedList();
@@ -51,11 +51,16 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
 
                         NumberManager numberManager = new NumberManager(context);
                         try {
-                            numberManager.saveSortingToSession(sessions[0], sortAlgorithm, seconds, array);
+                            numberManager.saveMergedChunks(
+                                    sessions[0], sortAlgorithm, milliseconds,
+                                    array, index);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        answers.remove(sortAlgorithm);
+                    }
+
+                    @Override
+                    public void onSorted() {
                         publishProgress();
                     }
 

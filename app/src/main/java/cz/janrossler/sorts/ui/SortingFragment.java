@@ -2,7 +2,9 @@ package cz.janrossler.sorts.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,6 @@ import cz.janrossler.sorts.R;
 import cz.janrossler.sorts.TreeViewActivity;
 import cz.janrossler.sorts.adapter.SessionsAdapter;
 import cz.janrossler.sorts.utils.NumberManager;
-import cz.janrossler.sorts.utils.Utilities;
 
 public class SortingFragment extends Fragment {
     private Activity activity;
@@ -37,6 +38,7 @@ public class SortingFragment extends Fragment {
     private LinearLayout layout_empty;
 
     private NumberManager numberManager;
+    private ProgressDialog pDialog;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +55,11 @@ public class SortingFragment extends Fragment {
                 .load(R.drawable.ic_sorting)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(image_animated);
+
+        pDialog = new ProgressDialog(activity);
+        pDialog.setIndeterminate(true);
+        pDialog.setCancelable(false);
+        pDialog.setMessage("Vytvářím novou instanci ...");
 
         numberManager = new NumberManager(activity);
         update();
@@ -86,21 +93,22 @@ public class SortingFragment extends Fragment {
                     int min = Integer.parseInt(edit_min.getText().toString());
                     int max = Integer.parseInt(edit_max.getText().toString());
 
-                    int max_length = Utilities.MAX_SESSION_SIZE;
-                    boolean very_large = length > max_length
-                            || min > max_length
-                            || max > max_length;
+                    //int max_length = Utilities.MAX_SESSION_SIZE;
+                    //boolean very_large = length > max_length
+                    //        || min > max_length
+                    //        || max > max_length;
 
-                    if(length > 0 && max > min && !very_large){
-                        numberManager.createSession(session, true);
-                        numberManager.createList(session, length, min, max);
-
+                    //if(length > 0 && max > min && !very_large){}
+                    AsyncCreateSession asyncCreateSession = new AsyncCreateSession(numberManager, () -> {
+                        //numberManager.createList(session, length, min, max);
+                        pDialog.dismiss();
                         update();
-                    }else if(very_large){
-                        Toast.makeText(activity,
-                                "Vaše čísla jsou moc velká pro zpracování.",
-                                Toast.LENGTH_LONG).show();
-                    }
+                    });
+                    pDialog.show();
+                    asyncCreateSession.length = length;
+                    asyncCreateSession.min = min;
+                    asyncCreateSession.max = max;
+                    asyncCreateSession.execute(session);
                 }catch (Exception e){
                     e.printStackTrace();
                     Toast.makeText(activity,
@@ -141,5 +149,48 @@ public class SortingFragment extends Fragment {
     public void onResume() {
         super.onResume();
         update();
+    }
+
+    private static class AsyncCreateSession extends AsyncTask<String, String, Void>{
+        NumberManager manager;
+        OnAsync async;
+        int length = 1;
+        int min = 0;
+        int max = 1;
+
+        public AsyncCreateSession(NumberManager manager, OnAsync async){
+            this.manager = manager;
+            this.async = async;
+        }
+
+        public void setLength(int length){
+            this.length = length;
+        }
+
+        public void setMin(int min) {
+            this.min = min;
+        }
+
+        public void setMax(int max) {
+            this.max = max;
+        }
+
+        @Override
+        protected Void doInBackground(@NonNull String... sessions) {
+            for (String session : sessions) manager.createList(session, length, min, max);
+
+            publishProgress();
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            if(async != null) async.onDone();
+            super.onProgressUpdate(values);
+        }
+
+        public interface OnAsync {
+            void onDone();
+        }
     }
 }

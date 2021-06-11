@@ -20,8 +20,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -30,6 +28,7 @@ import cz.janrossler.sorts.adapter.NodeAdapter;
 import cz.janrossler.sorts.utils.BinarySearchTree;
 import cz.janrossler.sorts.utils.Node;
 import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.Session;
 import cz.janrossler.sorts.utils.Template;
 import cz.janrossler.sorts.utils.Utilities;
 
@@ -42,7 +41,7 @@ public class TreeViewActivity extends AppCompatActivity {
     private boolean isAddOpen = false;
     private boolean isRemoveOpen = false;
     private Node node;
-    private JSONObject session;
+    private Session session;
 
     private RecyclerView tree;
     private FloatingActionButton tool_add;
@@ -103,17 +102,17 @@ public class TreeViewActivity extends AppCompatActivity {
         if(usingSession){
             session = numberManager.getSession(intent.getStringExtra("session"));
             List<Integer> numbers = numberManager
-                    .getUnsortedSessionList(intent.getStringExtra("session"));
+                    .getUnsortedSessionList(intent.getStringExtra("session"), 0);
 
             node = BinarySearchTree.createFromList(numbers);
 
             try {
-                isSessionEditable = session.has("editable") && session.getBoolean("editable");
+                isSessionEditable = session.isEditable();
             }catch (Exception e){
                 isSessionEditable = false;
             }
             locked.setVisibility(!isSessionEditable ? View.VISIBLE : View.GONE);
-        }else session = new JSONObject();
+        }else session = null;
 
         tool_add.setVisibility(usingSession && !isSessionEditable ? View.GONE : View.VISIBLE);
         tool_remove.setVisibility(usingSession && !isSessionEditable ? View.GONE : View.VISIBLE);
@@ -155,8 +154,6 @@ public class TreeViewActivity extends AppCompatActivity {
                     int h = calendar.get(Calendar.HOUR_OF_DAY);
                     int mi = calendar.get(Calendar.MINUTE);
                     session = y + "-" + m + "-" + d + " " + h + "-" + mi;
-
-                    numberManager.createSession(session, true);
                 }
 
                 numberManager.pushList(session, list);
@@ -377,7 +374,6 @@ public class TreeViewActivity extends AppCompatActivity {
                 int mi = calendar.get(Calendar.MINUTE);
                 String session = y + "-" + m + "-" + d + " " + h + "-" + mi;
 
-                numberManager.createSession(session, true);
                 numberManager.pushList(session, list);
                 super.onBackPressed();
             });

@@ -1,29 +1,29 @@
 package cz.janrossler.sorts.sortable;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import cz.janrossler.sorts.utils.NumberManager;
+import cz.janrossler.sorts.utils.Session;
 
 public abstract class Sortable implements SortableList {
     protected boolean isSorting = false;
-    protected String session;
+    protected String session_name;
+    protected Session session;
     protected NumberManager numberManager;
     protected List<Integer> numbers;
     protected SortingListener sortingListener;
     protected Timer timer;
 
-    public Sortable(Context context, String session){
-        this.session = session;
+    public Sortable(Context context, String session_name){
+        this.session_name = session_name;
         numberManager = new NumberManager(context);
-        numbers = numberManager.getUnsortedSessionList(session);
+        session = numberManager.getSession(session_name);
         timer = new Timer();
     }
 
@@ -41,7 +41,8 @@ public abstract class Sortable implements SortableList {
     }
 
     public interface SortingListener {
-        void onSuccessSort(int milliseconds);
+        void onChunkSorted(int milliseconds, int[] index);
+        void onSorted();
         void onFailed(String _message);
     }
 
@@ -162,17 +163,55 @@ public abstract class Sortable implements SortableList {
     public void start(){
         timer = new Timer();
         try{
-            sortNow();
-            timer.breakpoint();
+            int chunks = session.getChunkPages();
+            if(chunks > 1){
+                for(int j = 1; j < chunks; j++){
+                    numbers = numberManager.getUnsortedSessionList(session_name, j);
+                    numbers.addAll(numberManager.getUnsortedSessionList(session_name, j - 1));
 
-            if(sortingListener != null) {
-                if(isSorted())
-                    sortingListener.onSuccessSort((int) timer.getTotalCompare());
-                else {
-                    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
-                    throw new SortException("Seznam nebyl úspěšně seřazen.");
+                    sortNow();
+                    timer.breakpoint();
+
+                    if(sortingListener != null) {
+                        sortingListener.onChunkSorted((int) timer.getTotalCompare(), new int[]{j - 1, j});
+                        //if(isSorted()) { }else {
+                        //    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
+                        //    throw new SortException("Seznam nebyl úspěšně seřazen.");
+                        //}
+                    }
+                }
+
+                for(int j = chunks - 1; j > 0; j--){
+                    numbers = numberManager.getUnsortedSessionList(session_name, j);
+                    numbers.addAll(numberManager.getUnsortedSessionList(session_name, j - 1));
+
+                    sortNow();
+                    timer.breakpoint();
+
+                    if(sortingListener != null) {
+                        sortingListener.onChunkSorted((int) timer.getTotalCompare(), new int[]{j - 1, j});
+                        //if(isSorted()) { }else {
+                        //    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
+                        //    throw new SortException("Seznam nebyl úspěšně seřazen.");
+                        //}
+                    }
+                }
+            }else{
+                numbers = numberManager.getUnsortedSessionList(session_name, 0);
+
+                sortNow();
+                timer.breakpoint();
+
+                if(sortingListener != null) {
+                    sortingListener.onChunkSorted((int) timer.getTotalCompare(), new int[]{0});
+                    //if(isSorted()) { }else {
+                    //    if(numbers.size() <= 100) Log.i("SortedList", Arrays.toString(numbers.toArray()));
+                    //    throw new SortException("Seznam nebyl úspěšně seřazen.");
+                    //}
                 }
             }
+
+            if(sortingListener != null) sortingListener.onSorted();
         }catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
             if (sortingListener != null) sortingListener.onFailed("Třídění proběhlo mimo seznam.");

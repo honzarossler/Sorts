@@ -25,6 +25,7 @@ public class Utilities {
     public static final int MAX_TREE_SIZE = 1500;
     public static final int MAX_SESSION_SIZE = 2000000;
     public static final int MAX_GRAVITY_ALLOC = 1000000000;
+    public static final int MAX_CHUNK_SIZE = 500000;
 
     @NonNull
     public static JSONArray getSortAlgorithms(Context context){
