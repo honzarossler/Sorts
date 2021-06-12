@@ -18,5 +18,8 @@
         "image": "%folder%/bogo_sort_visual.gif"
       }
     ]
+  },
+  "source": {
+    "_": "%folder%/source.md"
   }
 }

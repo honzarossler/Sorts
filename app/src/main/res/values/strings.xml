@@ -44,4 +44,5 @@
     <string name="dialog_message_unsupported">This operation is not supported.</string>
     <string name="dialog_message_result_number">Searched number: %num%</string>
     <string name="dialog_message_result_amount">Number of occurrences: %amount%</string>
+    <string name="action_code">Source</string>
 </resources>

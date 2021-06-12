@@ -3,10 +3,13 @@ package cz.janrossler.sorts;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -16,12 +19,23 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import org.commonmark.node.Heading;
+
 import java.util.Arrays;
 import java.util.Locale;
 
 import cz.janrossler.sorts.adapter.TheoryAdapter;
 import cz.janrossler.sorts.utils.Language;
 import cz.janrossler.sorts.utils.Theory;
+import io.noties.markwon.AbstractMarkwonPlugin;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.MarkwonSpansFactory;
+import io.noties.markwon.SpanFactory;
+import io.noties.markwon.core.MarkwonTheme;
+import io.noties.markwon.ext.latex.JLatexMathPlugin;
+import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin;
 
 public class TheoryActivity extends AppCompatActivity {
     private RecyclerView content;
@@ -92,10 +106,10 @@ public class TheoryActivity extends AppCompatActivity {
         menu.clear();
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.theory_menu, menu);
+        menu.findItem(R.id.source).setVisible(theory.sourceEnabled());
         return super.onCreateOptionsMenu(menu);
     }
 
-    @SuppressWarnings("SwitchStatementWithTooFewBranches")
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -104,8 +118,46 @@ public class TheoryActivity extends AppCompatActivity {
                 showLanguageOptions();
                 return true;
 
+            case R.id.source:
+                openSource();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void openSource(){
+        Markwon markwon = Markwon.builder(this)
+                .usePlugin(new AbstractMarkwonPlugin() {
+                    @Override
+                    public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
+                        builder.headingBreakColor(getColor(R.color.pink_700));
+                        builder.build();
+                    }
+                    @Override
+                    public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
+                        final SpanFactory origin = builder.requireFactory(Heading.class);
+
+                        builder.setFactory(Heading.class, (configuration, props) -> new Object[]{
+                                origin.getSpans(configuration, props),
+                                new ForegroundColorSpan(getColor(R.color.pink_700))
+                        });
+                    }
+                })
+                .usePlugin(MarkwonInlineParserPlugin.create())
+                .usePlugin(JLatexMathPlugin.create(16 * getResources().getDisplayMetrics().density, builder -> {
+                    builder.inlinesEnabled(true);
+                    builder.build();
+                }))
+                .build();
+
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        View view = View.inflate(this, R.layout.dialog_source, null);
+        TextView textView = view.findViewById(R.id.textView);
+        markwon.setMarkdown(textView, theory.getLocalizedSource());
+
+        dialog.setContentView(view);
+        dialog.show();
     }
 }

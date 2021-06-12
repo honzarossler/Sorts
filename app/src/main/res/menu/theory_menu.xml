@@ -5,5 +5,10 @@
         android:id="@+id/language"
         android:icon="@drawable/ic_baseline_public_24"
         android:title="@string/action_lang"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/source"
+        android:icon="@drawable/ic_baseline_code_24"
+        android:title="@string/action_lang"
         app:showAsAction="always"/>
 </menu>

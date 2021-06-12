@@ -161,6 +161,19 @@ public class TheoryReader {
                 }
                 theory.put("body", body);
             }
+
+            if(theory.has("source")){
+                JSONObject sources = theory.getJSONObject("source");
+
+                Iterator<String> iter = sources.keys();
+                while(iter.hasNext()){
+                    String key = iter.next();
+                    String text = getTheoryText(sources.getString(key)
+                            .replace("%folder%", rootFolder));
+                    sources.put(key, text);
+                }
+                theory.put("source", sources);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
