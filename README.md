@@ -24,11 +24,13 @@ Aplikace obsahuje celkem 13 třídicích algoritmů:
 * ShakerSort
 * ShellSort
 
+Aplikace ale není omezena počtem doystupných algoritmů, a tak můžete navrhnout další algoritmy a přidat je. Návod je uveden níže v sekci Porozumění projektu.
+
 ### Teorie algoritmů
 
-Protože jsem věnoval aplikaci třídicím algoritmům, rozhodl jsem se přidat teorii inspirovanou stránkami [Algoritmy.net](https://algoritmy.net/), [GeeksForGeeks](https://www.geeksforgeeks.org/fundamentals-of-algorithms/?ref=shm) a [Wikipedia](https://cs.wikipedia.org).
+Protože jsem věnoval aplikaci třídicím algoritmům, rozhodl jsem se přidat teorii inspirovanou stránkami [Algoritmy.net](https://algoritmy.net/), [GeeksForGeeks](https://www.geeksforgeeks.org/fundamentals-of-algorithms/?ref=shm) a [Wikipedia](https://cs.wikipedia.org). Teorie mohou obsahovat i zdrojový kód pro daný algoritmus v jakyzových verzích.
 
-Teorie podporuje vícejazyčných verzí a je čtena z Assets složky v projektu aplikace. Bohužel teorie je k dispozici pouze od přibližně 10 algoritmů a jen v jazycích čeština a angličtina.
+Teorie podporuje vícejazyčných verzí a je čtena z Assets složky v projektu aplikace. Bohužel teorie je k dispozici pouze pro přibližně 10 algoritmů a jen v jazycích čeština a angličtina. Každý kdo by chtěl pomoci, může přidat další jazykové verze nebo nové teorie. Návod je uveden níže v sekci Porozumění projektu.
 
 ### Binární vyhledávací strom
 
@@ -40,7 +42,13 @@ Aplikace obsahuje spoustu částí, které jsem buď vytvořil sám nebo za pomo
 
 ### Systém ukládání algoritmů
 
-Aplikace používá pro správu instance čísel, kterých je nyní možné vytvořit nekonečně mnoho, ale jste limitováni velikostí instancí na 2 000 000 čísel. Tyto instance zpracovává třída `cz.janrossler.sorts.utils.NumberManager`, která obsahuje detailně popsané fungování této třídy a jeho metod.
+Aplikace používá pro správu instance čísel, kterých je nyní možné vytvořit nekonečně mnoho. Tyto instance zpracovává třída `cz.janrossler.sorts.utils.NumberManager`, která obsahuje detailně popsané fungování této třídy a jeho metod.
+
+#### Instance čísel
+
+Aplikace ukládá data do své paměti za pomoci `SharedPreferences`, avšak do 2 rozdílných souborů. První z nich obsahuje pouze metadata o instancích a druhý seznamy čísel. Android však omezuje velikosti objektů, které nemohly zpracovávát např. 5 miliónů čísel, a proto jsem vytvořil systém pro ukládání čísel po tzv. `chuncích` o velikosti maximálně 500 tisíc čísel.
+
+Důvodem ukládání dat v aplikaci je omezit veškerá oprávnění, které by uživatel musel nutně schvalovat.
 
 #### Seznam algoritmů a pochopení jeho obsahu
 
@@ -82,7 +90,7 @@ Samotný výběr a třídění pomocí algoritmů neimplementuje žádné konkr�
 2. `cz.janrossler.sorts.utils.SortingService` založí asynchronní volání `cz.janrossler.sorts.sortable.AsyncSorting` a předá mu komunikaci s aktivitou, instanci a algoritmus
 3. `cz.janrossler.sorts.sortable.AsyncSorting` definuje pomocí `cz.janrossler.sorts.sortable.Sort.getByName()` danou třídu rozšiřující `cz.janrossler.sorts.sortable.Sortable`
 4. `cz.janrossler.sorts.sortable.AsyncSorting` spustí algoritmus příkazem `Sortable.start()`, která obsahuje podchycení výjimek, přetečení zásobníku, časovač a potřebné metody pro třídění
-5. Třída rozšířena o `cz.janrossler.sorts.sortable.Sortable` vykoná třídění, vrátí odpověď a `cz.janrossler.sorts.sortable.AsyncSorting` uloží seřazená čísla a oznámí aktivitě, že bylo dokončeno třídění.
+5. Třída rozšířena o `cz.janrossler.sorts.sortable.Sortable` vykoná třídění, vrátí odpověď do `cz.janrossler.sorts.sortable.AsyncSorting`, uloží seřazená čísla a oznámí aktivitě, že bylo dokončeno třídění.
 
 ### Systém zobrazování teorií
 
@@ -109,6 +117,10 @@ Aplikace v základu čte a zpracovává JSON soubory teorií z `app/src/assets/s
         "image": "%folder%/some_image.gif"
       }
     ]
+  },
+  "source": {
+    "_": "%folder%/source.md",
+    "cs_CZ": "%folder%/source_csCZ.md"
   }
 }
 ```
@@ -120,6 +132,7 @@ Kde se nachází spoustu klíčů, které by měly být správně pochopeny:
 * ``body`` - Obsahuje klíče nazvané dle kódu jazyka a klíč ``_``, který bude vždy vyvolán, když bude chybět jazyková mutace. Všechny tyto klíče obsahují seznam
   * ``text`` - Obsahuje odkaz na Markdown soubor s teorií
   * ``image`` - Obsahuje odkaz na obrázky
+* ``source`` - Obsahuje klíče jazykových mutací zdrojového kódu algoritmu
 
 #### Zobrazení seznamu teorií
 
@@ -132,8 +145,6 @@ Všechny teorie se otevírají přes `cz.janrossler.sorts.TheoryActivity`, ktero
 ### Další užitečné informace
 
 Aplikace je stále ve vývoji a některé části kódu mohou být razantně změněny, odstraněny některé části, přidány další podmínky, vylepšení struktur JSON souborů, nebo budou vyžadovat zvláštní přístup.
-
-Dále je v plánu změnit přístup k datům a udělat efektivnější zpracovávání velkým dat. Aktuálně je omezen seznam jen na 2 000 000 čísel a určitě by se tento limit měl navýšit na minimálně 10 000 000 čísel aniž by došlo na selhání při přetečení zásobníku.
 
 Vykreslování stromu je omezeno na 1 500 čísel z důvodu dlouhého zpracovávání v `RecyclerView`. V plánu je optimalizace a efektivnější načítání položek a dosažení bezproblémového načítání až 100 000 čísel.
 
