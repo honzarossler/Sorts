@@ -42,7 +42,7 @@
     "enabled": true,
     "recommended_length": {
       "max": 100000,
-      "max_alloc": 1500000000
+      "max_alloc": 1000000000
     },
     "hints": {
       "_": "Just let gravity do its job",
