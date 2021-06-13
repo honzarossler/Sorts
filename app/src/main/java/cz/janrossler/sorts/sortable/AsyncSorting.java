@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,29 +30,21 @@ public class AsyncSorting extends AsyncTask<String, String, String> {
 
     protected String doInBackground(@NonNull String... sessions) {
         try {
+            // Získání třídicího algoritmu podle názvu ze JSON souboru
             sort = Sort.getByName(context, sortAlgorithm, sessions[0]);
 
             if (!sortAlgorithm.equals("")) {
                 sort.setSortingListener(new Sortable.SortingListener() {
                     @Override
                     public void onChunkSorted(int milliseconds, int[] index) {
-                        List<Integer> list = new ArrayList<>();
                         try {
-                            list = sort.getSortedList();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                            List<Integer> list = sort.getSortedList();
+                            JSONArray array = new JSONArray();
+                            list.forEach(array::put);
 
-                        JSONArray array = new JSONArray();
-
-                        for (int i = 0; i < list.size(); i++)
-                            array.put(list.get(i));
-
-                        NumberManager numberManager = new NumberManager(context);
-                        try {
+                            NumberManager numberManager = new NumberManager(context);
                             numberManager.saveMergedChunks(
-                                    sessions[0], sortAlgorithm, milliseconds,
-                                    array, index);
+                                    sessions[0], sortAlgorithm, milliseconds, array, index);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

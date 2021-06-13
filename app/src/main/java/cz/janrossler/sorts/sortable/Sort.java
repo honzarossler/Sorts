@@ -22,8 +22,11 @@ public class Sort {
             @NonNull String algorithm,
             @NonNull String session)
             throws Exception{
+                // Otevření třídy dle String návzu algoritmu
                 Class<?> clazz = Class.forName("cz.janrossler.sorts.sortable." + algorithm);
+                // Vytvoření konstruktoru pro tuto třídu
                 Constructor<?> constructor = clazz.getConstructor(Context.class, String.class);
+                // Návrat této třídy jako instanci Sortable
                 return (Sortable) constructor.newInstance(context, session);
     }
 }

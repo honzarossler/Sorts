@@ -44,31 +44,40 @@ public class SortingFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
         assert activity != null;
+
+        // Nastavení pohled
         View root = View.inflate(activity, R.layout.fragment_home, null);
+
+        // Definujeme prvky v prostředí
         sort_sessions = root.findViewById(R.id.sort_sessions);
         FloatingActionButton add = root.findViewById(R.id.add);
         FloatingActionButton tree = root.findViewById(R.id.tree);
         layout_empty = root.findViewById(R.id.layout_empty);
         ImageView image_animated = root.findViewById(R.id.image_animated);
 
+        // Načteme GIF soubor pro zobrazení v režimu bez instancí
         Glide.with(activity)
                 .load(R.drawable.ic_sorting)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(image_animated);
 
+        // Nastavíme dialog pro vytváření nových instancí
         pDialog = new ProgressDialog(activity);
         pDialog.setIndeterminate(true);
         pDialog.setCancelable(false);
         pDialog.setMessage("Vytvářím novou instanci ...");
 
+        // Definujeme uložiště instancí
         numberManager = new NumberManager(activity);
         update();
 
         add.setOnClickListener(v -> {
+            // Vytvoření dialogu pro přidávání instance
             final AlertDialog alertDialog;
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             View view = View.inflate(activity, R.layout.dialog_new_sorting, null);
 
+            // Vytvoření názvu instance
             Calendar calendar = Calendar.getInstance();
             int y = calendar.get(Calendar.YEAR);
             int m = calendar.get(Calendar.MONTH) + 1;
@@ -77,28 +86,38 @@ public class SortingFragment extends Fragment {
             int mi = calendar.get(Calendar.MINUTE);
             String session = y + "-" + m + "-" + d + " " + h + "-" + mi;
 
+            // Definice prvků pro dialog
             EditText edit_session_id = view.findViewById(R.id.session_id);
             EditText edit_length = view.findViewById(R.id.length);
             EditText edit_min = view.findViewById(R.id.min);
             EditText edit_max = view.findViewById(R.id.max);
             edit_session_id.setText(session);
-
             builder.setView(view);
+
+            // Sestavíme dialog
             alertDialog = builder.create();
+
+            // Nastavíme tlačítka dialogu
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,
                     activity.getText(R.string.action_create),
                     (dialog, which) -> {
                 try {
+                    // Získání hodnot z dialogu
                     int length = Integer.parseInt(edit_length.getText().toString());
                     int min = Integer.parseInt(edit_min.getText().toString());
                     int max = Integer.parseInt(edit_max.getText().toString());
 
-                    AsyncCreateSession asyncCreateSession = new AsyncCreateSession(numberManager, () -> {
-                        pDialog.dismiss();
-                        update();
+                    // Vytvoření asynchronního objektu pro tvorbu instance
+                    AsyncCreateSession asyncCreateSession =
+                            new AsyncCreateSession(numberManager, () -> {
+                                pDialog.dismiss();
+                                update();
                     });
 
+                    // Zobrazit dialog vytváření instance
                     pDialog.show();
+
+                    // Nastavení a spuštění asynchronního objektu
                     asyncCreateSession.length = length;
                     asyncCreateSession.min = min;
                     asyncCreateSession.max = max;
@@ -114,9 +133,11 @@ public class SortingFragment extends Fragment {
                     activity.getText(R.string.action_cancel),
                     (dialog, which) -> alertDialog.dismiss());
 
+            // Zobrazit dialog pro tvorbu instance
             alertDialog.show();
         });
 
+        // Otevřit novou instanci stromu
         tree.setOnClickListener(v ->
                 startActivity(new Intent(activity, TreeViewActivity.class)));
 
@@ -124,8 +145,10 @@ public class SortingFragment extends Fragment {
     }
 
     private void update(){
+        // Získání všech instancí
         JSONArray sessions = numberManager.getAllSessions();
 
+        // Pravidla pro zobrazení prvků
         if(sessions.length() < 1){
             layout_empty.setVisibility(View.VISIBLE);
             sort_sessions.setVisibility(View.GONE);
@@ -134,6 +157,7 @@ public class SortingFragment extends Fragment {
             sort_sessions.setVisibility(View.VISIBLE);
         }
 
+        // Nastavení a zobrazení instancí v mřížce
         SessionsAdapter adapter = new SessionsAdapter(activity, sessions);
         sort_sessions.setAdapter(adapter);
         sort_sessions.setLayoutManager(new GridLayoutManager(activity, 2));

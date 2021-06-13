@@ -1,6 +1,5 @@
 package cz.janrossler.sorts;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
@@ -93,6 +92,7 @@ public class TheoryActivity extends AppCompatActivity {
                 TheoryAdapter adapter =
                         new TheoryAdapter(this, theory.getTranslatedContent(langs[selectedPosition]));
 
+                thisLang = langs[selectedPosition];
                 content.setLayoutManager(new LinearLayoutManager(this));
                 content.setAdapter(adapter);
             }
@@ -110,20 +110,16 @@ public class TheoryActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.language:
-                showLanguageOptions();
-                return true;
-
-            case R.id.source:
-                openSource();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if(item.getItemId() == R.id.language){
+            showLanguageOptions();
+            return true;
+        }else if(item.getItemId() == R.id.source){
+            openSource();
+            return true;
+        }else{
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -155,7 +151,7 @@ public class TheoryActivity extends AppCompatActivity {
         BottomSheetDialog dialog = new BottomSheetDialog(this);
         View view = View.inflate(this, R.layout.dialog_source, null);
         TextView textView = view.findViewById(R.id.textView);
-        markwon.setMarkdown(textView, theory.getLocalizedSource());
+        markwon.setMarkdown(textView, theory.getTranslatedSource(thisLang));
 
         dialog.setContentView(view);
         dialog.show();

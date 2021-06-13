@@ -1,6 +1,4 @@
 ```java
-import androidx.annotation.NonNull;
-
 class BogoSort {
     public BogoSort() {
         // Vytvoříme náhodné pole čísel
@@ -29,21 +27,21 @@ class BogoSort {
             swap(a, i, (int) (Math.random() * i));
     }
 
-    void swap(@NonNull int[] a, int i, int j) {
+    void swap(int[] a, int i, int j) {
         // Prohodíme 2 čísla na indexích
         int temp = a[i];
         a[i] = a[j];
         a[j] = temp;
     }
 
-    boolean isSorted(@NonNull int[] a) {
+    boolean isSorted(int[] a) {
         for (int i = 1; i < a.length; i++)
             if (a[i] < a[i - 1])
                 return false;
         return true;
     }
 
-    void printArray(@NonNull int[] arr) {
+    void printArray(int[] arr) {
         for (int j : arr)
             System.out.print(j + " ");
         System.out.println();

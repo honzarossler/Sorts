@@ -23,13 +23,16 @@ public class TheoryFragment extends Fragment {
         Activity activity = getActivity();
         assert activity != null;
 
+        // Definice objektů pro získání teorií
         TheoryReader reader = new TheoryReader(activity);
         JSONArray theories = reader.getAllTheories();
         TheoryListAdapter adapter = new TheoryListAdapter(activity, theories);
 
+        // Nastavení prvků
         View root = View.inflate(activity, R.layout.fragment_dashboard, null);
         RecyclerView theories_list = root.findViewById(R.id.theories);
 
+        // Zobrazení teorií
         theories_list.setLayoutManager(new LinearLayoutManager(activity));
         theories_list.setAdapter(adapter);
 

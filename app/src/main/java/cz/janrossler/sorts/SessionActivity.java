@@ -77,13 +77,15 @@ public class SessionActivity extends AppCompatActivity implements SortingService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Definice objektu pro načítání instance
         numberManager = new NumberManager(this);
 
+        // Kontrola pro existenci volané instance
         intent = getIntent();
         if(intent == null || !intent.hasExtra("session")) finish();
 
+        // Nastavení prvků zobrazení
         setContentView(R.layout.activity_session);
-
         instance = findViewById(R.id.instance);
         total_length = findViewById(R.id.total_length);
         sort_technology = findViewById(R.id.sort_technology);
@@ -95,12 +97,13 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         fab_sort_view = findViewById(R.id.fab_sort_view);
         fab_search = findViewById(R.id.fab_search);
         session_preview = findViewById(R.id.session_preview);
-
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
+        // Spuštění služby pro okamžité třídění
         sortIntent = new Intent(SessionActivity.this, SortingService.class);
         bindService(sortIntent, mConnection, Context.BIND_AUTO_CREATE);
 
+        // Nastavení načítacích dialogů
         pDialog = new ProgressDialog(this);
         pDialog.setIndeterminate(true);
         pDialog.setCancelable(false);
@@ -110,6 +113,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
         pSearchDialog.setCancelable(false);
         pSearchDialog.setMessage(getString(R.string.dialog_message_finding_number));
 
+        // Nastavení eventů pro zobrazení prvků
         session_preview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
@@ -133,6 +137,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             }
         });
 
+        // Kliknutí pro seřazení sestupně a vzestupně
         fab_sort_view.setOnClickListener(v -> {
             if(isAscending){
                 manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
@@ -149,6 +154,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             update();
         });
 
+        // Kliknutí pro vyhledávání
         fab_search.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.dialog_message_input_search_number));
@@ -195,6 +201,7 @@ public class SessionActivity extends AppCompatActivity implements SortingService
             builder.show();
         });
 
+        // Změnit stránku (chunk)
         sort_page.setOnClickListener(v -> {
             CharSequence[] chars = new CharSequence[chunkTotal];
             for(int i = 0; i < chunkTotal; i++){

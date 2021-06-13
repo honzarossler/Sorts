@@ -42,8 +42,28 @@ public abstract class Sortable implements SortableList {
     }
 
     public interface SortingListener {
+        /**
+         * <p>
+         *     Je volán, když proběhlo úspěšné setřídění chunku.
+         * </p>
+         * @param milliseconds Doba trvání v milisekundách.
+         * @param index Pole indexů, které je tímto ovlivněno.
+         */
         void onChunkSorted(int milliseconds, int[] index);
+
+        /**
+         * <p>
+         *     Je volán, když jsou seřazeny všechny chunky.
+         * </p>
+         */
         void onSorted();
+
+        /**
+         * <p>
+         *     Je volán, pokud nedojde k úspěšnému setřídění seznamu čísel.
+         * </p>
+         * @param _message Chybová zpráva
+         */
         void onFailed(String _message);
     }
 
@@ -142,6 +162,13 @@ public abstract class Sortable implements SortableList {
         }
     }
 
+    /**
+     * <p>
+     *     Metoda swap() prohodí v listu, seznamu nebo poli položky na indexech i, j.
+     * </p>
+     * @param i První index listu
+     * @param j Druhý index listu
+     */
     @Override
     public void swap(int i, int j){
         int s = numbers.get(i);
@@ -149,6 +176,12 @@ public abstract class Sortable implements SortableList {
         numbers.set(j, s);
     }
 
+    /**
+     * <p>
+     *     Zkontroluje, zda je seznam správně seřazen.
+     * </p>
+     * @return Vrátí, zda je seznam seřazen.
+     */
     @Override
     public boolean isSorted() {
         for (int i = 1; i < numbers.size(); i++)
@@ -157,9 +190,18 @@ public abstract class Sortable implements SortableList {
         return true;
     }
 
+    /**
+     * <p>
+     *     Tato metoda obsahuje samotný proces třídění. Nedoporučuje se používat tuto metodu samostatně.
+     * </p>
+     * @throws Exception Pokud se něco pokazí, např. chyby s indexy, nebo nedostatečná paměť
+     */
     @Override
     public abstract void sortNow() throws Exception;
 
+    /**
+     * <p>Metoda, která by měla zachycovat chyby a volat sortNow().</p>
+     */
     @Override
     public void start(){
         timer = new Timer();
