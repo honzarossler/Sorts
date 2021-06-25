@@ -78,7 +78,7 @@ Každé z těchto klíčů má jasné poselství:
 * ``enabled`` - Určuje, zda bude tento algoritmus ignorován, neplatí pro teorie. Tento klíč je nepovinný.
 * ``recommended_length`` - Obsahuje kritické podmínky
   * ``max`` - Maximální počet čísel v seznamu. Po překročení této hodnoty bude algoritmus ignorován.
-  * ``max_alloc`` - Některé algoritmy způsobují přetečení zásobníku paměti a vyžadují maximální povolenou alokovanou velikost seznamu. Po překročení této hodnoty bude algoritmus ignorován.
+  * ``max_alloc`` - Některé algoritmy způsobují přetečení zásobníku paměti a vyžadují maximální povolenou alokovanou velikost seznamu v bajtech. Po překročení této hodnoty bude algoritmus ignorován.
 * ``hints`` - Obsahuje klíče jazyků, pro které se tato informace objeví v nabídce teorií.
   * Klíč `_` - Tento klíč je volán, když neexistuje jazyková mutace. Doporučuji zde aplikovat anglickou nápovědu.
 
